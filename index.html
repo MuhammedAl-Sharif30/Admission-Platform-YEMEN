@@ -1,187 +1,364 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>منصة القبول الطبي - اليمن</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* تعريف المتغيرات للألوان */
+        :root {
+            --primary-bg-light: hsl(200, 40%, 96%); /* أزرق سماوي فاتح جداً */
+            --primary-text-dark: hsl(200, 60%, 20%); /* أزرق داكن للعناوين والنصوص */
+            --secondary-text-grey: hsl(210, 10%, 40%); /* رمادي دافئ للنصوص الثانوية */
+            --accent-button-color: hsl(35, 90%, 60%); /* برتقالي هادئ للأزرار البارزة */
+            --accent-button-hover: hsl(35, 90%, 50%); /* درجة أغمق للبرتقالي عند التحويم */
+            --header-bg-color: hsl(200, 40%, 93%); /* لون أفتح للشريط العلوي */
+            --border-color: hsl(200, 20%, 80%); /* لون حدود خفيف */
+            --card-bg-color: #ffffff; /* خلفية البطاقات بيضاء */
+            --shadow-color: rgba(0, 0, 0, 0.1); /* لون الظل */
+            --shadow-color-hover: rgba(0, 0, 0, 0.2); /* لون الظل عند التحويم */
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0d0d1e;
-            color: #e0e0e0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--primary-bg-light);
+            color: var(--primary-text-dark);
             margin: 0;
             padding: 0;
-            text-align: center;
-            overflow: hidden;
-            position: relative;
-            box-sizing: border-box;
-            background-image: radial-gradient(circle at center, rgba(0, 200, 255, 0.05) 0%, rgba(0, 200, 255, 0) 50%),
-                              radial-gradient(circle at top right, rgba(255, 100, 200, 0.05) 0%, rgba(255, 100, 200, 0) 50%);
-            background-size: cover;
-            background-position: center center;
-            animation: backgroundPulse 20s infinite alternate ease-in-out;
-        }
-
-        @keyframes backgroundPulse {
-            0% { background-color: #0d0d1e; }
-            50% { background-color: #1a1a3a; }
-            100% { background-color: #0d0d1e; }
-        }
-
-        .screen {
-            width: 100%;
-            height: 100vh;
-            position: absolute;
-            top: 0;
-            left: 0;
             display: flex;
             flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden; /* لمنع ظهور شريط التمرير الأفقي */
+            text-align: right; /* لضمان محاذاة النص لليمين */
+        }
+
+        /* تنسيقات عامة للشاشات */
+        .screen {
+            width: 100%;
+            display: none; /* افتراضياً مخفية */
+            flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            padding: 20px;
+            padding-bottom: 80px; /* مساحة لأزرار التنقل السفلية */
             box-sizing: border-box;
-            background-color: rgba(10, 10, 30, 0.95);
+            background-color: var(--primary-bg-light);
             overflow-y: auto;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            pointer-events: none;
+            flex-grow: 1; /* لتأخذ المساحة المتاحة */
         }
 
         .screen.active {
-            opacity: 1;
-            pointer-events: auto;
+            display: flex; /* إظهار الشاشة النشطة */
         }
 
-        .scroll-content {
+        /* الشريط العلوي (Header) */
+        .header {
             width: 100%;
-            max-width: 700px;
-            background-color: rgba(15, 15, 40, 0.9);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 255, 255, 0.3);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            margin-bottom: 20px;
-            flex-shrink: 0;
-        }
-
-        h1 {
-            color: #00eaff;
-            font-size: 2.8em;
-            margin-bottom: 15px;
-            text-shadow: 0 0 15px rgba(0, 255, 255, 0.8), 0 0 25px rgba(0, 255, 255, 0.5);
-            font-weight: bold;
-        }
-
-        h2 {
-            color: #ffcc00;
-            font-size: 1.8em;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
-        }
-
-        p {
-            font-size: 1.1em;
-            line-height: 1.8;
-            margin-bottom: 15px;
-            color: #b0e0e6;
-            font-weight: 300;
-        }
-
-        .nav-buttons-container {
-            width: 100%;
+            background-color: var(--header-bg-color);
+            padding: 15px 25px;
+            box-shadow: 0 2px 10px var(--shadow-color);
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* للسماح بالعناصر بالنزول لسطر جديد في الشاشات الصغيرة */
+            gap: 10px; /* مسافة بين العناصر */
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700; /* سميك */
+            color: var(--primary-text-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .logo i {
+            margin-left: 10px; /* مسافة بين الأيقونة والنص */
+            color: var(--accent-button-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
             flex-wrap: wrap;
             justify-content: center;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            background-color: rgba(10, 10, 30, 0.98);
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            gap: 8px;
+            flex-grow: 1; /* للسماح لها بأخذ مساحة أكبر */
         }
 
-        .nav-button, .action-button {
-            background-color: #ff3366;
+        .nav-link {
+            color: var(--primary-text-dark);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 1.1em;
+            padding: 5px 0;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-button-color);
+        }
+        
+        .nav-link.active {
+            font-weight: 700;
+            color: var(--accent-button-color);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .auth-button {
+            background-color: var(--primary-text-dark);
+            color: white;
+            padding: 8px 18px;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .auth-button:hover {
+            background-color: var(--accent-button-color);
+        }
+
+        /* القسم الرئيسي الأول (Hero Section) */
+        .hero-section {
+            width: 100%;
+            background: linear-gradient(to right, hsl(200, 50%, 85%), hsl(220, 60%, 75%)); /* تدرج أزرق كخلفية مؤقتة للصورة */
+            color: white;
+            padding: 80px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: inset 0 -5px 15px var(--shadow-color-hover);
+        }
+
+        .hero-section h1 {
+            font-size: 3em;
+            font-weight: 700; /* سميك */
+            margin-bottom: 15px;
+            color: #fff; /* لون أبيض للعناوين على الخلفية الزرقاء */
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-section p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            max-width: 800px;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .hero-button {
+            background-color: var(--accent-button-color);
+            color: white;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 15px var(--shadow-color-hover);
+        }
+
+        .hero-button:hover {
+            background-color: var(--accent-button-hover);
+            transform: translateY(-3px);
+        }
+
+        /* قسم المحتوى المميز (Featured Content Section) */
+        .featured-section {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            box-sizing: border-box;
+            margin-bottom: 40px;
+        }
+
+        .featured-section h2 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--primary-text-dark);
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .featured-section h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-button-color);
+            border-radius: 2px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: var(--card-bg-color);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--shadow-color-hover);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 180px;
+            background-color: var(--primary-bg-light); /* لون مؤقت كخلفية للصورة */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: var(--primary-text-dark);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-content {
+            padding: 20px;
+            text-align: right;
+            flex-grow: 1;
+        }
+
+        .card-content h3 {
+            font-size: 1.5em;
+            color: var(--primary-text-dark);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .card-content p {
+            font-size: 0.95em;
+            color: var(--secondary-text-grey);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .card-button {
+            background-color: var(--primary-text-dark);
             color: white;
             padding: 10px 20px;
             border: none;
-            border-radius: 30px;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-            letter-spacing: 0.5px;
-            flex-grow: 1;
-            max-width: 200px;
-            min-width: 120px;
-        }
-
-        .nav-button:hover, .action-button:hover {
-            background-color: #e6004c;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 51, 102, 0.7);
-        }
-
-        .nav-button:active, .action-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-
-        .back-button {
-            background-color: #3366ff;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
             border-radius: 25px;
-            font-size: 1em;
-            z-index: 1001;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-        .back-button:hover { background-color: #2a52cc; }
+        .card-button:hover {
+            background-color: var(--accent-button-color);
+        }
 
-        /* Exam specific styles (will be used later) */
-        #examScreen .scroll-content {
-            margin-top: 20px;
-            padding-top: 60px;
-            position: relative;
+        /* تذييل الصفحة (Footer) - سنضيفه لاحقاً إذا أردت */
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+            .nav-links {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .auth-buttons {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .hero-section h1 {
+                font-size: 2.5em;
+            }
+            .hero-section p {
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header { padding: 10px 15px; }
+            .logo { font-size: 1.5em; }
+            .nav-links { gap: 15px; }
+            .nav-link { font-size: 1em; }
+            .auth-button { padding: 6px 12px; font-size: 0.85em; }
+            .hero-section { padding: 60px 15px; }
+            .hero-section h1 { font-size: 2em; }
+            .hero-section p { font-size: 1em; }
+            .hero-button { padding: 12px 25px; font-size: 1em; }
+            .featured-section { padding: 15px; }
+            .featured-section h2 { font-size: 1.8em; }
+            .cards-container { grid-template-columns: 1fr; }
+        }
+
+        /* Exam specific styles (remains for later use, hidden) */
+        #examScreen, #resultsScreen {
+            display: none; /* Keep hidden for now */
+            background-color: var(--primary-bg-light); /* ensure consistent background */
+            padding-top: 80px; /* space for header */
+        }
+        #examScreen .scroll-content, #resultsScreen .scroll-content {
+            background-color: var(--card-bg-color);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            margin: 20px auto;
+            max-width: 800px;
+            width: calc(100% - 40px);
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            color: var(--primary-text-dark);
+            text-align: right;
         }
 
         .timer-display {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #00eaff;
-            color: #0d0d1e;
+            background-color: var(--accent-button-color);
+            color: white;
             padding: 8px 15px;
             border-radius: 20px;
             font-weight: bold;
             font-size: 1.2em;
-            z-index: 10;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+            margin-bottom: 20px;
+            text-align: center;
         }
 
         .question-container {
-            background-color: rgba(0, 150, 150, 0.1);
-            border: 1px solid rgba(0, 255, 255, 0.4);
+            background-color: var(--primary-bg-light);
+            border: 1px solid var(--border-color);
             padding: 25px;
             border-radius: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-            text-align: right;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .question-text {
             font-size: 1.4em;
-            color: #e0f7fa;
+            color: var(--primary-text-dark);
             margin-bottom: 20px;
             line-height: 1.6;
         }
@@ -193,40 +370,40 @@
         }
 
         .option-button {
-            background-color: rgba(50, 50, 100, 0.8);
-            color: #e0f7fa;
+            background-color: white;
+            color: var(--primary-text-dark);
             padding: 12px 15px;
-            border: 1px solid #00eaff;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             font-size: 1.1em;
             cursor: pointer;
-            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
             text-align: right;
             width: 100%;
             box-sizing: border-box;
         }
 
         .option-button:hover {
-            background-color: rgba(70, 70, 120, 0.9);
-            border-color: #ffcc00;
+            background-color: var(--header-bg-color);
+            border-color: var(--accent-button-color);
         }
 
         .option-button.selected {
-            background-color: #3366ff;
-            border-color: #3366ff;
-            box-shadow: 0 0 10px rgba(51, 102, 255, 0.7);
+            background-color: var(--accent-button-color);
+            border-color: var(--accent-button-color);
+            color: white;
         }
 
         .option-button.correct {
             background-color: #4CAF50; /* Green for correct */
             border-color: #4CAF50;
-            box-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
+            color: white;
         }
 
         .option-button.incorrect {
             background-color: #f44336; /* Red for incorrect */
             border-color: #f44336;
-            box-shadow: 0 0 10px rgba(244, 67, 54, 0.7);
+            color: white;
         }
 
         .exam-nav-buttons {
@@ -238,38 +415,43 @@
 
         .exam-nav-buttons .action-button {
             flex-grow: 1;
-            min-width: unset;
-            max-width: unset;
+            background-color: var(--primary-text-dark);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .exam-nav-buttons .action-button:hover {
+            background-color: var(--accent-button-color);
         }
 
         /* Results Screen Styles */
-        #resultsScreen .scroll-content {
-            margin-top: 20px;
-        }
-
         .result-summary {
-            background-color: rgba(0, 100, 150, 0.2);
-            border: 1px solid #00eaff;
+            background-color: var(--header-bg-color);
+            border: 1px solid var(--border-color);
             padding: 25px;
             border-radius: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .result-summary p {
             font-size: 1.3em;
-            color: #e0f7fa;
+            color: var(--primary-text-dark);
             margin-bottom: 10px;
         }
 
         .result-summary span {
             font-weight: bold;
-            color: #ffcc00;
+            color: var(--accent-button-color);
         }
         
         .review-question-item {
-            background-color: rgba(20, 20, 50, 0.9);
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            background-color: var(--primary-bg-light);
+            border: 1px solid var(--border-color);
             padding: 15px;
             margin-bottom: 15px;
             border-radius: 10px;
@@ -279,7 +461,7 @@
         .review-question-item p {
             font-size: 1.1em;
             margin-bottom: 10px;
-            color: #e0f7fa;
+            color: var(--primary-text-dark);
         }
 
         .review-question-item ul {
@@ -290,9 +472,9 @@
 
         .review-question-item ul li {
             padding: 8px 0;
-            color: #b0e0e6;
+            color: var(--secondary-text-grey);
             font-size: 0.95em;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            border-bottom: 1px dashed var(--border-color);
         }
 
         .review-question-item ul li:last-child {
@@ -305,7 +487,7 @@
         }
 
         .review-question-item .your-answer {
-            color: #ffcc00;
+            color: var(--accent-button-color);
             font-weight: bold;
         }
 
@@ -313,158 +495,93 @@
             color: #f44336;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            h1 { font-size: 2.2em; }
-            h2 { font-size: 1.5em; }
-            p { font-size: 1em; }
-            .nav-button, .action-button {
-                padding: 8px 15px;
-                font-size: 0.9em;
-                max-width: 140px;
-                min-width: 100px;
-            }
-            .nav-buttons-container {
-                padding: 5px 0;
-                gap: 5px;
-            }
-            .back-button {
-                padding: 8px 15px;
-                font-size: 0.9em;
-                top: 10px;
-                right: 10px;
-            }
-            .scroll-content {
-                padding: 20px;
-            }
-            .question-text {
-                font-size: 1.2em;
-            }
-            .option-button {
-                font-size: 1em;
-                padding: 10px;
-            }
-            .timer-display {
-                font-size: 1em;
-                padding: 6px 12px;
-            }
-        }
     </style>
 </head>
 <body>
 
+    <header class="header">
+        <a href="#" class="logo" onclick="showScreen('mainScreen')">
+            <i class="fas fa-graduation-cap"></i>
+            منصة القبول
+        </a>
+        <nav class="nav-links">
+            <a href="#" class="nav-link active" onclick="showScreen('mainScreen')">
+                <i class="fas fa-home"></i> الرئيسية
+            </a>
+            <a href="#" class="nav-link" onclick="showScreen('materialsScreen')">
+                <i class="fas fa-book-open"></i> المواد الدراسية
+            </a>
+            <a href="#" class="nav-link" onclick="showScreen('examsOverviewScreen')">
+                <i class="fas fa-pencil-alt"></i> الامتحانات التجريبية
+            </a>
+            <a href="#" class="nav-link" onclick="openWhatsApp()">
+                <i class="fab fa-whatsapp"></i> تواصل معنا
+            </a>
+        </nav>
+        <div class="auth-buttons">
+            <button class="auth-button" onclick="alert('خاصية تسجيل الدخول قريباً')">تسجيل الدخول</button>
+            <button class="auth-button" onclick="alert('خاصية الاشتراك قريباً')">اشتراك</button>
+        </div>
+    </header>
+
     <div id="mainScreen" class="screen active">
-        <div class="scroll-content">
-            <h1>أهلاً بك في منصة القبول الطبي - اليمن!</h1>
-            <p>استعد لاختبارات القبول في كليات الطب البشري، الصيدلة، والمختبرات مع نماذج محاكية للامتحانات.</p>
-            <p>هذه المنصة ستساعدك على التعرف على نمط الأسئلة وإدارة الوقت بفعالية.</p>
-        </div>
-        
-        <div class="nav-buttons-container">
-            <button class="nav-button" onclick="showScreen('comingSoonScreen')">ابدأ الاختبار التجريبي (قريباً)</button>
-            <button class="nav-button" onclick="openWhatsApp()" style="background-color: #25D366;">تواصل معنا</button>
-        </div>
-    </div>
+        <section class="hero-section">
+            <h1>استعد لمستقبلك بثقة!</h1>
+            <p>منصة القبول الطبي - اليمن، رفيقك الأمثل لاجتياز اختبارات القبول في كليات الطب والصيدلة والمختبرات.</p>
+            <button class="hero-button" onclick="showScreen('examsOverviewScreen')">
+                <i class="fas fa-play-circle"></i> ابدأ الاختبار الآن
+            </button>
+        </section>
 
-    <div id="comingSoonScreen" class="screen">
-        <button class="nav-button back-button" onclick="showScreen('mainScreen')">العودة للرئيسية</button>
-        <div class="scroll-content">
-            <h2>قسم الاختبارات قيد الإنشاء</h2>
-            <p>نعمل بجد على إعداد أسئلة شاملة ودقيقة لاختبارات القبول.</p>
-            <p>ستكون المواد (أحياء، كيمياء، إنجليزي) متوفرة قريباً جداً.</p>
-            <p>تابعنا ليصلك كل جديد!</p>
-        </div>
-    </div>
-
-    <div id="examScreen" class="screen">
-        <button class="nav-button back-button" onclick="showScreen('mainScreen')">العودة للرئيسية</button>
-        <div class="timer-display" id="examTimer">الوقت المتبقي: 00:00</div>
-        <div class="scroll-content">
-            <div class="question-container">
-                <p class="question-text" id="questionText">سيظهر السؤال هنا.</p>
-                <div class="options-container" id="optionsContainer">
-                    <button class="option-button">الخيار 1</button>
-                    <button class="option-button">الخيار 2</button>
-                    <button class="option-button">الخيار 3</button>
-                    <button class="option-button">الخيار 4</button>
+        <section class="featured-section">
+            <h2>المحتوى المميز</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-image"><i class="fas fa-microscope"></i></div>
+                    <div class="card-content">
+                        <h3>أحدث اختبارات الأحياء</h3>
+                        <p>اختبر معلوماتك في الأحياء مع أحدث النماذج المحاكية لاختبارات القبول.</p>
+                        <button class="card-button" onclick="alert('سنضيف اختبارات هنا قريباً!')">ابدأ الاختبار</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image"><i class="fas fa-flask"></i></div>
+                    <div class="card-content">
+                        <h3>مراجعات الكيمياء الشاملة</h3>
+                        <p>مراجعات مركزة ومبسطة لأهم نقاط الكيمياء التي تحتاجها للنجاح.</p>
+                        <button class="card-button" onclick="alert('سنضيف مراجعات هنا قريباً!')">تصفح المراجعات</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image"><i class="fas fa-book-reader"></i></div>
+                    <div class="card-content">
+                        <h3>قواعد الإنجليزية للقبول</h3>
+                        <p>كل ما تحتاجه لإتقان اللغة الإنجليزية واجتياز قسم اللغة في الامتحان.</p>
+                        <button class="card-button" onclick="alert('سنضيف دروس هنا قريباً!')">تعلم الآن</button>
+                    </div>
                 </div>
             </div>
-            
-            <div class="exam-nav-buttons">
-                <button class="action-button" onclick="alert('ليس هناك أسئلة بعد!')" style="background-color: #3366ff;">السابق</button>
-                <button class="action-button" onclick="alert('ليس هناك أسئلة بعد!')" style="background-color: #ff9800;">التالي</button>
-                <button class="action-button" onclick="alert('ليس هناك أسئلة بعد!')" style="background-color: #f44336;">إنهاء الاختبار</button>
-            </div>
-        </div>
+        </section>
     </div>
 
-    <div id="resultsScreen" class="screen">
-        <button class="nav-button back-button" onclick="showScreen('mainScreen')">العودة للرئيسية</button>
-        <div class="scroll-content">
-            <h2>نتائج الاختبار</h2>
-            <div class="result-summary">
-                <p>درجتك: <span id="scorePercentage">--</span></p>
-                <p>الإجابات الصحيحة: <span id="correctAnswersCount">--</span></p>
-                <p>الإجابات الخاطئة: <span id="incorrectAnswersCount">--</span></p>
-                <p>الأسئلة التي لم تجب عليها: <span id="unansweredQuestionsCount">--</span></p>
-            </div>
-            <h3>مراجعة الإجابات</h3>
-            <div id="reviewContainer">
-                <p>لا توجد أسئلة لمراجعتها حالياً.</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // --- Screen Management Logic ---
-        function showScreen(screenId) {
-            console.log('Attempting to show screen:', screenId);
-            const screens = document.querySelectorAll('.screen');
-            screens.forEach(screen => {
-                screen.classList.remove('active');
-            });
-            const targetScreen = document.getElementById(screenId);
-            if (targetScreen) {
-                targetScreen.classList.add('active');
-                targetScreen.scrollTop = 0;
-                console.log(screenId + ' screen activated.');
-            } else {
-                console.error('Error: Screen with ID ' + screenId + ' not found.');
-            }
-        }
-
-        // --- WhatsApp Function ---
-        function openWhatsApp() {
-            const phoneNumber = '+967776575356'; // رقم واتساب محمد الشريف مع رمز الدولة
-            const message = encodeURIComponent('أهلاً، أود الاستفسار عن منصة القبول الطبي - اليمن.');
-            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-            window.open(whatsappUrl, '_system');
-        }
-
-        // --- Exam Logic (Functions are now empty/placeholders) ---
-        // سيتم إضافة المنطق هنا لاحقاً عندما نضع الأسئلة
-        function startExam() {
-            // حالياً لا يوجد شيء، فقط للانتقال لشاشة "قريباً"
-            showScreen('comingSoonScreen');
-            alert('القسم قيد الإنشاء!'); // يمكن إزالة هذا التنبيه لاحقاً
-        }
-
-        function prevQuestion() {
-            alert('لا توجد أسئلة بعد!');
-        }
-
-        function nextQuestion() {
-            alert('لا توجد أسئلة بعد!');
-        }
-
-        function confirmEndExam() {
-            alert('لا توجد أسئلة لإنهاء الاختبار!');
-        }
-
-        // Initialize the first screen on load
-        document.addEventListener('DOMContentLoaded', () => {
-            showScreen('mainScreen');
-        });
-    </script>
-</body>
-</html>
+    <div id="materialsScreen" class="screen">
+        <section class="featured-section">
+            <h2>المواد الدراسية المتاحة</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-image"><i class="fas fa-dna"></i></div>
+                    <div class="card-content">
+                        <h3>مادة الأحياء</h3>
+                        <p>شروحات مفصلة، ملخصات، وأسئلة تدريبية في جميع فصول الأحياء.</p>
+                        <button class="card-button" onclick="alert('محتوى الأحياء قيد التحضير!')">عرض المحتوى</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image"><i class="fas fa-atom"></i></div>
+                    <div class="card-content">
+                        <h3>مادة الكيمياء</h3>
+                        <p>شروحات وافية للتفاعلات، المعادلات، والعناصر الكيميائية الهامة.</p>
+                        <button class="card-button" onclick="alert('محتوى الكيمياء قيد التحضير!')">عرض المحتوى</button>
+                    </div>
+                </div>
+                <
