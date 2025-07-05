@@ -129,6 +129,7 @@
             gap: 20px;
             order: 3; /* لتأتي في النهاية */
             align-items: center;
+            white-space: nowrap; /* لمنع العناصر من الالتفاف - حل مؤقت لمشكلة القص */
         }
 
         .header-icon-button {
@@ -251,13 +252,14 @@
             box-shadow: 0 0 0 4px rgba(255, 179, 0, 0.6); /* ظل حول الزر بلون التمييز */
         }
 
-        /* قسم المحتوى المميز (Featured Content Section) - سيبقى ألوانه القديمة حالياً، سيتم تحديثها لاحقاً */
+        /* قسم المحتوى المميز (Featured Content Section) - تم تحديث الألوان */
         .featured-section {
             width: 100%;
             max-width: 1200px;
             padding: 20px;
             box-sizing: border-box;
             margin-bottom: 40px;
+            background-color: var(--light-background); /* خلفية القسم باللون الفاتح */
         }
 
         .featured-section h2 {
@@ -307,12 +309,12 @@
         .card-image {
             width: 100%;
             height: 180px;
-            background-color: var(--border-color); /* لون مؤقت كخلفية للصورة */
+            background-color: var(--border-color); /* لون خلفية مؤقت للصورة */
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 4em;
-            color: var(--text-on-light);
+            color: var(--accent-color); /* لون الأيقونات بلون التمييز */
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -337,7 +339,7 @@
         }
 
         .card-button {
-            background-color: var(--dark-primary); /* أزرار البطاقات باللون الداكن */
+            background-color: var(--accent-color); /* أزرار البطاقات بلون التمييز */
             color: var(--text-on-dark);
             padding: 10px 20px;
             border: none;
@@ -347,7 +349,7 @@
             transition: background-color 0.3s ease;
         }
         .card-button:hover {
-            background-color: var(--accent-color); /* لون التمييز عند التحويم */
+            background-color: darken(var(--accent-color), 10%); /* لون أغمق قليلاً عند التحويم */
         }
         .card-button:focus {
             outline: none;
