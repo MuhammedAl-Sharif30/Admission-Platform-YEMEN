@@ -9,24 +9,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* تعريف المتغيرات للألوان */
+        /* تعريف المتغيرات للألوان الجديدة بناءً على خطتك */
         :root {
-            --primary-bg-light: hsl(200, 40%, 96%); /* أزرق سماوي فاتح جداً */
-            --primary-text-dark: hsl(200, 60%, 20%); /* أزرق داكن للعناوين والنصوص */
-            --secondary-text-grey: hsl(210, 10%, 40%); /* رمادي دافئ للنصوص الثانوية */
-            --accent-button-color: hsl(35, 90%, 60%); /* برتقالي هادئ للأزرار البارزة */
-            --accent-button-hover: hsl(35, 90%, 50%); /* درجة أغمق للبرتقالي عند التحويم */
-            --header-bg-color: hsl(200, 40%, 93%); /* لون أفتح للشريط العلوي */
-            --border-color: hsl(200, 20%, 80%); /* لون حدود خفيف */
-            --card-bg-color: #ffffff; /* خلفية البطاقات بيضاء */
-            --shadow-color: rgba(0, 0, 0, 0.1); /* لون الظل */
-            --shadow-color-hover: rgba(0, 0, 0, 0.2); /* لون الظل عند التحويم */
+            /* الألوان الأساسية */
+            --dark-primary: #1A232D; /* كحلي داكن جداً - للخلفية العلوية، الهيدر، الفوتر، وشريط التنقل السفلي */
+            --light-background: #FFFFFF; /* أبيض نقي - لباقي الخلفيات، البطاقات */
+            --accent-color: #FFB300; /* برتقالي ذهبي - للأزرار الهامة، الأيقونات البارزة */
+            
+            /* ألوان النصوص */
+            --text-on-dark: #FFFFFF; /* أبيض - للنصوص على الخلفيات الداكنة */
+            --text-on-light: #333333; /* رمادي داكن جداً - للنصوص على الخلفيات الفاتحة */
+            --secondary-text-light: #666666; /* رمادي متوسط - للنصوص الثانوية على الخلفيات الفاتحة */
+            
+            /* ألوان إضافية (ظل، حدود) */
+            --border-color: #EEEEEE; /* رمادي فاتح جداً للحدود */
+            --shadow-color: rgba(0, 0, 0, 0.15); /* لون ظل عام */
+            --shadow-color-hover: rgba(0, 0, 0, 0.25); /* لون ظل عند التحويم */
         }
 
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: var(--primary-bg-light);
-            color: var(--primary-text-dark);
+            background-color: var(--light-background); /* خلفية الجسم باللون الفاتح */
+            color: var(--text-on-light); /* لون النص الافتراضي باللون الداكن على الفاتح */
             margin: 0;
             padding: 0;
             display: flex;
@@ -44,7 +48,7 @@
             align-items: center;
             padding-bottom: 80px; /* مساحة لأزرار التنقل السفلية */
             box-sizing: border-box;
-            background-color: var(--primary-bg-light);
+            background-color: var(--light-background); /* الشاشات الداخلية باللون الفاتح */
             overflow-y: auto;
             flex-grow: 1; /* لتأخذ المساحة المتاحة */
         }
@@ -53,42 +57,50 @@
             display: flex; /* إظهار الشاشة النشطة */
         }
 
-        /* الشريط العلوي (Header) */
+        /* الشريط العلوي (Header) - تطبيق الألوان الجديدة والهيكل الجديد */
         .header {
             width: 100%;
-            background-color: var(--header-bg-color);
+            background-color: var(--dark-primary); /* خلفية الهيدر باللون الداكن */
             padding: 15px 25px;
             box-shadow: 0 2px 10px var(--shadow-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap; /* للسماح بالعناصر بالنزول لسطر جديد في الشاشات الصغيرة */
-            gap: 10px; /* مسافة بين العناصر */
+            flex-wrap: wrap; 
+            gap: 10px; 
+            color: var(--text-on-dark); /* نصوص الهيدر باللون الفاتح */
         }
 
         .logo {
             font-size: 1.8em;
-            font-weight: 700; /* سميك */
-            color: var(--primary-text-dark);
+            font-weight: 700;
+            color: var(--text-on-dark); /* لون الشعار باللون الفاتح */
             text-decoration: none;
             display: flex;
             align-items: center;
         }
         .logo i {
-            margin-left: 10px; /* مسافة بين الأيقونة والنص */
-            color: var(--accent-button-color);
+            margin-left: 10px;
+            color: var(--accent-color); /* أيقونة الشعار بلون التمييز */
         }
 
+        /* تعديل أزرار التنقل الرئيسية في الهيدر */
         .nav-links {
-            display: flex;
+            display: none; /* سيتم إخفاؤها في الهيدر العلوي واستبدالها بزر القائمة الجانبية في الهاتف */
+            /* للمتصفحات الكبيرة، يمكننا إظهارها بجانب الشعار */
             gap: 25px;
-            flex-wrap: wrap;
-            justify-content: center;
-            flex-grow: 1; /* للسماح لها بأخذ مساحة أكبر */
+            flex-grow: 1;
+            justify-content: flex-end; /* لمحاذاتها لليمين */
+        }
+        @media (min-width: 900px) { /* لإظهارها على الشاشات الكبيرة */
+            .nav-links {
+                display: flex; 
+                order: 2; /* لتأتي بعد الشعار وقبل الأيقونات الجانبية */
+            }
         }
 
         .nav-link {
-            color: var(--primary-text-dark);
+            color: var(--text-on-dark); /* لون روابط التنقل باللون الفاتح */
             text-decoration: none;
             font-weight: 400;
             font-size: 1.1em;
@@ -98,51 +110,76 @@
         }
 
         .nav-link:hover {
-            color: var(--accent-button-color);
+            color: var(--accent-color); /* لون التمييز عند التحويم */
         }
         
-        /* التعديل هنا: إزالة outline عند التركيز لجعلها تبدو أنظف */
         .nav-link:focus {
             outline: none; 
-            color: var(--accent-button-color); /* يمكن إبقائها للوضوح */
+            color: var(--accent-color); 
         }
 
         .nav-link.active {
             font-weight: 700;
-            color: var(--accent-button-color);
+            color: var(--accent-color); /* لون التمييز للرابط النشط */
+        }
+
+        /* الأيقونات والأزرار الإضافية في الهيدر (القائمة، البحث، الملف الشخصي) */
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            order: 3; /* لتأتي في النهاية */
+            align-items: center;
+        }
+
+        .header-icon-button {
+            background: none;
+            border: none;
+            color: var(--text-on-dark); /* لون الأيقونات باللون الفاتح */
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .header-icon-button:hover {
+            color: var(--accent-color); /* لون التمييز عند التحويم */
+        }
+        .header-icon-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.4); /* ظل خفيف بلون التمييز */
+            border-radius: 5px;
+        }
+
+        /* إخفاء زر القائمة على الشاشات الكبيرة حيث تظهر روابط التنقل */
+        @media (min-width: 900px) {
+            .menu-button {
+                display: none;
+            }
+        }
+        /* لإظهار زر القائمة على الشاشات الصغيرة */
+        @media (max-width: 899px) {
+            .menu-button {
+                display: block; /* أظهره */
+                order: 1; /* ليكون في أقصى اليمين في تخطيط RTL */
+                margin-left: auto; /* لدفعه لليمين */
+            }
+            .logo {
+                order: 2; /* ليكون بجانب زر القائمة */
+            }
+            .header-icons {
+                order: 3; /* ليكون في أقصى اليسار */
+            }
         }
 
         .auth-buttons {
-            display: flex;
-            gap: 15px;
+            display: none; /* إخفائها مؤقتاً في الهيدر العلوي، يمكن وضعها في القائمة الجانبية */
         }
 
-        .auth-button {
-            background-color: var(--primary-text-dark);
-            color: white;
-            padding: 8px 18px;
-            border: none;
-            border-radius: 25px;
-            font-size: 0.9em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        /* التعديل هنا: إزالة outline عند التركيز */
-        .auth-button:focus {
-            outline: none;
-            /* تم تعديل هذا الجزء للوصول إلى اللون بشكل مباشر دون الحاجة إلى متغير RGB منفصل */
-            box-shadow: 0 0 0 3px hsla(35, 90%, 60%, 0.5); 
-        }
 
-        .auth-button:hover {
-            background-color: var(--accent-button-color);
-        }
-
-        /* القسم الرئيسي الأول (Hero Section) */
+        /* القسم الرئيسي الأول (Hero Section) - تطبيق الألوان الجديدة والتصميم */
         .hero-section {
             width: 100%;
-            background: linear-gradient(to right, hsl(200, 50%, 85%), hsl(220, 60%, 75%)); /* تدرج أزرق كخلفية مؤقتة للصورة */
-            color: white;
+            background-color: var(--dark-primary); /* خلفية الهيرو باللون الداكن */
+            color: var(--text-on-dark); /* نصوص الهيرو باللون الفاتح */
             padding: 80px 20px;
             display: flex;
             flex-direction: column;
@@ -150,14 +187,36 @@
             justify-content: center;
             text-align: center;
             margin-bottom: 40px;
-            box-shadow: inset 0 -5px 15px var(--shadow-color-hover);
+            box-shadow: inset 0 -5px 15px var(--shadow-color);
         }
+
+        /* Placeholder للرسم التوضيحي */
+        .hero-illustration-placeholder {
+            width: 250px;
+            height: 250px;
+            background-color: var(--accent-color); /* لون تمييز كخلفية مؤقتة */
+            border-radius: 50%; /* لجعلها دائرية كمثال */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5em;
+            color: var(--text-on-dark);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px var(--shadow-color-hover);
+            animation: pulse 2s infinite alternate; /* إضافة تأثير بسيط لجذب الانتباه */
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 0.9; }
+            to { transform: scale(1.05); opacity: 1; }
+        }
+
 
         .hero-section h1 {
             font-size: 3em;
-            font-weight: 700; /* سميك */
+            font-weight: 700;
             margin-bottom: 15px;
-            color: #fff; /* لون أبيض للعناوين على الخلفية الزرقاء */
+            color: var(--text-on-dark); /* لون أبيض للعناوين على الخلفية الداكنة */
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
@@ -166,34 +225,33 @@
             line-height: 1.6;
             max-width: 800px;
             margin-bottom: 30px;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.9); /* درجة أفتح قليلاً من الأبيض للنص الثانوي */
         }
 
         .hero-button {
-            background-color: var(--accent-button-color);
-            color: white;
+            background-color: var(--accent-color); /* لون التمييز للزر */
+            color: var(--text-on-dark); /* نص الزر باللون الفاتح */
             padding: 15px 35px;
             border: none;
             border-radius: 30px;
             font-size: 1.2em;
             font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 5px 15px var(--shadow-color-hover);
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px var(--shadow-color);
         }
 
         .hero-button:hover {
-            background-color: var(--accent-button-hover);
+            background-color: darken(var(--accent-color), 10%); /* لون أغمق قليلاً عند التحويم */
             transform: translateY(-3px);
+            box-shadow: 0 8px 20px var(--shadow-color-hover);
         }
-        /* التعديل هنا: إزالة outline عند التركيز */
         .hero-button:focus {
             outline: none;
-            /* تم تعديل هذا الجزء للوصول إلى اللون بشكل مباشر دون الحاجة إلى متغير RGB منفصل */
-            box-shadow: 0 0 0 4px hsla(35, 90%, 60%, 0.6);
+            box-shadow: 0 0 0 4px rgba(255, 179, 0, 0.6); /* ظل حول الزر بلون التمييز */
         }
 
-        /* قسم المحتوى المميز (Featured Content Section) */
+        /* قسم المحتوى المميز (Featured Content Section) - سيبقى ألوانه القديمة حالياً، سيتم تحديثها لاحقاً */
         .featured-section {
             width: 100%;
             max-width: 1200px;
@@ -205,7 +263,7 @@
         .featured-section h2 {
             font-size: 2.2em;
             font-weight: 700;
-            color: var(--primary-text-dark);
+            color: var(--text-on-light); /* لون العناوين باللون الداكن */
             margin-bottom: 30px;
             text-align: center;
             position: relative;
@@ -219,7 +277,7 @@
             bottom: 0;
             width: 80px;
             height: 4px;
-            background-color: var(--accent-button-color);
+            background-color: var(--accent-color); /* خط تحت العنوان بلون التمييز */
             border-radius: 2px;
         }
 
@@ -231,14 +289,14 @@
         }
 
         .card {
-            background-color: var(--card-bg-color);
+            background-color: var(--light-background); /* خلفية البطاقات باللون الفاتح */
             border-radius: 15px;
             box-shadow: 0 5px 15px var(--shadow-color);
             overflow: hidden;
             display: flex;
             flex-direction: column;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border-color); /* حدود خفيفة */
         }
 
         .card:hover {
@@ -249,12 +307,12 @@
         .card-image {
             width: 100%;
             height: 180px;
-            background-color: var(--primary-bg-light); /* لون مؤقت كخلفية للصورة */
+            background-color: var(--border-color); /* لون مؤقت كخلفية للصورة */
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 4em;
-            color: var(--primary-text-dark);
+            color: var(--text-on-light);
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -266,21 +324,21 @@
 
         .card-content h3 {
             font-size: 1.5em;
-            color: var(--primary-text-dark);
+            color: var(--text-on-light);
             margin-top: 0;
             margin-bottom: 10px;
         }
 
         .card-content p {
             font-size: 0.95em;
-            color: var(--secondary-text-grey);
+            color: var(--secondary-text-light); /* نصوص ثانوية بلون رمادي متوسط */
             line-height: 1.5;
             margin-bottom: 20px;
         }
 
         .card-button {
-            background-color: var(--primary-text-dark);
-            color: white;
+            background-color: var(--dark-primary); /* أزرار البطاقات باللون الداكن */
+            color: var(--text-on-dark);
             padding: 10px 20px;
             border: none;
             border-radius: 25px;
@@ -289,33 +347,34 @@
             transition: background-color 0.3s ease;
         }
         .card-button:hover {
-            background-color: var(--accent-button-color);
+            background-color: var(--accent-color); /* لون التمييز عند التحويم */
         }
-        /* التعديل هنا: إزالة outline عند التركيز */
         .card-button:focus {
             outline: none;
-            box-shadow: 0 0 0 3px hsla(35, 90%, 60%, 0.5);
+            box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.5);
         }
 
-        /* تذييل الصفحة (Footer) - سنضيفه لاحقاً إذا أردت */
+        /* تذييل الصفحة (Footer) - سيتم إضافته لاحقاً */
 
         /* Responsive Design */
         @media (max-width: 900px) {
             .header {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 15px;
+                flex-direction: row; /* أبقها في صف واحد */
+                justify-content: space-between; /* وزع العناصر */
+                align-items: center;
+                padding: 10px 15px;
+            }
+            .logo {
+                margin-right: auto; /* لتدفع الشعار لليسار في RTL */
+                font-size: 1.6em;
             }
             .nav-links {
-                margin-top: 15px;
-                width: 100%;
-                justify-content: flex-start;
+                display: none; /* إخفاء الروابط في الهيدر على الشاشات الصغيرة */
             }
             .auth-buttons {
-                margin-top: 15px;
-                width: 100%;
-                justify-content: flex-start;
+                display: none; /* إخفاء أزرار المصادقة في الهيدر على الشاشات الصغيرة */
             }
+            
             .hero-section h1 {
                 font-size: 2.5em;
             }
@@ -327,9 +386,6 @@
         @media (max-width: 600px) {
             .header { padding: 10px 15px; }
             .logo { font-size: 1.5em; }
-            .nav-links { gap: 15px; }
-            .nav-link { font-size: 1em; }
-            .auth-button { padding: 6px 12px; font-size: 0.85em; }
             .hero-section { padding: 60px 15px; }
             .hero-section h1 { font-size: 2em; }
             .hero-section p { font-size: 1em; }
@@ -337,16 +393,21 @@
             .featured-section { padding: 15px; }
             .featured-section h2 { font-size: 1.8em; }
             .cards-container { grid-template-columns: 1fr; }
+            .hero-illustration-placeholder {
+                width: 200px;
+                height: 200px;
+                font-size: 4em;
+            }
         }
 
         /* Exam specific styles (remains for later use, hidden) */
         #examScreen, #resultsScreen {
             display: none; /* Keep hidden for now */
-            background-color: var(--primary-bg-light); /* ensure consistent background */
+            background-color: var(--light-background); /* ensure consistent background */
             padding-top: 80px; /* space for header */
         }
         #examScreen .scroll-content, #resultsScreen .scroll-content {
-            background-color: var(--card-bg-color);
+            background-color: var(--light-background); /* الخلفية باللون الفاتح */
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 5px 15px var(--shadow-color);
@@ -355,13 +416,13 @@
             width: calc(100% - 40px);
             box-sizing: border-box;
             border: 1px solid var(--border-color);
-            color: var(--primary-text-dark);
+            color: var(--text-on-light);
             text-align: right;
         }
 
         .timer-display {
-            background-color: var(--accent-button-color);
-            color: white;
+            background-color: var(--accent-color); /* لون التمييز */
+            color: var(--text-on-dark);
             padding: 8px 15px;
             border-radius: 20px;
             font-weight: bold;
@@ -371,7 +432,7 @@
         }
 
         .question-container {
-            background-color: var(--primary-bg-light);
+            background-color: var(--border-color); /* لون فاتح مختلف قليلاً للخلفية */
             border: 1px solid var(--border-color);
             padding: 25px;
             border-radius: 15px;
@@ -381,7 +442,7 @@
 
         .question-text {
             font-size: 1.4em;
-            color: var(--primary-text-dark);
+            color: var(--text-on-light);
             margin-bottom: 20px;
             line-height: 1.6;
         }
@@ -393,8 +454,8 @@
         }
 
         .option-button {
-            background-color: white;
-            color: var(--primary-text-dark);
+            background-color: var(--light-background);
+            color: var(--text-on-light);
             padding: 12px 15px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -407,19 +468,18 @@
         }
 
         .option-button:hover {
-            background-color: var(--header-bg-color);
-            border-color: var(--accent-button-color);
+            background-color: var(--border-color);
+            border-color: var(--accent-color);
         }
-        /* التعديل هنا: إزالة outline عند التركيز */
         .option-button:focus {
             outline: none;
-            box-shadow: 0 0 0 3px hsla(35, 90%, 60%, 0.5);
+            box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.5);
         }
 
         .option-button.selected {
-            background-color: var(--accent-button-color);
-            border-color: var(--accent-button-color);
-            color: white;
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: var(--text-on-dark);
         }
 
         .option-button.correct {
@@ -443,8 +503,8 @@
 
         .exam-nav-buttons .action-button {
             flex-grow: 1;
-            background-color: var(--primary-text-dark);
-            color: white;
+            background-color: var(--dark-primary); /* أزرار التحكم بالامتحان باللون الداكن */
+            color: var(--text-on-dark);
             padding: 10px 20px;
             border: none;
             border-radius: 25px;
@@ -453,18 +513,17 @@
             transition: background-color 0.3s ease;
         }
         .exam-nav-buttons .action-button:hover {
-            background-color: var(--accent-button-color);
+            background-color: var(--accent-color);
         }
-        /* التعديل هنا: إزالة outline عند التركيز */
         .exam-nav-buttons .action-button:focus {
             outline: none;
-            box-shadow: 0 0 0 3px hsla(35, 90%, 60%, 0.5);
+            box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.5);
         }
 
 
         /* Results Screen Styles */
         .result-summary {
-            background-color: var(--header-bg-color);
+            background-color: var(--border-color); /* خلفية ملخص النتائج بلون فاتح */
             border: 1px solid var(--border-color);
             padding: 25px;
             border-radius: 15px;
@@ -474,17 +533,17 @@
 
         .result-summary p {
             font-size: 1.3em;
-            color: var(--primary-text-dark);
+            color: var(--text-on-light);
             margin-bottom: 10px;
         }
 
         .result-summary span {
             font-weight: bold;
-            color: var(--accent-button-color);
+            color: var(--accent-color);
         }
         
         .review-question-item {
-            background-color: var(--primary-bg-light);
+            background-color: var(--border-color);
             border: 1px solid var(--border-color);
             padding: 15px;
             margin-bottom: 15px;
@@ -495,7 +554,7 @@
         .review-question-item p {
             font-size: 1.1em;
             margin-bottom: 10px;
-            color: var(--primary-text-dark);
+            color: var(--text-on-light);
         }
 
         .review-question-item ul {
@@ -506,7 +565,7 @@
 
         .review-question-item ul li {
             padding: 8px 0;
-            color: var(--secondary-text-grey);
+            color: var(--secondary-text-light);
             font-size: 0.95em;
             border-bottom: 1px dashed var(--border-color);
         }
@@ -524,9 +583,56 @@
             color: #f44336; /* Red for incorrect attempts */
             font-weight: bold;
         }
-        /* جعل الألوان الصحيحة تظهر باللون الصحيح */
         .review-question-item .your-answer.correct {
-            color: var(--accent-button-color); /* Correct user answer will be accent color */
+            color: var(--accent-color);
+        }
+
+        /* شريط التنقل السفلي (Bottom Navigation Bar) - جديد */
+        .bottom-nav-bar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            height: 60px; /* ارتفاع ثابت */
+            background-color: var(--dark-primary); /* نفس لون الهيدر الداكن */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            box-shadow: 0 -2px 10px var(--shadow-color);
+            z-index: 1000; /* لضمان ظهوره فوق المحتوى */
+        }
+        @media (min-width: 900px) { /* إخفاؤه على الشاشات الكبيرة */
+            .bottom-nav-bar {
+                display: none;
+            }
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-on-dark); /* أيقونات ونصوص باللون الفاتح */
+            font-size: 0.8em;
+            font-weight: 400;
+            padding: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .bottom-nav-item i {
+            font-size: 1.4em;
+            margin-bottom: 3px;
+        }
+
+        .bottom-nav-item.active {
+            color: var(--accent-color); /* لون التمييز للعنصر النشط */
+            font-weight: 700;
+        }
+        .bottom-nav-item:hover {
+            color: var(--accent-color);
+        }
+        .bottom-nav-item:focus {
+            outline: none;
         }
 
     </style>
@@ -534,36 +640,48 @@
 <body>
 
     <header class="header">
+        <button class="header-icon-button menu-button" onclick="alert('القائمة الجانبية قريباً')">
+            <i class="fas fa-bars"></i>
+        </button>
+
         <a href="#" class="logo" onclick="showScreen('mainScreen')">
             <i class="fas fa-graduation-cap"></i>
             منصة القبول
         </a>
+        
         <nav class="nav-links">
             <a href="#" class="nav-link active" data-screen-id="mainScreen" onclick="showScreen('mainScreen')">
-                <i class="fas fa-home"></i> الرئيسية
+                الرئيسية
             </a>
             <a href="#" class="nav-link" data-screen-id="materialsScreen" onclick="showScreen('materialsScreen')">
-                <i class="fas fa-book-open"></i> المواد الدراسية
+                المواد الدراسية
             </a>
             <a href="#" class="nav-link" data-screen-id="examsOverviewScreen" onclick="showScreen('examsOverviewScreen')">
-                <i class="fas fa-pencil-alt"></i> الامتحانات التجريبية
+                الامتحانات التجريبية
             </a>
             <a href="#" class="nav-link" onclick="openWhatsApp()">
-                <i class="fab fa-whatsapp"></i> تواصل معنا
+                تواصل معنا
             </a>
         </nav>
-        <div class="auth-buttons">
-            <button class="auth-button" onclick="alert('خاصية تسجيل الدخول قريباً')">تسجيل الدخول</button>
-            <button class="auth-button" onclick="alert('خاصية الاشتراك قريباً')">اشتراك</button>
-        </div>
+
+        <div class="header-icons">
+            <button class="header-icon-button" onclick="alert('خاصية البحث قريباً')">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="header-icon-button" onclick="alert('الملف الشخصي قريباً')">
+                <i class="fas fa-user-circle"></i>
+            </button>
+            </div>
     </header>
 
     <div id="mainScreen" class="screen active">
         <section class="hero-section">
-            <h1>استعد لمستقبلك بثقة!</h1>
-            <p>منصة القبول الطبي - اليمن، رفيقك الأمثل لاجتياز اختبارات القبول في كليات الطب والصيدلة والمختبرات.</p>
+            <div class="hero-illustration-placeholder">
+                <i class="fas fa-lightbulb"></i> </div>
+            <h1>بوابتك نحو مستقبل مشرق!</h1>
+            <p>استعد لاختبارات القبول في جميع الجامعات اليمنية بأسلوب فريد ومواد شاملة.</p>
             <button class="hero-button" onclick="showScreen('examsOverviewScreen')">
-                <i class="fas fa-play-circle"></i> ابدأ الاختبار الآن
+                <i class="fas fa-graduation-cap"></i> ابدأ رحلتك الآن
             </button>
         </section>
 
@@ -677,8 +795,8 @@
             </div>
             
             <div class="exam-nav-buttons">
-                <button class="action-button" onclick="prevQuestion()" style="background-color: var(--primary-text-dark);">السابق</button>
-                <button class="action-button" onclick="nextQuestion()" style="background-color: var(--accent-button-color);">التالي</button>
+                <button class="action-button" onclick="prevQuestion()" style="background-color: var(--dark-primary);">السابق</button>
+                <button class="action-button" onclick="nextQuestion()" style="background-color: var(--accent-color);">التالي</button>
                 <button class="action-button" onclick="confirmEndExam()" style="background-color: #f44336;">إنهاء الاختبار</button>
             </div>
         </div>
@@ -701,6 +819,25 @@
         </div>
     </div>
 
+    <nav class="bottom-nav-bar">
+        <a href="#" class="bottom-nav-item active" data-screen-id="mainScreen" onclick="showScreen('mainScreen')">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        <a href="#" class="bottom-nav-item" data-screen-id="materialsScreen" onclick="showScreen('materialsScreen')">
+            <i class="fas fa-book-open"></i>
+            <span>المواد</span>
+        </a>
+        <a href="#" class="bottom-nav-item" data-screen-id="examsOverviewScreen" onclick="showScreen('examsOverviewScreen')">
+            <i class="fas fa-pencil-alt"></i>
+            <span>الامتحانات</span>
+        </a>
+        <a href="#" class="bottom-nav-item" onclick="alert('ملفك الشخصي قريباً')">
+            <i class="fas fa-user-circle"></i>
+            <span>حسابي</span>
+        </a>
+    </nav>
+
     <script>
         // --- Screen Management Logic ---
         function showScreen(screenId) { 
@@ -722,13 +859,21 @@
                 console.error('Error: Screen with ID ' + screenId + ' not found.');
             }
 
-            // إدارة الـ "active" class في شريط التنقل العلوي
-            const navLinks = document.querySelectorAll('.nav-link');
+            // إدارة الـ "active" class في شريط التنقل العلوي (للشاشات الكبيرة)
+            const navLinks = document.querySelectorAll('.header .nav-link');
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                // Find the nav link that corresponds to the screenId and activate it
                 if (link.getAttribute('data-screen-id') === screenId) {
                     link.classList.add('active');
+                }
+            });
+
+            // إدارة الـ "active" class في شريط التنقل السفلي (للشاشات الصغيرة)
+            const bottomNavItems = document.querySelectorAll('.bottom-nav-bar .bottom-nav-item');
+            bottomNavItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-screen-id') === screenId) {
+                    item.classList.add('active');
                 }
             });
         }
@@ -787,9 +932,25 @@
 
         // Initialize the first screen on load
         document.addEventListener('DOMContentLoaded', () => {
-            // عند التحميل لأول مرة، تأكد من تفعيل الشاشة الرئيسية وتفعيل الرابط الخاص بها في الشريط العلوي
+            // عند التحميل لأول مرة، تأكد من تفعيل الشاشة الرئيسية وتفعيل الرابط الخاص بها في الشريط العلوي والسفلي
             showScreen('mainScreen');
         });
+
+        // Helper function for darkening colors (for hover effects)
+        // This is a simplified version; for more robust color manipulation, a library or Sass/Less is better
+        function darken(color, percentage) {
+            let f = parseInt(color.slice(1), 16),
+                t = percentage < 0 ? 0 : 255,
+                p = percentage < 0 ? percentage * -1 : percentage,
+                R = f >> 16,
+                G = (f >> 8) & 0x00FF,
+                B = f & 0x0000FF;
+            return "#" + (
+                0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 +
+                (Math.round((t - G) * p) + G) * 0x100 +
+                (Math.round((t - B) * p) + B)
+            ).toString(16).slice(1);
+        }
     </script>
 </body>
 </html>
