@@ -40,18 +40,8 @@
             min-height: 100vh;
             overflow-x: hidden; /* لمنع ظهور شريط التمرير الأفقي */
             text-align: right; /* لضمان محاذاة النص لليمين */
-            transition: margin-right 0.5s; /* للانتقال السلس للمحتوى عند فتح السايدبار */
+            /* Removed margin-right transition from body */
         }
-        /* دفع المحتوى لليسار عند فتح القائمة الجانبية */
-        body.sidebar-open {
-            margin-right: 250px; /* نفس عرض السايدبار */
-        }
-        @media (min-width: 900px) { /* لا تدفع المحتوى على الشاشات الكبيرة */
-            body.sidebar-open {
-                margin-right: 0;
-            }
-        }
-
 
         /* تنسيقات عامة للشاشات */
         .screen {
@@ -64,7 +54,7 @@
             background-color: var(--light-background); /* الشاشات الداخلية باللون الفاتح */
             overflow-y: auto;
             flex-grow: 1; /* لتأخذ المساحة المتاحة */
-            transition: margin-right 0.5s; /* للانتقال السلس للمحتوى عند فتح السايدبار */
+            /* Removed margin-right transition from screen */
         }
 
         .screen.active {
@@ -83,7 +73,7 @@
             flex-wrap: wrap; 
             gap: 10px; 
             color: var(--text-on-dark); /* نصوص الهيدر باللون الفاتح */
-            transition: margin-right 0.5s; /* للانتقال السلس للمحتوى عند فتح السايدبار */
+            /* Removed margin-right transition from header */
         }
 
         .logo {
@@ -93,7 +83,7 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            transition: font-size 0.3s ease, margin-right 0.3s ease; /* لتحريك حجم الخط والهامش بسلاسة */
+            /* Removed font-size transition, it's no longer needed for sidebar push */
         }
         .logo i {
             margin-left: 10px;
@@ -175,20 +165,26 @@
             .header-icons .profile-icon {
                 display: block;
             }
+            /* إعادة ترتيب العناصر في الهيدر على الشاشات الكبيرة لتبدو طبيعية */
+            .logo { order: 1; margin-right: 0; }
+            .nav-links { order: 2; flex-grow: 1; justify-content: flex-end; }
+            .header-icons { order: 3; }
         }
         /* لإظهار زر القائمة على الشاشات الصغيرة وإخفاء أيقونات البحث والملف الشخصي */
         @media (max-width: 899px) {
             .menu-button {
                 display: block; /* أظهره */
-                order: 1; /* ليكون في أقصى اليمين في تخطيط RTL */
-                margin-right: auto; /* لدفعه لليسار */
+                order: 3; /* ليكون في أقصى اليسار في تخطيط RTL */
+                margin-left: auto; /* لدفعه لليسار */
             }
             .logo {
-                order: 2; /* ليكون بجانب زر القائمة */
-                margin-right: 15px; /* مسافة بين زر القائمة والشعار */
+                order: 1; /* ليكون في أقصى اليمين */
+                margin-right: 0; /* لضمان عدم وجود هامش زائد يدفعه */
+                margin-left: auto; /* لدفعه لليمين وترك مسافة لزر القائمة */
             }
             .header-icons {
-                order: 3; /* ليكون في أقصى اليسار */
+                order: 2; /* ليكون في المنتصف، بجانب الشعار */
+                margin-right: 15px; /* مسافة بين الشعار والأيقونات */
             }
             /* إخفاء أيقونات البحث والملف الشخصي من الهيدر على الشاشات الصغيرة */
             .header-icons .search-icon,
@@ -197,21 +193,14 @@
             }
         }
 
-        /* تعديل خاص للشعار عندما تكون القائمة الجانبية مفتوحة على الشاشات الصغيرة */
-        body.sidebar-open .header .logo {
-            font-size: 1.4em; /* تقليل حجم الخط قليلاً */
-            margin-right: -200px; /* لدفعه خارج الشاشة عند فتح السايدبار */
-            opacity: 0; /* إخفاء تدريجي */
-            pointer-events: none; /* منع التفاعل معه */
-        }
-        @media (min-width: 900px) { /* تأكد من عدم تطبيق هذا على الشاشات الكبيرة */
-            body.sidebar-open .header .logo {
-                font-size: 1.8em;
-                margin-right: 0;
-                opacity: 1;
-                pointer-events: auto;
-            }
-        }
+        /* هذا الكلاس لم يعد له تأثير مباشر على تحريك الشعار */
+        /*body.sidebar-open .header .logo {
+            font-size: 1.4em;
+            margin-right: -200px; 
+            opacity: 0;
+            pointer-events: none;
+        }*/
+
 
         .auth-buttons {
             display: none; /* إخفائها مؤقتاً في الهيدر العلوي، يمكن وضعها في القائمة الجانبية */
@@ -683,12 +672,12 @@
             height: 100%;
             width: 0; /* مخفية افتراضياً */
             position: fixed;
-            z-index: 1001; /* أعلى من كل شيء آخر */
+            z-index: 1002; /* أعلى من كل شيء آخر (أعلى من الأوفرلاي) */
             top: 0;
             right: 0; /* تظهر من اليمين في RTL */
             background-color: var(--dark-primary); /* نفس لون الهيدر */
             overflow-x: hidden;
-            transition: 0.5s; /* حركة سلسة للفتح والإغلاق */
+            transition: 0.3s ease-in-out; /* حركة سلسة أسرع للفتح والإغلاق */
             padding-top: 60px; /* مسافة من الأعلى لتجنب تداخل الهيدر */
             box-shadow: -5px 0 15px var(--shadow-color-hover);
             display: flex;
@@ -770,12 +759,14 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5); /* تعتيم خفيف */
-            z-index: 1000; /* تحت القائمة الجانبية وفوق المحتوى */
+            z-index: 1001; /* تحت القائمة الجانبية وفوق المحتوى */
             display: none; /* مخفية افتراضياً */
-            transition: background-color 0.5s;
+            opacity: 0; /* للتحكم في ظهور التعتيم بسلاسة */
+            transition: opacity 0.3s ease-in-out; /* حركة سلسة أسرع للتعتيم */
         }
         .overlay.active {
             display: block;
+            opacity: 1;
         }
 
     </style>
@@ -1062,13 +1053,15 @@
         function openSidebar() {
             document.getElementById("sidebar").classList.add("open");
             document.querySelector(".overlay").classList.add("active");
-            document.body.classList.add("sidebar-open"); // إضافة كلاس للجسم للتحكم في ظهور الشعار
+            // لم نعد بحاجة لهذا الكلاس لأنه لا يوجد دفع للمحتوى
+            // document.body.classList.add("sidebar-open"); 
         }
 
         function closeSidebar() {
             document.getElementById("sidebar").classList.remove("open");
             document.querySelector(".overlay").classList.remove("active");
-            document.body.classList.remove("sidebar-open"); // إزالة الكلاس من الجسم
+            // لم نعد بحاجة لهذا الكلاس لأنه لا يوجد دفع للمحتوى
+            // document.body.classList.remove("sidebar-open"); 
         }
 
         // --- WhatsApp Function ---
