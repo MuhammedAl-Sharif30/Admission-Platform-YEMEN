@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>منصة القبول الطبي - اليمن</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* تعريف المتغيرات للألوان الجديدة بناءً على خطتك */
@@ -38,7 +40,18 @@
             min-height: 100vh;
             overflow-x: hidden; /* لمنع ظهور شريط التمرير الأفقي */
             text-align: right; /* لضمان محاذاة النص لليمين */
+            transition: margin-right 0.5s; /* للانتقال السلس للمحتوى عند فتح السايدبار */
         }
+        /* دفع المحتوى لليسار عند فتح القائمة الجانبية */
+        body.sidebar-open {
+            margin-right: 250px; /* نفس عرض السايدبار */
+        }
+        @media (min-width: 900px) { /* لا تدفع المحتوى على الشاشات الكبيرة */
+            body.sidebar-open {
+                margin-right: 0;
+            }
+        }
+
 
         /* تنسيقات عامة للشاشات */
         .screen {
@@ -51,6 +64,7 @@
             background-color: var(--light-background); /* الشاشات الداخلية باللون الفاتح */
             overflow-y: auto;
             flex-grow: 1; /* لتأخذ المساحة المتاحة */
+            transition: margin-right 0.5s; /* للانتقال السلس للمحتوى عند فتح السايدبار */
         }
 
         .screen.active {
@@ -69,6 +83,7 @@
             flex-wrap: wrap; 
             gap: 10px; 
             color: var(--text-on-dark); /* نصوص الهيدر باللون الفاتح */
+            transition: margin-right 0.5s; /* للانتقال السلس للمحتوى عند فتح السايدبار */
         }
 
         .logo {
@@ -78,6 +93,7 @@
             text-decoration: none;
             display: flex;
             align-items: center;
+            transition: font-size 0.3s ease, margin-right 0.3s ease; /* لتحريك حجم الخط والهامش بسلاسة */
         }
         .logo i {
             margin-left: 10px;
@@ -129,7 +145,6 @@
             gap: 20px;
             order: 3; /* لتأتي في النهاية */
             align-items: center;
-            /* white-space: nowrap; تم إزالة هذا السطر لأن القائمة الجانبية ستحل المشكلة بشكل أفضل */
         }
 
         .header-icon-button {
@@ -166,10 +181,11 @@
             .menu-button {
                 display: block; /* أظهره */
                 order: 1; /* ليكون في أقصى اليمين في تخطيط RTL */
-                margin-left: auto; /* لدفعه لليمين */
+                margin-right: auto; /* لدفعه لليسار */
             }
             .logo {
                 order: 2; /* ليكون بجانب زر القائمة */
+                margin-right: 15px; /* مسافة بين زر القائمة والشعار */
             }
             .header-icons {
                 order: 3; /* ليكون في أقصى اليسار */
@@ -178,6 +194,22 @@
             .header-icons .search-icon,
             .header-icons .profile-icon {
                 display: none;
+            }
+        }
+
+        /* تعديل خاص للشعار عندما تكون القائمة الجانبية مفتوحة على الشاشات الصغيرة */
+        body.sidebar-open .header .logo {
+            font-size: 1.4em; /* تقليل حجم الخط قليلاً */
+            margin-right: -200px; /* لدفعه خارج الشاشة عند فتح السايدبار */
+            opacity: 0; /* إخفاء تدريجي */
+            pointer-events: none; /* منع التفاعل معه */
+        }
+        @media (min-width: 900px) { /* تأكد من عدم تطبيق هذا على الشاشات الكبيرة */
+            body.sidebar-open .header .logo {
+                font-size: 1.8em;
+                margin-right: 0;
+                opacity: 1;
+                pointer-events: auto;
             }
         }
 
@@ -377,7 +409,6 @@
                 padding: 10px 15px;
             }
             .logo {
-                margin-right: auto; /* لتدفع الشعار لليسار في RTL */
                 font-size: 1.6em;
             }
             .nav-links {
@@ -783,11 +814,12 @@
             <button class="header-icon-button profile-icon" onclick="alert('الملف الشخصي قريباً')">
                 <i class="fas fa-user-circle"></i>
             </button>
-            </div>
+        </div>
     </header>
 
     <div id="sidebar" class="sidebar">
-        <button class="close-btn" onclick="closeSidebar()">&times;</button> <div class="sidebar-links">
+        <button class="close-btn" onclick="closeSidebar()">&times;</button>
+        <div class="sidebar-links">
             <a href="#" class="sidebar-link active" data-screen-id="mainScreen" onclick="showScreen('mainScreen'); closeSidebar();">
                 <i class="fas fa-home"></i> الرئيسية
             </a>
@@ -800,13 +832,14 @@
             <a href="#" class="sidebar-link" onclick="openWhatsApp(); closeSidebar();">
                 <i class="fab fa-whatsapp"></i> تواصل معنا
             </a>
-            <hr style="border-color: rgba(255,255,255,0.2); margin: 15px 0;"> <button class="sidebar-icon-button" onclick="alert('خاصية البحث قريباً'); closeSidebar();">
+            <hr style="border-color: rgba(255,255,255,0.2); margin: 15px 0;">
+            <button class="sidebar-icon-button" onclick="alert('خاصية البحث قريباً'); closeSidebar();">
                 <i class="fas fa-search"></i> البحث
             </button>
             <button class="sidebar-icon-button" onclick="alert('الملف الشخصي قريباً'); closeSidebar();">
                 <i class="fas fa-user-circle"></i> الملف الشخصي
             </button>
-            </div>
+        </div>
     </div>
 
     <div class="overlay" onclick="closeSidebar()"></div>
@@ -814,7 +847,8 @@
     <div id="mainScreen" class="screen active">
         <section class="hero-section">
             <div class="hero-illustration-placeholder">
-                <i class="fas fa-lightbulb"></i> </div>
+                <i class="fas fa-lightbulb"></i>
+            </div>
             <h1>بوابتك نحو مستقبل مشرق!</h1>
             <p>استعد لاختبارات القبول في جميع الجامعات اليمنية بأسلوب فريد ومواد شاملة.</p>
             <button class="hero-button" onclick="showScreen('examsOverviewScreen')">
@@ -1028,11 +1062,13 @@
         function openSidebar() {
             document.getElementById("sidebar").classList.add("open");
             document.querySelector(".overlay").classList.add("active");
+            document.body.classList.add("sidebar-open"); // إضافة كلاس للجسم للتحكم في ظهور الشعار
         }
 
         function closeSidebar() {
             document.getElementById("sidebar").classList.remove("open");
             document.querySelector(".overlay").classList.remove("active");
+            document.body.classList.remove("sidebar-open"); // إزالة الكلاس من الجسم
         }
 
         // --- WhatsApp Function ---
@@ -1096,6 +1132,7 @@
         // Helper function for darkening colors (for hover effects)
         // This is a simplified version; for more robust color manipulation, a library or Sass/Less is better
         function darken(color, percentage) {
+            // Function to darken a hex color (simplified)
             let f = parseInt(color.slice(1), 16),
                 t = percentage < 0 ? 0 : 255,
                 p = percentage < 0 ? percentage * -1 : percentage,
