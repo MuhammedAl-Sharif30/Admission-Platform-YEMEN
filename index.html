@@ -410,6 +410,7 @@
 
         /* قسم شهادات الطلاب (Testimonials Section) - جديد */
         .testimonials-section {
+            display: none; /* <--- هذا السطر تم إضافته لإخفاء القسم */
             width: 100%;
             max-width: 1200px;
             padding: 40px 20px; /* مسافة داخلية أكبر */
@@ -1150,27 +1151,6 @@
             });
 
             showTestimonial(0); // عرض الشهادة الأولى عند التحميل
-        }
-
-        function showTestimonial(index) {
-            if (testimonials.length === 0) return;
-            
-            currentTestimonialIndex = index;
-            // للتأكد من أننا لا نخرج عن الحدود
-            if (currentTestimonialIndex < 0) {
-                currentTestimonialIndex = testimonials.length - 1;
-            } else if (currentTestimonialIndex >= testimonials.length) {
-                currentTestimonialIndex = 0;
-            }
-
-            const offset = -currentTestimonialIndex * testimonials[0].offsetWidth; // تحريك بمقدار عرض البطاقة
-            testimonialSlider.style.transform = `translateX(${offset}px)`;
-
-            // تحديث حالة النقاط
-            const dots = testimonialDotsContainer.querySelectorAll('.slider-dot');
-            dots.forEach((dot, idx) => {
-                dot.classList.toggle('active', idx === currentTestimonialIndex);
-            });
         }
 
         function nextTestimonial() {
