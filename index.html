@@ -129,7 +129,7 @@
             gap: 20px;
             order: 3; /* لتأتي في النهاية */
             align-items: center;
-            white-space: nowrap; /* لمنع العناصر من الالتفاف - حل مؤقت لمشكلة القص */
+            /* white-space: nowrap; تم إزالة هذا السطر لأن القائمة الجانبية ستحل المشكلة بشكل أفضل */
         }
 
         .header-icon-button {
@@ -155,8 +155,13 @@
             .menu-button {
                 display: none;
             }
+            /* إظهار أيقونات البحث والملف الشخصي على الشاشات الكبيرة */
+            .header-icons .search-icon,
+            .header-icons .profile-icon {
+                display: block;
+            }
         }
-        /* لإظهار زر القائمة على الشاشات الصغيرة */
+        /* لإظهار زر القائمة على الشاشات الصغيرة وإخفاء أيقونات البحث والملف الشخصي */
         @media (max-width: 899px) {
             .menu-button {
                 display: block; /* أظهره */
@@ -168,6 +173,11 @@
             }
             .header-icons {
                 order: 3; /* ليكون في أقصى اليسار */
+            }
+            /* إخفاء أيقونات البحث والملف الشخصي من الهيدر على الشاشات الصغيرة */
+            .header-icons .search-icon,
+            .header-icons .profile-icon {
+                display: none;
             }
         }
 
@@ -637,12 +647,112 @@
             outline: none;
         }
 
+        /* القائمة الجانبية (Sidebar) - تنسيقات جديدة */
+        .sidebar {
+            height: 100%;
+            width: 0; /* مخفية افتراضياً */
+            position: fixed;
+            z-index: 1001; /* أعلى من كل شيء آخر */
+            top: 0;
+            right: 0; /* تظهر من اليمين في RTL */
+            background-color: var(--dark-primary); /* نفس لون الهيدر */
+            overflow-x: hidden;
+            transition: 0.5s; /* حركة سلسة للفتح والإغلاق */
+            padding-top: 60px; /* مسافة من الأعلى لتجنب تداخل الهيدر */
+            box-shadow: -5px 0 15px var(--shadow-color-hover);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.open {
+            width: 250px; /* عرض القائمة عند الفتح */
+        }
+
+        .sidebar .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 25px; /* زر الإغلاق على اليسار في RTL */
+            font-size: 2em;
+            color: var(--text-on-dark);
+            cursor: pointer;
+            transition: 0.3s;
+            background: none;
+            border: none;
+        }
+
+        .sidebar .close-btn:hover {
+            color: var(--accent-color);
+        }
+
+        .sidebar-links {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex-grow: 1; /* لتأخذ المساحة المتاحة */
+        }
+
+        .sidebar-link, .sidebar-icon-button {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 1.2em;
+            color: var(--text-on-dark);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: 0.3s;
+            border-radius: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: right; /* محاذاة النص لليمين */
+        }
+
+        .sidebar-link:hover, .sidebar-icon-button:hover {
+            color: var(--accent-color);
+            background-color: rgba(255, 255, 255, 0.1); /* خلفية خفيفة عند التحويم */
+        }
+        .sidebar-link.active {
+            color: var(--accent-color);
+            font-weight: 700;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .sidebar-link i, .sidebar-icon-button i {
+            font-size: 1.3em;
+            color: var(--text-on-dark); /* لون الأيقونات داخل القائمة الجانبية */
+        }
+        .sidebar-link:hover i, .sidebar-icon-button:hover i {
+            color: var(--accent-color);
+        }
+        .sidebar-link.active i {
+            color: var(--accent-color);
+        }
+
+        /* Overlay لتعتيم الخلفية عند فتح القائمة الجانبية */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* تعتيم خفيف */
+            z-index: 1000; /* تحت القائمة الجانبية وفوق المحتوى */
+            display: none; /* مخفية افتراضياً */
+            transition: background-color 0.5s;
+        }
+        .overlay.active {
+            display: block;
+        }
+
     </style>
 </head>
 <body>
 
     <header class="header">
-        <button class="header-icon-button menu-button" onclick="alert('القائمة الجانبية قريباً')">
+        <button class="header-icon-button menu-button" onclick="openSidebar()">
             <i class="fas fa-bars"></i>
         </button>
 
@@ -667,14 +777,39 @@
         </nav>
 
         <div class="header-icons">
-            <button class="header-icon-button" onclick="alert('خاصية البحث قريباً')">
+            <button class="header-icon-button search-icon" onclick="alert('خاصية البحث قريباً')">
                 <i class="fas fa-search"></i>
             </button>
-            <button class="header-icon-button" onclick="alert('الملف الشخصي قريباً')">
+            <button class="header-icon-button profile-icon" onclick="alert('الملف الشخصي قريباً')">
                 <i class="fas fa-user-circle"></i>
             </button>
             </div>
     </header>
+
+    <div id="sidebar" class="sidebar">
+        <button class="close-btn" onclick="closeSidebar()">&times;</button> <div class="sidebar-links">
+            <a href="#" class="sidebar-link active" data-screen-id="mainScreen" onclick="showScreen('mainScreen'); closeSidebar();">
+                <i class="fas fa-home"></i> الرئيسية
+            </a>
+            <a href="#" class="sidebar-link" data-screen-id="materialsScreen" onclick="showScreen('materialsScreen'); closeSidebar();">
+                <i class="fas fa-book-open"></i> المواد الدراسية
+            </a>
+            <a href="#" class="sidebar-link" data-screen-id="examsOverviewScreen" onclick="showScreen('examsOverviewScreen'); closeSidebar();">
+                <i class="fas fa-pencil-alt"></i> الامتحانات التجريبية
+            </a>
+            <a href="#" class="sidebar-link" onclick="openWhatsApp(); closeSidebar();">
+                <i class="fab fa-whatsapp"></i> تواصل معنا
+            </a>
+            <hr style="border-color: rgba(255,255,255,0.2); margin: 15px 0;"> <button class="sidebar-icon-button" onclick="alert('خاصية البحث قريباً'); closeSidebar();">
+                <i class="fas fa-search"></i> البحث
+            </button>
+            <button class="sidebar-icon-button" onclick="alert('الملف الشخصي قريباً'); closeSidebar();">
+                <i class="fas fa-user-circle"></i> الملف الشخصي
+            </button>
+            </div>
+    </div>
+
+    <div class="overlay" onclick="closeSidebar()"></div>
 
     <div id="mainScreen" class="screen active">
         <section class="hero-section">
@@ -878,6 +1013,26 @@
                     item.classList.add('active');
                 }
             });
+
+            // إدارة الـ "active" class في القائمة الجانبية (للشاشات الصغيرة)
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-screen-id') === screenId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // --- Sidebar Logic ---
+        function openSidebar() {
+            document.getElementById("sidebar").classList.add("open");
+            document.querySelector(".overlay").classList.add("active");
+        }
+
+        function closeSidebar() {
+            document.getElementById("sidebar").classList.remove("open");
+            document.querySelector(".overlay").classList.remove("active");
         }
 
         // --- WhatsApp Function ---
