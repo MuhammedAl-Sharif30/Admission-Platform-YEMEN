@@ -993,6 +993,267 @@
             opacity: 1;
         }
 
+        /* تنسيقات شاشة الاختبار */
+        .exam-screen-content { /* هذا الكلاس لم يُستخدم في HTML بعد، لكنه مجهز */
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: var(--light-background);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .timer-display {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--dark-primary);
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .question-container {
+            background-color: var(--light-background);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .question-text {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--text-on-light);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-button {
+            width: 100%;
+            padding: 15px 20px;
+            background-color: var(--border-color); /* لون فاتح للخيار */
+            color: var(--text-on-light);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1.1em;
+            text-align: right; /* محاذاة لليمين */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        .option-button:hover {
+            background-color: var(--accent-color);
+            color: var(--text-on-dark);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .option-button.selected {
+            background-color: var(--dark-primary); /* لون داكن للخيار المحدد */
+            color: var(--text-on-dark);
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .option-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.5); /* ظل حول الخيار المحدد */
+        }
+
+        .exam-nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+            flex-wrap: wrap; /* للسماح للأزرار بالتكسر في الأجهزة الصغيرة */
+        }
+
+        .action-button {
+            flex: 1; /* لجعل الأزرار تأخذ مساحة متساوية */
+            min-width: 120px; /* حجم أدنى للزر */
+            padding: 15px 25px;
+            border: none;
+            border-radius: 30px;
+            color: var(--text-on-dark);
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px var(--shadow-color-hover);
+        }
+        .action-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(255, 179, 0, 0.6);
+        }
+        /* أزرار محددة بألوان مميزة */
+        .action-button[style*="background-color: var(--accent-color)"] {
+            background-color: var(--accent-color) !important;
+        }
+        .action-button[style*="background-color: var(--dark-primary)"] {
+            background-color: var(--dark-primary) !important;
+        }
+        .action-button[style*="background-color: #f44336"] { /* لون أحمر لزر الإنهاء */
+            background-color: #f44336 !important;
+        }
+        .action-button[style*="background-color: #f44336"]:hover {
+            background-color: #d32f2f !important;
+        }
+
+
+        /* تنسيقات شاشة النتائج */
+        .result-summary {
+            background-color: var(--border-color);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            text-align: center;
+        }
+        .result-summary p {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: var(--text-on-light);
+        }
+        .result-summary p span {
+            font-weight: 700;
+            color: var(--dark-primary);
+        }
+        #scorePercentage {
+            font-size: 2em;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(255, 179, 0, 0.6);
+        }
+
+        #reviewContainer {
+            background-color: var(--light-background);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        .question-review-item {
+            padding: 15px 0;
+            border-bottom: 1px dashed var(--border-color);
+            text-align: right;
+        }
+        .question-review-item:last-child {
+            border-bottom: none;
+        }
+        .question-review-item p {
+            margin: 5px 0;
+            font-size: 1em;
+            color: var(--secondary-text-light);
+        }
+        .question-review-item p strong {
+            color: var(--text-on-light);
+        }
+        .question-review-item .correct {
+            color: #4CAF50; /* أخضر للإجابة الصحيحة */
+            font-weight: 700;
+        }
+        .question-review-item .incorrect {
+            color: #f44336; /* أحمر للإجابة الخاطئة */
+            font-weight: 700;
+        }
+        .question-review-item .unanswered {
+            color: #9E9E9E; /* رمادي لغير المجاب عليها */
+            font-weight: 700;
+        }
+        /* لتلوين خلفية السؤال كاملاً في المراجعة */
+        .question-review-item.wrong {
+            background-color: rgba(244, 67, 54, 0.08); /* خلفية حمراء فاتحة جداً للخاطئ */
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .question-review-item.unanswered {
+            background-color: rgba(158, 158, 158, 0.08); /* خلفية رمادية فاتحة لغير المجاب */
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+
+        /* تعديلات عامة للشاشات (scroll content و back button) */
+        .screen .scroll-content {
+            width: 100%;
+            max-width: 900px; /* نفس عرض شاشة الاختبار للحفاظ على التناسق */
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: var(--light-background);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            margin-top: 20px;
+            flex-grow: 1; /* لتأخذ المساحة المتبقية */
+            overflow-y: auto; /* لتمكين التمرير إذا كان المحتوى طويلاً */
+            margin-bottom: 20px; /* مسافة قبل نهاية الشاشة */
+        }
+        .screen .back-button {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            background-color: var(--dark-primary);
+            color: var(--text-on-dark);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 3px 10px var(--shadow-color);
+            display: inline-block; /* لكي يعمل التحويم والظل بشكل صحيح */
+        }
+        .screen .back-button:hover {
+            background-color: #2c3e50; /* لون أغمق قليلاً */
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--shadow-color-hover);
+        }
+        .screen .back-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 35, 45, 0.5);
+        }
+
+        /* تعديلات التجاوبية لشاشتي الاختبار والنتائج */
+        @media (max-width: 600px) {
+            .timer-display {
+                font-size: 1.2em;
+            }
+            .question-text {
+                font-size: 1.2em;
+            }
+            .option-button {
+                font-size: 1em;
+                padding: 12px 15px;
+            }
+            .action-button {
+                font-size: 1em;
+                padding: 12px 18px;
+                min-width: unset; /* إلغاء الحد الأدنى للعرض للسماح بالتكيف أكثر */
+                flex-basis: 48%; /* لكي يأخذ كل زر ما يقرب من نصف العرض */
+            }
+            .result-summary p {
+                font-size: 1em;
+            }
+            #scorePercentage {
+                font-size: 1.8em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1257,11 +1518,7 @@
             <div class="question-container">
                 <p class="question-text" id="questionText">سيظهر السؤال هنا.</p>
                 <div class="options-container" id="optionsContainer">
-                    <button class="option-button">الخيار 1</button>
-                    <button class="option-button">الخيار 2</button>
-                    <button class="option-button">الخيار 3</button>
-                    <button class="option-button">الخيار 4</button>
-                </div>
+                    </div>
             </div>
             
             <div class="exam-nav-buttons">
@@ -1482,48 +1739,345 @@
         }
 
 
-        // --- Exam Logic (Functions are now placeholders, will be developed later) ---
-        // مصفوفة الأسئلة - فارغة حالياً
-        let allQuestions = []; // هنا سنضع أسئلتك لاحقاً
+        // --- Exam Logic ---
+        // مصفوفات الأسئلة لكل مادة
+        const questionsBiology = [
+            {
+                question: "ما هي الوحدة الأساسية للحياة؟",
+                options: ["الذرة", "الجزيء", "الخلية", "النسيج"],
+                answer: "الخلية"
+            },
+            {
+                question: "أي من التالي ليس جزءًا من الجهاز الهضمي؟",
+                options: ["المعدة", "القلب", "الأمعاء الدقيقة", "الكبد"],
+                answer: "القلب"
+            },
+            {
+                question: "ما هو اسم العملية التي تحول فيها النباتات ضوء الشمس إلى طاقة؟",
+                options: ["التنفس", "التخمر", "التمثيل الضوئي", "النتح"],
+                answer: "التمثيل الضوئي"
+            },
+            {
+                question: "العضو المسؤول عن ضخ الدم في جسم الإنسان هو:",
+                options: ["الرئة", "الكلى", "القلب", "المخ"],
+                answer: "القلب"
+            },
+            {
+                question: "أي من الغازات التالية ضروري لعملية التنفس عند الكائنات الحية؟",
+                options: ["ثاني أكسيد الكربون", "النيتروجين", "الأكسجين", "الهيدروجين"],
+                answer: "الأكسجين"
+            },
+            {
+                question: "ما هي المادة الوراثية التي تحمل التعليمات اللازمة لبناء الكائنات الحية؟",
+                options: ["البروتين", "الكربوهيدرات", "الدهون", "الحمض النووي (DNA)"],
+                answer: "الحمض النووي (DNA)"
+            },
+            {
+                question: "أي جزء من الخلية النباتية مسؤول عن إنتاج الغذاء؟",
+                options: ["النواة", "الميتوكوندريا", "البلاستيدات الخضراء", "الجدار الخلوي"],
+                answer: "البلاستيدات الخضراء"
+            },
+            {
+                question: "ما هو الهرمون المسؤول عن تنظيم مستوى السكر في الدم؟",
+                options: ["الأدرينالين", "الإنسولين", "التستوستيرون", "الإستروجين"],
+                answer: "الإنسولين"
+            },
+            {
+                question: "أي مما يلي يعتبر من الكائنات الحية الدقيقة؟",
+                options: ["النبات", "الحيوان", "البكتيريا", "الفطر"],
+                answer: "البكتيريا"
+            },
+            {
+                question: "ما هو أكبر عضو في جسم الإنسان؟",
+                options: ["المخ", "الكبد", "الجلد", "القلب"],
+                answer: "الجلد"
+            }
+        ];
 
+        const questionsChemistry = [
+            {
+                question: "ما هو الرمز الكيميائي للماء؟",
+                options: ["CO2", "O2", "H2O", "N2"],
+                answer: "H2O"
+            },
+            {
+                question: "ما هو العنصر الأكثر وفرة في الغلاف الجوي للأرض؟",
+                options: ["الأكسجين", "النيتروجين", "الهيدروجين", "الأرجون"],
+                answer: "النيتروجين"
+            },
+            {
+                question: "أي من التالي يعتبر حمضًا قويًا؟",
+                options: ["HCl", "NaOH", "NH3", "CH4"],
+                answer: "HCl"
+            },
+            {
+                question: "ما هو رقم التكافؤ (عدد التأكسد) للأكسجين في معظم مركباته؟",
+                options: ["+1", "+2", "-1", "-2"],
+                answer: "-2"
+            },
+            {
+                question: "المادة التي تسرع التفاعل الكيميائي دون أن تستهلك هي:",
+                options: ["المثبط", "المحفز", "المتفاعل", "الناتج"],
+                answer: "المحفز"
+            },
+            {
+                question: "الغاز الناتج عن احتراق الوقود الأحفوري ويسبب الاحتباس الحراري هو:",
+                options: ["الأكسجين", "النيتروجين", "ثاني أكسيد الكربون", "الهيدروجين"],
+                answer: "ثاني أكسيد الكربون"
+            },
+            {
+                question: "ما هو اسم العملية التي يتحول فيها السائل إلى غاز؟",
+                options: ["التكثيف", "التجمد", "التبخر", "الانصهار"],
+                answer: "التبخر"
+            },
+            {
+                question: "كم عدد البروتونات في ذرة الكربون (C)؟ (العدد الذري للكربون = 6)",
+                options: ["4", "6", "8", "12"],
+                answer: "6"
+            },
+            {
+                question: "الرابطة الكيميائية الناتجة عن مشاركة الإلكترونات بين الذرات هي:",
+                options: ["أيونية", "تساهمية", "فلزية", "هيدروجينية"],
+                answer: "تساهمية"
+            },
+            {
+                question: "ما هو العنصر الأساسي الذي تشكل منه جميع المركبات العضوية؟",
+                options: ["الأكسجين", "الهيدروجين", "الكربون", "النيتروجين"],
+                answer: "الكربون"
+            }
+        ];
+
+        const questionsEnglish = [
+            {
+                question: "Choose the correct word to complete the sentence: 'She ___ to the store yesterday.'",
+                options: ["go", "goes", "went", "going"],
+                answer: "went"
+            },
+            {
+                question: "What is the past participle of the verb 'eat'?",
+                options: ["eat", "ate", "eaten", "eating"],
+                answer: "eaten"
+            },
+            {
+                question: "Which of these is a synonym for 'happy'?",
+                options: ["sad", "joyful", "angry", "tired"],
+                answer: "joyful"
+            },
+            {
+                question: "Complete the sentence: 'If I __ a bird, I would fly.'",
+                options: ["was", "were", "am", "is"],
+                answer: "were"
+            },
+            {
+                question: "What is the plural of 'child'?",
+                options: ["childs", "children", "childes", "child's"],
+                answer: "children"
+            },
+            {
+                question: "Choose the correct preposition: 'The book is ___ the table.'",
+                options: ["at", "in", "on", "by"],
+                answer: "on"
+            },
+            {
+                question: "Which word means the opposite of 'expand'?",
+                options: ["grow", "stretch", "contract", "enlarge"],
+                answer: "contract"
+            },
+            {
+                question: "Identify the adjective in the sentence: 'The quick brown fox jumps over the lazy dog.'",
+                options: ["fox", "jumps", "quick", "over"],
+                answer: "quick"
+            },
+            {
+                question: "Complete the sentence: 'She speaks English ___.'",
+                options: ["good", "well", "fluent", "bad"],
+                answer: "well"
+            },
+            {
+                question: "What is the full form of 'I'll'?",
+                options: ["I will", "I shall", "I would", "I am"],
+                answer: "I will"
+            }
+        ];
+
+        // مصفوفة الأسئلة النشطة حالياً (سيتم ملؤها عند بدء الاختبار)
+        let activeQuestions = [];
         let currentQuestionIndex = 0;
         let userAnswers = [];
         let examTimer;
         let timeLeft = 0; // في البداية 0
+        const EXAM_DURATION_SECONDS = 300; // 5 دقائق لكل اختبار كمثال
 
+        // دالة بدء الاختبار
         function startExam(subject) {
-            // حالياً لا توجد أسئلة، فقط عرض تنبيه
-            alert(`لا توجد أسئلة لمادة ${subject} بعد!`);
-            // بعد إضافة الأسئلة، هنا سيتم تصفية الأسئلة حسب المادة وبدء الاختبار
-            // showScreen('examScreen'); // يجب أن نكون بالفعل في شاشة الاختبار
+            switch (subject) {
+                case 'أحياء':
+                    activeQuestions = [...questionsBiology]; // نسخ الأسئلة
+                    break;
+                case 'كيمياء':
+                    activeQuestions = [...questionsChemistry];
+                    break;
+                case 'إنجليزي':
+                    activeQuestions = [...questionsEnglish];
+                    break;
+                default:
+                    alert('المادة غير موجودة!');
+                    return;
+            }
+
+            // خلط الأسئلة عشوائياً
+            activeQuestions.sort(() => Math.random() - 0.5);
+
+            currentQuestionIndex = 0;
+            userAnswers = Array(activeQuestions.length).fill(null); // تهيئة إجابات المستخدم
+            timeLeft = EXAM_DURATION_SECONDS; // إعادة ضبط المؤقت
+            
+            showScreen('examScreen');
+            loadQuestion();
+            startTimer();
         }
 
+        // دالة تحميل السؤال الحالي
         function loadQuestion() {
-            // لا يوجد أسئلة حالياً
+            if (activeQuestions.length === 0) {
+                document.getElementById('questionText').innerText = "لا توجد أسئلة لهذه المادة.";
+                document.getElementById('optionsContainer').innerHTML = '';
+                return;
+            }
+
+            const questionData = activeQuestions[currentQuestionIndex];
+            document.getElementById('questionText').innerText = `${currentQuestionIndex + 1}. ${questionData.question}`;
+
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = ''; // مسح الخيارات السابقة
+
+            questionData.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.classList.add('option-button');
+                button.innerText = option;
+                button.onclick = () => selectOption(index);
+
+                // إذا كان المستخدم قد أجاب على هذا السؤال، حدد خياره
+                if (userAnswers[currentQuestionIndex] === option) {
+                    button.classList.add('selected');
+                }
+                optionsContainer.appendChild(button);
+            });
         }
 
+        // دالة اختيار إجابة
         function selectOption(optionIndex) {
-            // لا يوجد أسئلة حالياً
+            const optionsContainer = document.getElementById('optionsContainer');
+            const buttons = optionsContainer.querySelectorAll('.option-button');
+            
+            // إزالة التحديد من جميع الخيارات
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            
+            // تحديد الخيار الذي تم النقر عليه
+            buttons[optionIndex].classList.add('selected');
+            
+            // حفظ إجابة المستخدم
+            userAnswers[currentQuestionIndex] = activeQuestions[currentQuestionIndex].options[optionIndex];
         }
 
+        // دالة السؤال السابق
         function prevQuestion() {
-            alert('لا توجد أسئلة بعد!');
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            } else {
+                alert('هذا هو السؤال الأول!');
+            }
         }
 
+        // دالة السؤال التالي
         function nextQuestion() {
-            alert('لا توجد أسئلة بعد!');
+            if (currentQuestionIndex < activeQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                alert('هذا هو السؤال الأخير. يرجى إنهاء الاختبار.');
+            }
         }
 
+        // دالة بدء المؤقت
+        function startTimer() {
+            clearInterval(examTimer); // مسح أي مؤقت سابق
+            examTimer = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('examTimer').innerText = `الوقت المتبقي: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(examTimer);
+                    alert('انتهى الوقت! سيتم إنهاء الاختبار تلقائياً.');
+                    endExam();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        // دالة تأكيد إنهاء الاختبار
         function confirmEndExam() {
-            alert('لا توجد أسئلة لإنهاء الاختبار!');
+            if (confirm('هل أنت متأكد أنك تريد إنهاء الاختبار؟')) {
+                endExam();
+            }
         }
 
+        // دالة إنهاء الاختبار وعرض النتائج
+        function endExam() {
+            clearInterval(examTimer); // إيقاف المؤقت
+            calculateResults();
+            showScreen('resultsScreen');
+        }
+
+        // دالة حساب النتائج
         function calculateResults() {
-            // لا يوجد أسئلة حالياً
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let unansweredCount = 0;
+
+            const reviewContainer = document.getElementById('reviewContainer');
+            reviewContainer.innerHTML = ''; // مسح المراجعات القديمة
+
+            activeQuestions.forEach((q, index) => {
+                const userAnswer = userAnswers[index];
+                const correctAnswer = q.answer;
+
+                const questionReviewDiv = document.createElement('div');
+                questionReviewDiv.classList.add('question-review-item'); // سنضيف تنسيقات لاحقاً
+                questionReviewDiv.innerHTML = `
+                    <p><strong>السؤال ${index + 1}:</strong> ${q.question}</p>
+                    <p>إجابتك: <span class="${userAnswer === correctAnswer ? 'correct' : 'incorrect'}">${userAnswer !== null ? userAnswer : 'لم تجب'}</span></p>
+                    <p>الإجابة الصحيحة: <span>${correctAnswer}</span></p>
+                    <hr>
+                `;
+
+                if (userAnswer === correctAnswer) {
+                    correctCount++;
+                } else if (userAnswer !== null) {
+                    incorrectCount++;
+                    questionReviewDiv.classList.add('wrong');
+                } else {
+                    unansweredCount++;
+                    questionReviewDiv.classList.add('unanswered');
+                }
+                reviewContainer.appendChild(questionReviewDiv);
+            });
+
+            const totalQuestions = activeQuestions.length;
+            const scorePercentage = totalQuestions > 0 ? ((correctCount / totalQuestions) * 100).toFixed(2) + '%' : '0%';
+
+            document.getElementById('scorePercentage').innerText = scorePercentage;
+            document.getElementById('correctAnswersCount').innerText = correctCount;
+            document.getElementById('incorrectAnswersCount').innerText = incorrectCount;
+            document.getElementById('unansweredQuestionsCount').innerText = unansweredCount;
         }
 
+        // دالة مراجعة الإجابات (تم دمجها مع calculateResults لعرضها فوراً)
         function reviewAnswers() {
-            // لا يوجد أسئلة حالياً
+            // يمكننا هنا إضافة منطق لتصفح الأسئلة بشكل فردي في شاشة المراجعة إذا أردنا
+            // حالياً، تقوم calculateResults بإنشاء عرض كامل للمراجعة
         }
 
         // Initialize the first screen and the testimonials slider on load
