@@ -40,7 +40,6 @@
             min-height: 100vh;
             overflow-x: hidden; /* لمنع ظهور شريط التمرير الأفقي */
             text-align: right; /* لضمان محاذاة النص لليمين */
-            /* Removed margin-right transition from body */
         }
 
         /* تنسيقات عامة للشاشات */
@@ -54,7 +53,6 @@
             background-color: var(--light-background); /* الشاشات الداخلية باللون الفاتح */
             overflow-y: auto;
             flex-grow: 1; /* لتأخذ المساحة المتاحة */
-            /* Removed margin-right transition from screen */
         }
 
         .screen.active {
@@ -73,7 +71,7 @@
             flex-wrap: wrap; 
             gap: 10px; 
             color: var(--text-on-dark); /* نصوص الهيدر باللون الفاتح */
-            /* Removed margin-right transition from header */
+            position: relative; /* Needed for absolute positioning of children */
         }
 
         .logo {
@@ -83,7 +81,6 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            /* Removed font-size transition, it's no longer needed for sidebar push */
         }
         .logo i {
             margin-left: 10px;
@@ -93,7 +90,6 @@
         /* تعديل أزرار التنقل الرئيسية في الهيدر */
         .nav-links {
             display: none; /* سيتم إخفاؤها في الهيدر العلوي واستبدالها بزر القائمة الجانبية في الهاتف */
-            /* للمتصفحات الكبيرة، يمكننا إظهارها بجانب الشعار */
             gap: 25px;
             flex-grow: 1;
             justify-content: flex-end; /* لمحاذاتها لليمين */
@@ -170,37 +166,29 @@
             .nav-links { order: 2; flex-grow: 1; justify-content: flex-end; }
             .header-icons { order: 3; }
         }
-        /* لإظهار زر القائمة على الشاشات الصغيرة وإخفاء أيقونات البحث والملف الشخصي */
+        /* للمحمول: زر القائمة في أقصى اليسار، الشعار في المنتصف */
         @media (max-width: 899px) {
+            .header {
+                justify-content: center; /* ليتم توسيط الشعار */
+                padding: 15px 70px; /* مساحة لزر القائمة على اليسار (ولأيقونات وهمية على اليمين للموازنة) */
+            }
             .menu-button {
                 display: block; /* أظهره */
-                order: 3; /* ليكون في أقصى اليسار في تخطيط RTL */
-                margin-left: auto; /* لدفعه لليسار */
+                position: absolute; /* وضعه بشكل مطلق للتحكم الدقيق */
+                left: 15px; /* 15 بكسل من الحافة اليسرى */
+                top: 50%; /* توسيط عمودي */
+                transform: translateY(-50%);
+                margin: 0; /* إزالة أي هوامش تلقائية قديمة */
             }
             .logo {
-                order: 1; /* ليكون في أقصى اليمين */
-                margin-right: 0; /* لضمان عدم وجود هامش زائد يدفعه */
-                margin-left: auto; /* لدفعه لليمين وترك مسافة لزر القائمة */
+                flex-grow: 0; /* منع الشعار من التمدد وأخذ مساحة غير ضرورية */
+                margin: 0; /* إزالة أي هوامش تلقائية قديمة */
             }
             .header-icons {
-                order: 2; /* ليكون في المنتصف، بجانب الشعار */
-                margin-right: 15px; /* مسافة بين الشعار والأيقونات */
-            }
-            /* إخفاء أيقونات البحث والملف الشخصي من الهيدر على الشاشات الصغيرة */
-            .header-icons .search-icon,
-            .header-icons .profile-icon {
+                /* إخفاء أيقونات البحث والملف الشخصي تماماً من الهيدر على الشاشات الصغيرة */
                 display: none;
             }
         }
-
-        /* هذا الكلاس لم يعد له تأثير مباشر على تحريك الشعار */
-        /*body.sidebar-open .header .logo {
-            font-size: 1.4em;
-            margin-right: -200px; 
-            opacity: 0;
-            pointer-events: none;
-        }*/
-
 
         .auth-buttons {
             display: none; /* إخفائها مؤقتاً في الهيدر العلوي، يمكن وضعها في القائمة الجانبية */
@@ -280,7 +268,7 @@
         }
         .hero-button:focus {
             outline: none;
-            box-shadow: 0 0 0 4px rgba(255, 179, 0, 0.6); /* ظل حول الزر بلون التمييز */
+            box-shadow: 0 0 0 4px rgba(255, 179, 0, 0.6); /* ظل حول الزر بلون التتمييز */
         }
 
         /* قسم المحتوى المميز (Featured Content Section) - تم تحديث الألوان */
@@ -391,36 +379,16 @@
 
         /* Responsive Design */
         @media (max-width: 900px) {
-            .header {
-                flex-direction: row; /* أبقها في صف واحد */
-                justify-content: space-between; /* وزع العناصر */
-                align-items: center;
-                padding: 10px 15px;
-            }
-            .logo {
-                font-size: 1.6em;
-            }
-            .nav-links {
-                display: none; /* إخفاء الروابط في الهيدر على الشاشات الصغيرة */
-            }
-            .auth-buttons {
-                display: none; /* إخفاء أزرار المصادقة في الهيدر على الشاشات الصغيرة */
-            }
-            
+            /* Handled by the more specific mobile media query */
+        }
+
+        @media (max-width: 600px) {
             .hero-section h1 {
-                font-size: 2.5em;
+                font-size: 2.5em; /* Adjusted for smaller screens */
             }
             .hero-section p {
                 font-size: 1.1em;
             }
-        }
-
-        @media (max-width: 600px) {
-            .header { padding: 10px 15px; }
-            .logo { font-size: 1.5em; }
-            .hero-section { padding: 60px 15px; }
-            .hero-section h1 { font-size: 2em; }
-            .hero-section p { font-size: 1em; }
             .hero-button { padding: 12px 25px; font-size: 1em; }
             .featured-section { padding: 15px; }
             .featured-section h2 { font-size: 1.8em; }
@@ -429,6 +397,13 @@
                 width: 200px;
                 height: 200px;
                 font-size: 4em;
+            }
+            /* Header padding adjustment for very small screens if needed */
+            .header {
+                 padding: 10px 60px; /* Adjust padding for smaller screens if 70px is too much */
+            }
+            .menu-button {
+                left: 10px; /* Closer to the edge */
             }
         }
 
@@ -1053,15 +1028,11 @@
         function openSidebar() {
             document.getElementById("sidebar").classList.add("open");
             document.querySelector(".overlay").classList.add("active");
-            // لم نعد بحاجة لهذا الكلاس لأنه لا يوجد دفع للمحتوى
-            // document.body.classList.add("sidebar-open"); 
         }
 
         function closeSidebar() {
             document.getElementById("sidebar").classList.remove("open");
             document.querySelector(".overlay").classList.remove("active");
-            // لم نعد بحاجة لهذا الكلاس لأنه لا يوجد دفع للمحتوى
-            // document.body.classList.remove("sidebar-open"); 
         }
 
         // --- WhatsApp Function ---
