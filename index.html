@@ -418,10 +418,10 @@
                 explanation: "بشكل عام، تزداد حامضية الأكاسيد مع زيادة عدد تأكسد العنصر اللافلزي. في المجموعة الخامسة، يكون عدد تأكسد العنصر في الأكاسيد الخماسية أعلى منه في الأكاسيد الثلاثية، وبالتالي تكون الأكاسيد الخماسية أكثر حامضية."
             },
             {
-                question: "عدد الكم ms كم عدد اتجاهات الإلكترون:",
+                question: "عدد الكم mₛ كم عدد اتجاهات الإلكترون:",
                 options: ["1/2", "2", "-1/2", "أ أو ج"],
                 answer: "أ أو ج",
-                explanation: "عدد الكم المغزلي (ms) يصف اتجاه دوران الإلكترون حول محوره. له قيمتان محتملتان فقط: +1/2 (اتجاه الدوران للأعلى) و -1/2 (اتجاه الدوران للأسفل)، مما يعني وجود اتجاهين محتملين لدوران الإلكترون."
+                explanation: "عدد الكم المغزلي (mₛ) يصف اتجاه دوران الإلكترون حول محوره. له قيمتان محتملتان فقط: +1/2 (اتجاه الدوران للأعلى) و -1/2 (اتجاه الدوران للأسفل)، مما يعني وجود اتجاهين محتملين لدوران الإلكترون."
             },
             {
                 question: "واحد مول من جزيء الكلور Cl₂ (الكتلة الذرية للكلور Cl=35.5) يساوي ...",
@@ -433,7 +433,7 @@
                 question: "عدد الكم المغناطيسي للعدد الثانوي f هو ....",
                 options: ["(-5, 5)", "(-3, 3)", "(-1, 1)", "(-7, 7)"],
                 answer: "(-3, 3)",
-                explanation: "عدد الكم الثانوي (l) للمستوى الفرعي f هو 3. عدد الكم المغناطيسي (ml) يتراوح من -l إلى +l بما في ذلك الصفر. لذا، بالنسبة لـ l=3 (المستوى الفرعي f)، تكون قيم ml هي: -3, -2, -1, 0, +1, +2, +3. وبالتالي، النطاق هو (-3, 3)."
+                explanation: "عدد الكم الثانوي (l) للمستوى الفرعي f هو 3. عدد الكم المغناطيسي (m_l) يتراوح من -l إلى +l بما في ذلك الصفر. لذا، بالنسبة لـ l=3 (المستوى الفرعي f)، تكون قيم m_l هي: -3, -2, -1, 0, +1, +2, +3. وبالتالي، النطاق هو (-3, 3)."
             },
             {
                 question: "عدد أفوجادرو ....",
@@ -498,7 +498,7 @@
         ];
 
         let questionsEnglish = [
-            // No English questions provided yet, placeholder for future addition
+            // لا توجد أسئلة إنجليزية مقدمة بعد
             {
                 question: "Which of the following is a synonym for 'diligent'?",
                 options: ["Lazy", "Hardworking", "Careless", "Slow"],
@@ -562,15 +562,58 @@
 
         function loadQuestion() {
             const questionData = currentQuestions[currentQuestionIndex];
+            // Replace common LaTeX-like patterns for subscripts with HTML subscripts
+            let formattedQuestion = questionData.question
+                .replace(/H2O/g, 'H₂O')
+                .replace(/Cl2/g, 'Cl₂')
+                .replace(/NaHCO3/g, 'NaHCO₃')
+                .replace(/NaNO3/g, 'NaNO₃')
+                .replace(/NaCO3/g, 'Na₂CO₃') // Assuming it might be a typo for Na2CO3
+                .replace(/CaCO3/g, 'CaCO₃')
+                .replace(/O2/g, 'O₂')
+                .replace(/CO2/g, 'CO₂')
+                .replace(/CH4/g, 'CH₄')
+                .replace(/N2/g, 'N₂')
+                .replace(/SO2/g, 'SO₂')
+                .replace(/H2SO4/g, 'H₂SO₄')
+                .replace(/Fe2O3/g, 'Fe₂O₃')
+                .replace(/H2/g, 'H₂')
+                .replace(/C6H12O6/g, 'C₆H₁₂O₆')
+                .replace(/C12/g, 'C₁₂');
+            
+            // For ms and ml, specifically for chemistry questions to make them visually correct
+            formattedQuestion = formattedQuestion
+                .replace(/ms/g, 'mₛ')
+                .replace(/ml/g, 'mₗ');
+
             questionContainer.innerHTML = `
-                <p>السؤال ${currentQuestionIndex + 1} من ${currentQuestions.length}: ${questionData.question}</p>
+                <p>السؤال ${currentQuestionIndex + 1} من ${currentQuestions.length}: ${formattedQuestion}</p>
                 <div class="options">
-                    ${questionData.options.map((option, index) => `
-                        <label>
-                            <input type="radio" name="question${currentQuestionIndex}" value="${option}" ${userAnswers[currentQuestionIndex] === option ? 'checked' : ''}>
-                            ${option}
-                        </label>
-                    `).join('')}
+                    ${questionData.options.map((option, index) => {
+                        let formattedOption = option
+                            .replace(/H2O/g, 'H₂O')
+                            .replace(/Cl2/g, 'Cl₂')
+                            .replace(/NaHCO3/g, 'NaHCO₃')
+                            .replace(/NaNO3/g, 'NaNO₃')
+                            .replace(/NaCO3/g, 'Na₂CO₃')
+                            .replace(/CaCO3/g, 'CaCO₃')
+                            .replace(/O2/g, 'O₂')
+                            .replace(/CO2/g, 'CO₂')
+                            .replace(/CH4/g, 'CH₄')
+                            .replace(/N2/g, 'N₂')
+                            .replace(/SO2/g, 'SO₂')
+                            .replace(/H2SO4/g, 'H₂SO₄')
+                            .replace(/Fe2O3/g, 'Fe₂O₃')
+                            .replace(/H2/g, 'H₂')
+                            .replace(/C6H12O6/g, 'C₆H₁₂O₆')
+                            .replace(/C12/g, 'C₁₂');
+                        return `
+                            <label>
+                                <input type="radio" name="question${currentQuestionIndex}" value="${option}" ${userAnswers[currentQuestionIndex] === option ? 'checked' : ''}>
+                                ${formattedOption}
+                            </label>
+                        `;
+                    }).join('')}
                 </div>
             `;
 
@@ -655,11 +698,39 @@
                 const userAnswerText = userAnswers[index] ? userAnswers[index] : 'لم تتم الإجابة';
                 const isCorrect = userAnswers[index] === q.answer;
 
+                // Format question, options, and explanation for display (especially subscripts)
+                const formatTextForDisplay = (text) => {
+                    return text
+                        .replace(/H2O/g, 'H₂O')
+                        .replace(/Cl2/g, 'Cl₂')
+                        .replace(/NaHCO3/g, 'NaHCO₃')
+                        .replace(/NaNO3/g, 'NaNO₃')
+                        .replace(/NaCO3/g, 'Na₂CO₃')
+                        .replace(/CaCO3/g, 'CaCO₃')
+                        .replace(/O2/g, 'O₂')
+                        .replace(/CO2/g, 'CO₂')
+                        .replace(/CH4/g, 'CH₄')
+                        .replace(/N2/g, 'N₂')
+                        .replace(/SO2/g, 'SO₂')
+                        .replace(/H2SO4/g, 'H₂SO₄')
+                        .replace(/Fe2O3/g, 'Fe₂O₃')
+                        .replace(/H2/g, 'H₂')
+                        .replace(/C6H12O6/g, 'C₆H₁₂O₆')
+                        .replace(/C12/g, 'C₁₂')
+                        .replace(/ms/g, 'mₛ')
+                        .replace(/ml/g, 'mₗ');
+                };
+
+                const formattedQuestion = formatTextForDisplay(q.question);
+                const formattedCorrectAnswer = formatTextForDisplay(q.answer);
+                const formattedUserAnswer = formatTextForDisplay(userAnswerText);
+                const formattedExplanation = formatTextForDisplay(q.explanation);
+
                 reviewItem.innerHTML = `
-                    <p><strong>السؤال ${index + 1}:</strong> ${q.question}</p>
-                    <p class="correct-answer"><strong>الإجابة الصحيحة:</strong> ${q.answer}</p>
-                    <p class="${isCorrect ? 'correct-answer' : 'your-answer'}"><strong>إجابتك:</strong> ${userAnswerText} ${isCorrect ? '(صحيحة)' : '(خاطئة)'}</p>
-                    <p class="explanation"><strong>الشرح:</strong> ${q.explanation}</p>
+                    <p><strong>السؤال ${index + 1}:</strong> ${formattedQuestion}</p>
+                    <p class="correct-answer"><strong>الإجابة الصحيحة:</strong> ${formattedCorrectAnswer}</p>
+                    <p class="${isCorrect ? 'correct-answer' : 'your-answer'}"><strong>إجابتك:</strong> ${formattedUserAnswer} ${isCorrect ? '(صحيحة)' : '(خاطئة)'}</p>
+                    <p class="explanation"><strong>الشرح:</strong> ${formattedExplanation}</p>
                 `;
                 reviewContainer.appendChild(reviewItem);
             });
