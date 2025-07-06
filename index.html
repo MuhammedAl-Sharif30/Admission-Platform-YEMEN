@@ -1034,6 +1034,16 @@
             color: var(--text-on-light);
             margin-bottom: 25px;
             line-height: 1.6;
+            /* إصلاح مشكلة علامات الترقيم في اللغات المختلطة */
+            direction: rtl; /* اتجاه النص من اليمين لليسار للعربي */
+            unicode-bidi: embed; /* السماح للمحتوى داخل العنصر بتغيير الاتجاه */
+            text-align: right;
+        }
+        /* لضمان أن الأجزاء الإنجليزية في النص العربي تحافظ على اتجاهها */
+        .question-text span.english {
+            direction: ltr;
+            unicode-bidi: isolate; /* لعزل اتجاه النص داخل هذا النطاق */
+            display: inline-block; /* لضمان تطبيق direction بشكل صحيح */
         }
 
         .options-container {
@@ -1054,6 +1064,15 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            /* إصلاح مشكلة علامات الترقيم في اللغات المختلطة */
+            direction: rtl; /* اتجاه النص من اليمين لليسار للعربي */
+            unicode-bidi: embed; /* السماح للمحتوى داخل العنصر بتغيير الاتجاه */
+        }
+        /* لضمان أن الأجزاء الإنجليزية في الخيارات تحافظ على اتجاهها */
+        .option-button span.english {
+            direction: ltr;
+            unicode-bidi: isolate;
+            display: inline-block;
         }
 
         .option-button:hover {
@@ -1158,14 +1177,39 @@
         .question-review-item:last-child {
             border-bottom: none;
         }
-        .question-review-item p {
+        /* هذا الكلاس الجديد للنصوص داخل المراجعة (لمعالجة RTL/LTR) */
+        .question-review-item p.review-text {
             margin: 5px 0;
             font-size: 1em;
             color: var(--secondary-text-light);
+            direction: rtl; /* اتجاه النص من اليمين لليسار للعربي */
+            unicode-bidi: embed; /* السماح للمحتوى داخل العنصر بتغيير الاتجاه */
         }
-        .question-review-item p strong {
-            color: var(--text-on-light);
+        .question-review-item p.review-text span {
+            font-weight: 700;
         }
+        .question-review-item p.review-text span.english,
+        .question-review-item p.review-text span.explanation-content {
+            direction: ltr; /* لضمان أن النص الإنجليزي أو محتوى الشرح يبقى LTR */
+            unicode-bidi: isolate; /* لعزل اتجاه النص داخل هذا النطاق */
+            display: inline-block; /* لضمان تطبيق direction بشكل صحيح */
+        }
+        /* لتنسيق نص الشرح نفسه */
+        .question-review-item .explanation-text {
+            font-style: italic;
+            color: var(--dark-primary); /* لون داكن أكثر بروزاً للشرح */
+            background-color: rgba(255, 179, 0, 0.1); /* خلفية خفيفة بلون التمييز */
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            border-right: 4px solid var(--accent-color); /* شريط على اليمين */
+            direction: rtl; /* للتأكد من اتجاه الشرح نفسه عربي */
+            unicode-bidi: embed;
+        }
+        .question-review-item .explanation-text strong {
+            color: var(--accent-color); /* لون مميز لعنوان الشرح */
+        }
+
         .question-review-item .correct {
             color: #4CAF50; /* أخضر للإجابة الصحيحة */
             font-weight: 700;
@@ -1694,6 +1738,7 @@
             showTestimonial(0); // عرض الشهادة الأولى عند التحميل
         }
 
+
         // دالة لعرض الشهادة بناءً على الفهرس
         function showTestimonial(index) {
             if (!testimonialSlider || testimonials.length === 0) return;
@@ -1740,57 +1785,67 @@
 
 
         // --- Exam Logic ---
-        // مصفوفات الأسئلة لكل مادة
+        // مصفوفات الأسئلة لكل مادة - تم إضافة حقل 'explanation'
         const questionsBiology = [
             {
                 question: "ما هي الوحدة الأساسية للحياة؟",
                 options: ["الذرة", "الجزيء", "الخلية", "النسيج"],
-                answer: "الخلية"
+                answer: "الخلية",
+                explanation: "الخلية هي أصغر وحدة بنائية ووظيفية في الكائنات الحية، وهي قادرة على الحياة والتكاثر بشكل مستقل."
             },
             {
                 question: "أي من التالي ليس جزءًا من الجهاز الهضمي؟",
                 options: ["المعدة", "القلب", "الأمعاء الدقيقة", "الكبد"],
-                answer: "القلب"
+                answer: "القلب",
+                explanation: "الجهاز الهضمي يتكون من الأعضاء المسؤولة عن هضم الطعام وامتصاصه. القلب هو جزء من الجهاز الدوري (الدورة الدموية)."
             },
             {
                 question: "ما هو اسم العملية التي تحول فيها النباتات ضوء الشمس إلى طاقة؟",
                 options: ["التنفس", "التخمر", "التمثيل الضوئي", "النتح"],
-                answer: "التمثيل الضوئي"
+                answer: "التمثيل الضوئي",
+                explanation: "التمثيل الضوئي (أو البناء الضوئي) هو العملية التي تستخدمها النباتات والطحالب وبعض البكتيريا لتحويل الطاقة الضوئية إلى طاقة كيميائية (سكريات)."
             },
             {
                 question: "العضو المسؤول عن ضخ الدم في جسم الإنسان هو:",
                 options: ["الرئة", "الكلى", "القلب", "المخ"],
-                answer: "القلب"
+                answer: "القلب",
+                explanation: "القلب هو عضلة مجوفة تقوم بضخ الدم في جميع أنحاء الجسم عبر الجهاز الدوري."
             },
             {
                 question: "أي من الغازات التالية ضروري لعملية التنفس عند الكائنات الحية؟",
                 options: ["ثاني أكسيد الكربون", "النيتروجين", "الأكسجين", "الهيدروجين"],
-                answer: "الأكسجين"
+                answer: "الأكسجين",
+                explanation: "الأكسجين ضروري للتنفس الهوائي، وهي العملية التي تنتج فيها معظم الكائنات الحية الطاقة من الغذاء."
             },
             {
                 question: "ما هي المادة الوراثية التي تحمل التعليمات اللازمة لبناء الكائنات الحية؟",
                 options: ["البروتين", "الكربوهيدرات", "الدهون", "الحمض النووي (DNA)"],
-                answer: "الحمض النووي (DNA)"
+                answer: "الحمض النووي (DNA)",
+                explanation: "الحمض النووي (DNA) هو جزيء يحتوي على التعليمات الوراثية التي تستخدم في تطوير وعمل جميع الكائنات الحية المعروفة وبعض الفيروسات."
             },
             {
                 question: "أي جزء من الخلية النباتية مسؤول عن إنتاج الغذاء؟",
                 options: ["النواة", "الميتوكوندريا", "البلاستيدات الخضراء", "الجدار الخلوي"],
-                answer: "البلاستيدات الخضراء"
+                answer: "البلاستيدات الخضراء",
+                explanation: "البلاستيدات الخضراء هي العضيات الموجودة في الخلايا النباتية والطحالب والتي تجري فيها عملية التمثيل الضوئي (صنع الغذاء)."
             },
             {
                 question: "ما هو الهرمون المسؤول عن تنظيم مستوى السكر في الدم؟",
                 options: ["الأدرينالين", "الإنسولين", "التستوستيرون", "الإستروجين"],
-                answer: "الإنسولين"
+                answer: "الإنسولين",
+                explanation: "الإنسولين هو هرمون يفرزه البنكرياس ويساعد على تنظيم مستويات السكر في الدم عن طريق مساعدة الخلايا على امتصاص الجلوكوز."
             },
             {
                 question: "أي مما يلي يعتبر من الكائنات الحية الدقيقة؟",
                 options: ["النبات", "الحيوان", "البكتيريا", "الفطر"],
-                answer: "البكتيريا"
+                answer: "البكتيريا",
+                explanation: "البكتيريا هي كائنات حية دقيقة وحيدة الخلية لا يمكن رؤيتها بالعين المجردة."
             },
             {
                 question: "ما هو أكبر عضو في جسم الإنسان؟",
                 options: ["المخ", "الكبد", "الجلد", "القلب"],
-                answer: "الجلد"
+                answer: "الجلد",
+                explanation: "الجلد هو أكبر عضو في جسم الإنسان، حيث يغطي مساحة تقارب 2 متر مربع."
             }
         ];
 
@@ -1798,105 +1853,125 @@
             {
                 question: "ما هو الرمز الكيميائي للماء؟",
                 options: ["CO2", "O2", "H2O", "N2"],
-                answer: "H2O"
+                answer: "H2O",
+                explanation: "يتكون جزيء الماء من ذرتي هيدروجين وذرة أكسجين واحدة، ويرمز له بالصيغة H2O."
             },
             {
                 question: "ما هو العنصر الأكثر وفرة في الغلاف الجوي للأرض؟",
                 options: ["الأكسجين", "النيتروجين", "الهيدروجين", "الأرجون"],
-                answer: "النيتروجين"
+                answer: "النيتروجين",
+                explanation: "يشكل غاز النيتروجين حوالي 78% من حجم الغلاف الجوي للأرض."
             },
             {
                 question: "أي من التالي يعتبر حمضًا قويًا؟",
                 options: ["HCl", "NaOH", "NH3", "CH4"],
-                answer: "HCl"
+                answer: "HCl",
+                explanation: "HCl (حمض الهيدروكلوريك) هو حمض قوي يتأين بالكامل في الماء. NaOH هيدروكسيد الصوديوم (قاعدة قوية)، NH3 الأمونيا (قاعدة ضعيفة)، CH4 الميثان (مركب عضوي)."
             },
             {
                 question: "ما هو رقم التكافؤ (عدد التأكسد) للأكسجين في معظم مركباته؟",
                 options: ["+1", "+2", "-1", "-2"],
-                answer: "-2"
+                answer: "-2",
+                explanation: "في معظم المركبات، يكون رقم التكافؤ للأكسجين -2، باستثناء بعض المركبات مثل البيروكسيدات حيث يكون -1."
             },
             {
                 question: "المادة التي تسرع التفاعل الكيميائي دون أن تستهلك هي:",
                 options: ["المثبط", "المحفز", "المتفاعل", "الناتج"],
-                answer: "المحفز"
+                answer: "المحفز",
+                explanation: "المحفز هو مادة تزيد من سرعة التفاعل الكيميائي دون أن تستهلك في العملية نفسها."
             },
             {
                 question: "الغاز الناتج عن احتراق الوقود الأحفوري ويسبب الاحتباس الحراري هو:",
                 options: ["الأكسجين", "النيتروجين", "ثاني أكسيد الكربون", "الهيدروجين"],
-                answer: "ثاني أكسيد الكربون"
+                answer: "ثاني أكسيد الكربون",
+                explanation: "ثاني أكسيد الكربون (CO2) هو أحد غازات الدفيئة الرئيسية التي تساهم في ظاهرة الاحتباس الحراري."
             },
             {
                 question: "ما هو اسم العملية التي يتحول فيها السائل إلى غاز؟",
                 options: ["التكثيف", "التجمد", "التبخر", "الانصهار"],
-                answer: "التبخر"
+                answer: "التبخر",
+                explanation: "التبخر هو عملية فيزيائية يتحول فيها السائل إلى غاز (بخار) عند درجة حرارة أقل من نقطة الغليان."
             },
             {
                 question: "كم عدد البروتونات في ذرة الكربون (C)؟ (العدد الذري للكربون = 6)",
                 options: ["4", "6", "8", "12"],
-                answer: "6"
+                answer: "6",
+                explanation: "العدد الذري للعنصر (Z) يمثل عدد البروتونات في نواة الذرة. بما أن العدد الذري للكربون هو 6، فإنه يحتوي على 6 بروتونات."
             },
             {
                 question: "الرابطة الكيميائية الناتجة عن مشاركة الإلكترونات بين الذرات هي:",
                 options: ["أيونية", "تساهمية", "فلزية", "هيدروجينية"],
-                answer: "تساهمية"
+                answer: "تساهمية",
+                explanation: "الرابطة التساهمية تتشكل عندما تتشارك ذرتان أو أكثر في أزواج من الإلكترونات لكي تكتمل مداراتها الخارجية."
             },
             {
                 question: "ما هو العنصر الأساسي الذي تشكل منه جميع المركبات العضوية؟",
                 options: ["الأكسجين", "الهيدروجين", "الكربون", "النيتروجين"],
-                answer: "الكربون"
+                answer: "الكربون",
+                explanation: "الكيمياء العضوية هي دراسة المركبات التي تحتوي على الكربون، حيث يشكل الكربون العمود الفقري لهذه المركبات."
             }
         ];
 
         const questionsEnglish = [
             {
-                question: "Choose the correct word to complete the sentence: 'She ___ to the store yesterday.'",
-                options: ["go", "goes", "went", "going"],
-                answer: "went"
+                question: "Choose the correct word to complete the sentence: 'She <span class='english'>___</span> to the store yesterday.'",
+                options: ["<span class='english'>go</span>", "<span class='english'>goes</span>", "<span class='english'>went</span>", "<span class='english'>going</span>"],
+                answer: "<span class='english'>went</span>",
+                explanation: "The sentence uses 'yesterday,' indicating a past action. The past simple form of 'go' is 'went'."
             },
             {
-                question: "What is the past participle of the verb 'eat'?",
-                options: ["eat", "ate", "eaten", "eating"],
-                answer: "eaten"
+                question: "What is the past participle of the verb '<span class='english'>eat</span>'?",
+                options: ["<span class='english'>eat</span>", "<span class='english'>ate</span>", "<span class='english'>eaten</span>", "<span class='english'>eating</span>"],
+                answer: "<span class='english'>eaten</span>",
+                explanation: "The past participle of the irregular verb 'eat' is 'eaten'. It is often used with 'have' or 'has' in perfect tenses, e.g., 'I have eaten'."
             },
             {
-                question: "Which of these is a synonym for 'happy'?",
-                options: ["sad", "joyful", "angry", "tired"],
-                answer: "joyful"
+                question: "Which of these is a synonym for '<span class='english'>happy</span>'?",
+                options: ["<span class='english'>sad</span>", "<span class='english'>joyful</span>", "<span class='english'>angry</span>", "<span class='english'>tired</span>"],
+                answer: "<span class='english'>joyful</span>",
+                explanation: "'Joyful' means feeling, expressing, or causing great pleasure and happiness, making it a synonym for 'happy'."
             },
             {
-                question: "Complete the sentence: 'If I __ a bird, I would fly.'",
-                options: ["was", "were", "am", "is"],
-                answer: "were"
+                question: "Complete the sentence: 'If I <span class='english'>__</span> a bird, I would fly.'",
+                options: ["<span class='english'>was</span>", "<span class='english'>were</span>", "<span class='english'>am</span>", "<span class='english'>is</span>"],
+                answer: "<span class='english'>were</span>",
+                explanation: "This is a second conditional sentence (hypothetical situation). In such sentences, 'were' is used for all subjects in the 'if' clause, even for singular subjects like 'I', 'he', 'she', 'it'."
             },
             {
-                question: "What is the plural of 'child'?",
-                options: ["childs", "children", "childes", "child's"],
-                answer: "children"
+                question: "What is the plural of '<span class='english'>child</span>'?",
+                options: ["<span class='english'>childs</span>", "<span class='english'>children</span>", "<span class='english'>childes</span>", "<span class='english'>child's</span>"],
+                answer: "<span class='english'>children</span>",
+                explanation: "'Children' is the irregular plural form of 'child'. Many English nouns have irregular plural forms."
             },
             {
-                question: "Choose the correct preposition: 'The book is ___ the table.'",
-                options: ["at", "in", "on", "by"],
-                answer: "on"
+                question: "Choose the correct preposition: 'The book is <span class='english'>___</span> the table.'",
+                options: ["<span class='english'>at</span>", "<span class='english'>in</span>", "<span class='english'>on</span>", "<span class='english'>by</span>"],
+                answer: "<span class='english'>on</span>",
+                explanation: "'On' is used when something is resting on the surface of another object, like a book on a table."
             },
             {
-                question: "Which word means the opposite of 'expand'?",
-                options: ["grow", "stretch", "contract", "enlarge"],
-                answer: "contract"
+                question: "Which word means the opposite of '<span class='english'>expand</span>'?",
+                options: ["<span class='english'>grow</span>", "<span class='english'>stretch</span>", "<span class='english'>contract</span>", "<span class='english'>enlarge</span>"],
+                answer: "<span class='english'>contract</span>",
+                explanation: "'Expand' means to become larger or more extensive. 'Contract' means to become smaller or shorter, thus it is the opposite."
             },
             {
-                question: "Identify the adjective in the sentence: 'The quick brown fox jumps over the lazy dog.'",
-                options: ["fox", "jumps", "quick", "over"],
-                answer: "quick"
+                question: "Identify the adjective in the sentence: '<span class='english'>The quick brown fox jumps over the lazy dog.</span>'",
+                options: ["<span class='english'>fox</span>", "<span class='english'>jumps</span>", "<span class='english'>quick</span>", "<span class='english'>over</span>"],
+                answer: "<span class='english'>quick</span>",
+                explanation: "An adjective describes a noun. In this sentence, 'quick' describes 'fox', and 'lazy' describes 'dog'. 'Quick' is one of the adjectives."
             },
             {
-                question: "Complete the sentence: 'She speaks English ___.'",
-                options: ["good", "well", "fluent", "bad"],
-                answer: "well"
+                question: "Complete the sentence: 'She speaks English <span class='english'>___</span>.'",
+                options: ["<span class='english'>good</span>", "<span class='english'>well</span>", "<span class='english'>fluent</span>", "<span class='english'>bad</span>"],
+                answer: "<span class='english'>well</span>",
+                explanation: "'Well' is an adverb used to describe how someone speaks (an action verb). 'Good' is an adjective and describes nouns."
             },
             {
-                question: "What is the full form of 'I'll'?",
-                options: ["I will", "I shall", "I would", "I am"],
-                answer: "I will"
+                question: "What is the full form of '<span class='english'>I'll</span>'?",
+                options: ["<span class='english'>I will</span>", "<span class='english'>I shall</span>", "<span class='english'>I would</span>", "<span class='english'>I am</span>"],
+                answer: "<span class='english'>I will</span>",
+                explanation: "The contraction 'I'll' is most commonly a short form of 'I will'."
             }
         ];
 
@@ -1946,7 +2021,7 @@
             }
 
             const questionData = activeQuestions[currentQuestionIndex];
-            document.getElementById('questionText').innerText = `${currentQuestionIndex + 1}. ${questionData.question}`;
+            document.getElementById('questionText').innerHTML = `${currentQuestionIndex + 1}. ${questionData.question}`; // استخدم innerHTML لدعم span.english
 
             const optionsContainer = document.getElementById('optionsContainer');
             optionsContainer.innerHTML = ''; // مسح الخيارات السابقة
@@ -1954,7 +2029,7 @@
             questionData.options.forEach((option, index) => {
                 const button = document.createElement('button');
                 button.classList.add('option-button');
-                button.innerText = option;
+                button.innerHTML = option; // استخدم innerHTML لدعم span.english
                 button.onclick = () => selectOption(index);
 
                 // إذا كان المستخدم قد أجاب على هذا السؤال، حدد خياره
@@ -1976,7 +2051,7 @@
             // تحديد الخيار الذي تم النقر عليه
             buttons[optionIndex].classList.add('selected');
             
-            // حفظ إجابة المستخدم
+            // حفظ إجابة المستخدم (نص الخيار، وليس فقط الفهرس)
             userAnswers[currentQuestionIndex] = activeQuestions[currentQuestionIndex].options[optionIndex];
         }
 
@@ -2031,7 +2106,7 @@
             showScreen('resultsScreen');
         }
 
-        // دالة حساب النتائج
+        // دالة حساب النتائج وعرض المراجعة
         function calculateResults() {
             let correctCount = 0;
             let incorrectCount = 0;
@@ -2043,25 +2118,38 @@
             activeQuestions.forEach((q, index) => {
                 const userAnswer = userAnswers[index];
                 const correctAnswer = q.answer;
+                const explanation = q.explanation || "لا يوجد شرح متاح لهذا السؤال."; // استخدم شرح افتراضي إذا لم يكن موجوداً
 
                 const questionReviewDiv = document.createElement('div');
-                questionReviewDiv.classList.add('question-review-item'); // سنضيف تنسيقات لاحقاً
-                questionReviewDiv.innerHTML = `
-                    <p><strong>السؤال ${index + 1}:</strong> ${q.question}</p>
-                    <p>إجابتك: <span class="${userAnswer === correctAnswer ? 'correct' : 'incorrect'}">${userAnswer !== null ? userAnswer : 'لم تجب'}</span></p>
-                    <p>الإجابة الصحيحة: <span>${correctAnswer}</span></p>
-                    <hr>
-                `;
+                questionReviewDiv.classList.add('question-review-item');
+                
+                let answerStatusClass = '';
+                let answerDisplay = '';
 
                 if (userAnswer === correctAnswer) {
                     correctCount++;
+                    answerStatusClass = 'correct';
+                    answerDisplay = userAnswer;
                 } else if (userAnswer !== null) {
                     incorrectCount++;
-                    questionReviewDiv.classList.add('wrong');
+                    answerStatusClass = 'incorrect';
+                    answerDisplay = userAnswer;
+                    questionReviewDiv.classList.add('wrong'); // لتلوين خلفية السؤال الخاطئ
                 } else {
                     unansweredCount++;
-                    questionReviewDiv.classList.add('unanswered');
+                    answerStatusClass = 'unanswered';
+                    answerDisplay = 'لم تجب';
+                    questionReviewDiv.classList.add('unanswered'); // لتلوين خلفية السؤال غير المجاب
                 }
+
+                questionReviewDiv.innerHTML = `
+                    <p class="review-text"><strong>السؤال ${index + 1}:</strong> ${q.question}</p>
+                    <p class="review-text">إجابتك: <span class="${answerStatusClass}">${answerDisplay}</span></p>
+                    <p class="review-text">الإجابة الصحيحة: <span class="correct">${correctAnswer}</span></p>
+                    <div class="explanation-text">
+                        <strong>الشرح:</strong> <span class="explanation-content">${explanation}</span>
+                    </div>
+                `;
                 reviewContainer.appendChild(questionReviewDiv);
             });
 
@@ -2072,12 +2160,6 @@
             document.getElementById('correctAnswersCount').innerText = correctCount;
             document.getElementById('incorrectAnswersCount').innerText = incorrectCount;
             document.getElementById('unansweredQuestionsCount').innerText = unansweredCount;
-        }
-
-        // دالة مراجعة الإجابات (تم دمجها مع calculateResults لعرضها فوراً)
-        function reviewAnswers() {
-            // يمكننا هنا إضافة منطق لتصفح الأسئلة بشكل فردي في شاشة المراجعة إذا أردنا
-            // حالياً، تقوم calculateResults بإنشاء عرض كامل للمراجعة
         }
 
         // Initialize the first screen and the testimonials slider on load
