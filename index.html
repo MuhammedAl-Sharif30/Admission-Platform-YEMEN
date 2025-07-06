@@ -2,2179 +2,673 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة القبول الطبي - اليمن</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* تعريف المتغيرات للألوان الجديدة بناءً على خطتك */
-        :root {
-            /* الألوان الأساسية */
-            --dark-primary: #1A232D; /* كحلي داكن جداً - للخلفية العلوية، الهيدر، الفوتر، وشريط التنقل السفلي */
-            --light-background: #FFFFFF; /* أبيض نقي - لباقي الخلفيات، البطاقات */
-            --accent-color: #FFB300; /* برتقالي ذهبي - للأزرار الهامة، الأيقونات البارزة */
-            
-            /* ألوان النصوص */
-            --text-on-dark: #FFFFFF; /* أبيض - للنصوص على الخلفيات الداكنة */
-            --text-on-light: #333333; /* رمادي داكن جداً - للنصوص على الخلفيات الفاتحة */
-            --secondary-text-light: #666666; /* رمادي متوسط - للنصوص الثانوية على الخلفيات الفاتحة */
-            
-            /* ألوان إضافية (ظل، حدود) */
-            --border-color: #EEEEEE; /* رمادي فاتح جداً للحدود */
-            --shadow-color: rgba(0, 0, 0, 0.15); /* لون ظل عام */
-            --shadow-color-hover: rgba(0, 0, 0, 0.25); /* لون ظل عند التحويم */
-        }
-
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: var(--light-background); /* خلفية الجسم باللون الفاتح */
-            color: var(--text-on-light); /* لون النص الافتراضي باللون الداكن على الفاتح */
+            background-color: #f0f2f5;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
+            align-items: center;
             min-height: 100vh;
-            overflow-x: hidden; /* لمنع ظهور شريط التمرير الأفقي */
-            text-align: right; /* لضمان محاذاة النص لليمين */
         }
-
-        /* تنسيقات عامة للشاشات */
-        .screen {
-            width: 100%;
-            display: none; /* افتراضياً مخفية */
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 80px; /* مساحة لأزرار التنقل السفلية */
-            box-sizing: border-box;
-            background-color: var(--light-background); /* الشاشات الداخلية باللون الفاتح */
-            overflow-y: auto;
-            flex-grow: 1; /* لتأخذ المساحة المتاحة */
-        }
-
-        .screen.active {
-            display: flex; /* إظهار الشاشة النشطة */
-        }
-
-        /* الشريط العلوي (Header) - تطبيق الألوان الجديدة والهيكل الجديد */
-        .header {
-            width: 100%;
-            background-color: var(--dark-primary); /* خلفية الهيدر باللون الداكن */
-            padding: 15px 25px;
-            box-shadow: 0 2px 10px var(--shadow-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap; 
-            gap: 10px; 
-            color: var(--text-on-dark); /* نصوص الهيدر باللون الفاتح */
-            position: relative; /* Needed for absolute positioning of children */
-        }
-
-        .logo {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: var(--text-on-dark); /* لون الشعار باللون الفاتح */
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        .logo i {
-            margin-left: 10px;
-            color: var(--accent-color); /* أيقونة الشعار بلون التمييز */
-        }
-
-        /* تعديل أزرار التنقل الرئيسية في الهيدر */
-        .nav-links {
-            display: none; /* سيتم إخفاؤها في الهيدر العلوي واستبدالها بزر القائمة الجانبية في الهاتف */
-            gap: 25px;
-            flex-grow: 1;
-            justify-content: flex-end; /* لمحاذاتها لليمين */
-        }
-        @media (min-width: 900px) { /* لإظهارها على الشاشات الكبيرة */
-            .nav-links {
-                display: flex; 
-                order: 2; /* لتأتي بعد الشعار وقبل الأيقونات الجانبية */
-            }
-        }
-
-        .nav-link {
-            color: var(--text-on-dark); /* لون روابط التنقل باللون الفاتح */
-            text-decoration: none;
-            font-weight: 400;
-            font-size: 1.1em;
-            padding: 5px 0;
-            position: relative;
-            transition: color 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--accent-color); /* لون التمييز عند التحويم */
-        }
-        
-        .nav-link:focus {
-            outline: none; 
-            color: var(--accent-color); 
-        }
-
-        .nav-link.active {
-            font-weight: 700;
-            color: var(--accent-color); /* لون التمييز للرابط النشط */
-        }
-
-        /* الأيقونات والأزرار الإضافية في الهيدر (القائمة، البحث، الملف الشخصي) */
-        .header-icons {
-            display: flex;
-            gap: 20px;
-            order: 3; /* لتأتي في النهاية */
-            align-items: center;
-        }
-
-        .header-icon-button {
-            background: none;
-            border: none;
-            color: var(--text-on-dark); /* لون الأيقونات باللون الفاتح */
-            font-size: 1.3em;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .header-icon-button:hover {
-            color: var(--accent-color); /* لون التمييز عند التحويم */
-        }
-        .header-icon-button:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.4); /* ظل خفيف بلون التمييز */
-            border-radius: 5px;
-        }
-
-        /* إخفاء زر القائمة على الشاشات الكبيرة حيث تظهر روابط التنقل */
-        @media (min-width: 900px) {
-            .menu-button {
-                display: none;
-            }
-            /* إظهار أيقونات البحث والملف الشخصي على الشاشات الكبيرة */
-            .header-icons .search-icon,
-            .header-icons .profile-icon {
-                display: block;
-            }
-            /* إعادة ترتيب العناصر في الهيدر على الشاشات الكبيرة لتبدو طبيعية */
-            .logo { order: 1; margin-right: 0; }
-            .nav-links { order: 2; flex-grow: 1; justify-content: flex-end; }
-            .header-icons { order: 3; }
-        }
-        /* للمحمول: زر القائمة في أقصى اليسار، الشعار في المنتصف */
-        @media (max-width: 899px) {
-            .header {
-                justify-content: center; /* ليتم توسيط الشعار */
-                padding: 15px 70px; /* مساحة لزر القائمة على اليسار (ولأيقونات وهمية على اليمين للموازنة) */
-            }
-            .menu-button {
-                display: block; /* أظهره */
-                position: absolute; /* وضعه بشكل مطلق للتحكم الدقيق */
-                left: 15px; /* 15 بكسل من الحافة اليسرى */
-                top: 50%; /* توسيط عمودي */
-                transform: translateY(-50%);
-                margin: 0; /* إزالة أي هوامش تلقائية قديمة */
-            }
-            .logo {
-                flex-grow: 0; /* منع الشعار من التمدد وأخذ مساحة غير ضرورية */
-                margin: 0; /* إزالة أي هوامش تلقائية قديمة */
-            }
-            .header-icons {
-                /* إخفاء أيقونات البحث والملف الشخصي تماماً من الهيدر على الشاشات الصغيرة */
-                display: none;
-            }
-        }
-
-        .auth-buttons {
-            display: none; /* إخفائها مؤقتاً في الهيدر العلوي، يمكن وضعها في القائمة الجانبية */
-        }
-
-
-        /* القسم الرئيسي الأول (Hero Section) - تطبيق الألوان الجديدة والتصميم */
-        .hero-section {
-            width: 100%;
-            background-color: var(--dark-primary); /* خلفية الهيرو باللون الداكن */
-            color: var(--text-on-dark); /* نصوص الهيرو باللون الفاتح */
-            padding: 80px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            margin-bottom: 40px;
-            box-shadow: inset 0 -5px 15px var(--shadow-color);
-            position: relative; /* لتموضع العناصر الداخلية */
-            overflow: hidden; /* لإخفاء أي عناصر تخرج عن حدود القسم */
-        }
-
-        /* Placeholder للرسم التوضيحي */
-        .hero-illustration-placeholder {
-            width: 250px;
-            height: 250px;
-            /* خلفية الرسم هي نفسها الخلفية الداكنة، مع أيقونة بلون التتمييز */
-            background-color: transparent; 
-            border-radius: 50%; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 5em;
-            color: var(--accent-color); /* أيقونة المصباح بلون التمييز */
-            margin-bottom: 30px;
-            /* إضافة ظل توهج خفيف للأيقونة */
-            text-shadow: 0 0 25px rgba(255, 179, 0, 0.7); /* توهج حول الأيقونة */
-            animation: pulse 2s infinite alternate; /* إضافة تأثير بسيط لجذب الانتباه */
-            position: relative;
-            z-index: 2; /* لجعل الأيقونة فوق العناصر الزخرفية */
-        }
-        /* لتأثير الخلفية الزخرفية حول الرسم التوضيحي */
-        .hero-illustration-placeholder::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle at center, rgba(255,179,0,0.2) 0%, transparent 70%); /* هالة حول الأيقونة */
-            top: 0;
-            left: 0;
-            transform: scale(1.1); /* أكبر قليلاً من الأيقونة */
-            z-index: -1;
-            animation: glowEffect 2s infinite alternate; /* تأثير توهج خفيف */
-        }
-        @keyframes glowEffect {
-            from { transform: scale(1.05); opacity: 0.7; }
-            to { transform: scale(1.15); opacity: 1; }
-        }
-
-
-        @keyframes pulse {
-            from { transform: scale(1); opacity: 0.9; }
-            to { transform: scale(1.05); opacity: 1; }
-        }
-
-
-        .hero-section h1 {
-            font-size: 3em;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--text-on-dark); /* لون أبيض للعناوين على الخلفية الداكنة */
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-
-        .hero-section p {
-            font-size: 1.2em;
-            line-height: 1.6;
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
             max-width: 800px;
-            margin-bottom: 30px;
-            color: rgba(255, 255, 255, 0.9); /* درجة أفتح قليلاً من الأبيض للنص الثانوي */
-        }
-
-        .hero-button {
-            background-color: var(--accent-color); /* لون التمييز للزر */
-            color: var(--text-on-dark); /* نص الزر باللون الفاتح */
-            padding: 15px 35px;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.2em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 5px 15px var(--shadow-color);
-        }
-
-        .hero-button:hover {
-            background-color: #E69A00; /* لون أغمق قليلاً عند التحويم */
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px var(--shadow-color-hover);
-        }
-        .hero-button:focus {
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(255, 179, 0, 0.6); /* ظل حول الزر بلون التمييز */
-        }
-
-        /* قسم المحتوى المميز (Featured Content Section) - تم تحديث الألوان والتحسينات */
-        .featured-section {
-            width: 100%;
-            max-width: 1200px;
-            padding: 20px;
+            margin: 20px auto;
             box-sizing: border-box;
-            margin-bottom: 40px;
-            background-color: var(--light-background); /* خلفية القسم باللون الفاتح */
+            text-align: right; /* Right-to-left for RTL text */
         }
-
-        .section-title { /* تطبيق نفس نمط العنوان على جميع الأقسام */
-            font-size: 2.2em;
-            font-weight: 700;
-            color: var(--text-on-light); /* لون العناوين باللون الداكن */
-            margin-bottom: 30px;
-            text-align: center;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: 0;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(to right, transparent, var(--accent-color), transparent); /* تدرج لوني */
-            border-radius: 2px;
-            opacity: 0.8; /* شفافية خفيفة */
-            box-shadow: 0 0 10px var(--accent-color); /* توهج خفيف */
-        }
-
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            justify-content: center;
-        }
-
-        .card {
-            background-color: var(--light-background);
-            border-radius: 20px; /* زيادة دائرية الحواف لمظهر أكثر نعومة */
-            box-shadow: 0 8px 20px var(--shadow-color); /* ظل أكبر قليلاً بشكل افتراضي */
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* إضافة border-color للانتقال */
-            border: 2px solid transparent; /* حدود شفافة افتراضياً */
-            cursor: pointer; /* للإشارة إلى أنها قابلة للنقر */
-        }
-
-        .card:hover {
-            transform: translateY(-8px); /* نطاط أكبر */
-            box-shadow: 0 15px 30px var(--shadow-color-hover); /* ظل أكبر بكثير عند التحويم */
-            border-color: var(--accent-color); /* إطار بلون التمييز عند التحويم */
-        }
-
-        .card-image {
+        header {
             width: 100%;
-            height: 180px; 
-            background-color: var(--dark-primary); /* خلفية الأيقونة بنفس اللون الداكن الأساسي */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 5em; /* أيقونات أكبر وأوضح */
-            color: var(--accent-color); /* لون الأيقونة بلون التمييز */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* خط فاصل خفيف */
-            position: relative;
-        }
-        .card-image i {
-            text-shadow: 0 0 15px rgba(255, 179, 0, 0.6); /* توهج حول الأيقونة */
-        }
-
-        .card-content {
-            padding: 20px;
-            text-align: right;
-            flex-grow: 1;
-        }
-
-        .card-content h3 {
-            font-size: 1.5em;
-            color: var(--text-on-light);
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
-        .card-content p {
-            font-size: 0.95em;
-            color: var(--secondary-text-light); /* نصوص ثانوية بلون رمادي متوسط */
-            line-height: 1.5;
+            text-align: center;
+            padding: 20px 0;
+            background-color: #28a745; /* Green header */
+            color: white;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
             margin-bottom: 20px;
         }
-
-        .card-button {
-            background-color: var(--accent-color); /* أزرار البطاقات بلون التمييز */
-            color: var(--text-on-dark);
-            padding: 10px 20px;
+        h1, h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .category-selection, .quiz-section, .results-section, .intro-section {
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .category-selection button {
+            background-color: #007bff;
+            color: white;
             border: none;
-            border-radius: 25px;
-            font-size: 0.9em;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+            width: calc(33% - 20px);
+            box-sizing: border-box;
+        }
+        .category-selection button:hover {
+            background-color: #0056b3;
+        }
+        @media (max-width: 768px) {
+            .category-selection button {
+                width: calc(50% - 20px);
+            }
+        }
+        @media (max-width: 480px) {
+            .category-selection button {
+                width: calc(100% - 20px);
+            }
+        }
+        .question-container {
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .question-container p {
+            font-size: 18px;
+            color: #444;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .options label {
+            display: block;
+            background-color: #e9ecef;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
-        }
-        .card-button:hover {
-            background-color: #E69A00; /* لون أغمق قليلاً عند التحويم */
-        }
-        .card-button:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.5);
-        }
-
-        /* قسم شهادات الطلاب (Testimonials Section) - جديد */
-        .testimonials-section {
-            display: none; /* <--- هذا السطر تم إضافته لإخفاء القسم */
-            width: 100%;
-            max-width: 1200px;
-            padding: 40px 20px; /* مسافة داخلية أكبر */
-            box-sizing: border-box;
-            margin-bottom: 60px; /* مسافة أكبر قبل الفوتر أو القسم التالي */
-            background-color: var(--border-color); /* خلفية رمادية فاتحة لتمييزها */
-            border-radius: 20px; /* حواف دائرية للقسم نفسه */
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.05); /* ظل داخلي خفيف */
-            text-align: center;
-        }
-
-        .testimonial-slider-container {
-            position: relative;
-            width: 100%;
-            overflow: hidden; /* لإخفاء البطاقات خارج العرض */
-            margin: 0 auto;
-            padding: 20px 0; /* مسافة لأزرار التنقل إن كانت خارج السلايدر */
-        }
-
-        .testimonial-slider {
-            display: flex;
-            transition: transform 0.5s ease-in-out; /* حركة سلسة للسلايدر */
-            width: fit-content; /* للسماح للعناصر بالتراص أفقياً */
-        }
-
-        .testimonial-card {
-            flex: 0 0 100%; /* كل بطاقة تأخذ عرض 100% لتظهر واحدة فقط */
-            max-width: 500px; /* حد أقصى لعرض البطاقة الفردية */
-            margin: 0 auto; /* توسيط البطاقة داخل مساحتها */
-            background-color: var(--light-background);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 5px 20px var(--shadow-color);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 250px; /* ارتفاع أدنى للبطاقة */
-            box-sizing: border-box;
-        }
-
-        .testimonial-card .student-info {
+            font-size: 16px;
+            color: #555;
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            flex-direction: column; /* لجعل الصورة والاسم فوق بعض في الشاشات الصغيرة */
-        }
-        .testimonial-card .student-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: var(--border-color); /* لون مؤقت للصورة */
-            margin-bottom: 10px; /* مسافة بين الصورة والاسم */
-            overflow: hidden;
-            border: 3px solid var(--accent-color); /* إطار بلون التمييز */
-            box-shadow: 0 0 10px rgba(255, 179, 0, 0.4);
-        }
-        .testimonial-card .student-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .testimonial-card .student-name {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: var(--text-on-light);
-            margin-right: 0; /* إزالة الهامش الأيمن للمحاذاة المركزية */
-        }
-        .testimonial-card .student-university {
-            font-size: 0.9em;
-            color: var(--secondary-text-light);
-            margin-top: 5px;
-        }
-
-        .testimonial-card .quote-text {
-            font-size: 1.1em;
-            color: var(--text-on-light);
-            line-height: 1.6;
-            font-style: italic; /* لجعل النص يبدو كاقتباس */
-            margin-bottom: 20px;
-        }
-        .testimonial-card .quote-text::before,
-        .testimonial-card .quote-text::after {
-            content: '"'; /* علامات اقتباس */
-            font-size: 1.5em;
-            color: var(--accent-color);
-            line-height: 0;
-            vertical-align: sub; /* لتعديل موضعها قليلاً */
-        }
-        .testimonial-card .quote-text::after {
-            content: '" ';
-            vertical-align: top;
-        }
-
-
-        .testimonial-card .rating .fas {
-            color: var(--accent-color);
-            font-size: 1.1em;
-            margin: 0 2px;
-        }
-
-        .slider-nav-buttons {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 10px;
-            box-sizing: border-box;
-            z-index: 10;
-        }
-        .slider-nav-buttons button {
-            background-color: rgba(26, 35, 45, 0.7); /* خلفية داكنة شفافة */
-            color: var(--text-on-dark);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 1.5em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .slider-nav-buttons button:hover {
-            background-color: var(--accent-color);
-            transform: scale(1.1);
-        }
-        .slider-nav-buttons button:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.6);
-        }
-
-        .slider-dots {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
             gap: 10px;
         }
-        .slider-dot {
-            width: 10px;
-            height: 10px;
-            background-color: var(--secondary-text-light);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+        .options label:hover {
+            background-color: #dcdfe3;
         }
-        .slider-dot.active {
-            background-color: var(--accent-color);
+        .options input[type="radio"] {
+            margin-left: 5px; /* Adjust for RTL */
             transform: scale(1.2);
-            box-shadow: 0 0 8px var(--accent-color);
         }
-
-        /* Responsive Design للشهادات */
-        @media (max-width: 768px) {
-            .testimonials-section {
-                padding: 30px 15px;
-            }
-            .testimonial-card {
-                padding: 20px;
-                min-height: 280px; /* زيادة الارتفاع قليلاً للمحمول */
-            }
-            .testimonial-card .student-avatar {
-                width: 70px;
-                height: 70px;
-            }
-            .testimonial-card .student-name {
-                font-size: 1.2em;
-            }
-            .testimonial-card .quote-text {
-                font-size: 1em;
-            }
-            .slider-nav-buttons button {
-                width: 35px;
-                height: 35px;
-                font-size: 1.2em;
-            }
-        }
-
-        /* قسم "كيف تبدأ رحلتك؟" (Get Started Section) - جديد */
-        .get-started-section {
-            width: 100%;
-            max-width: 1200px;
-            padding: 50px 20px;
-            box-sizing: border-box;
-            margin-bottom: 60px; /* مسافة قبل الفوتر */
-            background-color: var(--dark-primary); /* خلفية داكنة لتميزه */
-            color: var(--text-on-dark); /* نصوص فاتحة */
-            border-radius: 20px;
-            box-shadow: 0 10px 30px var(--shadow-color-hover); /* ظل بارز */
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative; /* لتموضع العناصر الزخرفية */
-            overflow: hidden; /* لمنع تجاوز العناصر للحدود */
-        }
-        /* تعديل عنوان القسم داخل هذا القسم ليكون بلون مختلف */
-        .get-started-section .section-title {
-            color: var(--text-on-dark); /* أبيض لعنوان القسم داخل الخلفية الداكنة */
-        }
-        .get-started-section .section-title::after {
-            background: linear-gradient(to right, transparent, var(--accent-color), transparent);
-            box-shadow: 0 0 10px var(--accent-color);
-        }
-
-        .get-started-section .hero-button {
-            margin-top: 40px; /* مسافة أكبر للزر */
-        }
-
-        .steps-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-            width: 100%;
-            justify-content: center;
-        }
-
-        .step-card {
-            background-color: var(--light-background); /* خلفية بيضاء لبطاقات الخطوات */
-            color: var(--text-on-light); /* نص داكن */
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px var(--shadow-color);
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .step-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px var(--shadow-color-hover);
-        }
-
-        .step-icon {
-            font-size: 3.5em; /* أيقونات أكبر */
-            color: var(--accent-color); /* لون التمييز للأيقونات */
-            margin-bottom: 20px;
-            text-shadow: 0 0 15px rgba(255, 179, 0, 0.5); /* توهج حول الأيقونات */
-        }
-
-        .step-card h3 {
-            font-size: 1.6em;
-            margin-bottom: 10px;
-            color: var(--text-on-light);
-        }
-
-        .step-card p {
-            font-size: 1em;
-            color: var(--secondary-text-light);
-            line-height: 1.6;
-        }
-
-
-        /* شريط التنقل السفلي (Bottom Navigation Bar) - جديد مع التحسينات */
-        .bottom-nav-bar {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            width: 100%;
-            height: 60px; /* ارتفاع ثابت */
-            background-color: rgba(26, 35, 45, 0.9); /* استخدام RGBA للشفافية مع اللون الداكن */
-            backdrop-filter: blur(8px); /* تأثير الضبابية */
-            -webkit-backdrop-filter: blur(8px); /* دعم متصفحات الويب كيت */
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            box-shadow: 0 -5px 20px var(--shadow-color-hover); /* ظل أقوى قليلاً للداخل */
-            z-index: 1000; /* لضمان ظهوره فوق المحتوى */
-            border-top: 1px solid rgba(255, 255, 255, 0.1); /* خط فاصل علوي خفيف */
-        }
-        @media (min-width: 900px) { /* إخفاؤه على الشاشات الكبيرة */
-            .bottom-nav-bar {
-                display: none;
-            }
-        }
-
-        .bottom-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--text-on-dark); /* أيقونات ونصوص باللون الفاتح */
-            font-size: 0.8em;
-            font-weight: 400;
-            padding: 5px;
-            transition: color 0.3s ease;
-            position: relative; /* لإضافة العنصر pseudo */
-        }
-
-        .bottom-nav-item i {
-            font-size: 1.4em;
-            margin-bottom: 3px;
-        }
-
-        .bottom-nav-item.active {
-            color: var(--accent-color); /* لون التمييز للعنصر النشط */
-            font-weight: 700;
-        }
-        .bottom-nav-item.active::before { /* إضافة نقطة التحديد النشط */
-            content: '';
-            position: absolute;
-            top: -10px; /* موضع النقطة فوق الأيقونة */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 8px; /* عرض النقطة */
-            height: 8px; /* ارتفاع النقطة */
-            background-color: var(--accent-color);
-            border-radius: 50%; /* لجعلها دائرية */
-            animation: fadeInScale 0.3s ease-out forwards; /* تأثير بسيط للظهور */
-            box-shadow: 0 0 10px var(--accent-color); /* توهج خفيف حول النقطة */
-        }
-
-        /* Keyframe للأنيميشن */
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: translateX(-50%) scale(0.5); }
-            to { opacity: 1; transform: translateX(-50%) scale(1); }
-        }
-
-        .bottom-nav-item:hover {
-            color: var(--accent-color);
-        }
-        .bottom-nav-item:focus {
-            outline: none;
-        }
-
-        /* الفوتر (Footer) - جديد */
-        .footer {
-            background-color: var(--dark-primary); /* خلفية الفوتر باللون الداكن */
-            color: var(--text-on-dark); /* نصوص الفوتر باللون الفاتح */
-            padding: 40px 20px 20px;
-            text-align: right; /* محاذاة لليمين */
-            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
-            margin-top: auto; /* ليدفع الفوتر للأسفل */
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto 30px;
-        }
-
-        .footer-section {
-            flex: 1;
-            min-width: 250px;
-            margin-bottom: 20px;
-        }
-
-        .footer-logo {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: var(--accent-color); /* لون التمييز للشعار في الفوتر */
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .footer-logo i {
-            margin-left: 10px;
-            font-size: 1.1em;
-        }
-
-        .footer-section p, .footer-section ul li {
-            font-size: 0.95em;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.8); /* نص ثانوي شفاف قليلاً */
-        }
-
-        .footer-section h3 {
-            font-size: 1.4em;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--text-on-dark);
-            position: relative;
-            padding-bottom: 5px;
-        }
-        .footer-section h3::after {
-            content: '';
-            position: absolute;
-            right: 0; /* للخط تحت العنوان في RTL */
-            bottom: 0;
-            width: 50px;
-            height: 3px;
-            background-color: var(--accent-color);
-            border-radius: 2px;
-            opacity: 0.8;
-        }
-
-        .footer-section ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-section ul li a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            display: block; /* لجعل منطقة النقر أكبر */
-            padding: 5px 0;
-        }
-
-        .footer-section ul li a:hover {
-            color: var(--accent-color);
-        }
-
-        .footer-contact p {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        .footer-contact p i {
-            color: var(--accent-color);
-            font-size: 1.1em;
-        }
-
-        .social-icons {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-            justify-content: flex-start; /* محاذاة لليمين */
-        }
-        .social-icons a {
-            color: var(--text-on-dark);
-            font-size: 1.5em;
-            transition: color 0.3s ease, transform 0.2s ease;
-        }
-        .social-icons a:hover {
-            color: var(--accent-color);
-            transform: translateY(-3px) scale(1.1);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 20px;
-            margin-top: 20px;
-            text-align: center;
-            font-size: 0.85em;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        /* تعديلات التجاوبية للفوتر */
-        @media (max-width: 768px) {
-            .footer-content {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            .footer-section {
-                min-width: unset;
-                width: 100%;
-                text-align: center;
-            }
-            .footer-section h3::after {
-                left: 50%; /* توسيط الخط تحت العنوان */
-                transform: translateX(-50%);
-                right: unset;
-            }
-            .footer-contact p {
-                justify-content: center; /* توسيط معلومات الاتصال */
-            }
-            .social-icons {
-                justify-content: center; /* توسيط أيقونات التواصل */
-            }
-        }
-
-
-        /* القائمة الجانبية (Sidebar) - تنسيقات جديدة */
-        .sidebar {
-            height: 100%;
-            width: 0; /* مخفية افتراضياً */
-            position: fixed;
-            z-index: 1002; /* أعلى من كل شيء آخر (أعلى من الأوفرلاي) */
-            top: 0;
-            right: 0; /* تظهر من اليمين في RTL */
-            background-color: var(--dark-primary); /* نفس لون الهيدر */
-            overflow-x: hidden;
-            transition: 0.3s ease-in-out; /* حركة سلسة أسرع للفتح والإغلاق */
-            padding-top: 60px; /* مسافة من الأعلى لتجنب تداخل الهيدر */
-            box-shadow: -5px 0 15px var(--shadow-color-hover);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sidebar.open {
-            width: 250px; /* عرض القائمة عند الفتح */
-        }
-
-        .sidebar .close-btn {
-            position: absolute;
-            top: 15px;
-            left: 25px; /* زر الإغلاق على اليسار في RTL */
-            font-size: 2em;
-            color: var(--text-on-dark);
-            cursor: pointer;
-            transition: 0.3s;
-            background: none;
-            border: none;
-        }
-
-        .sidebar .close-btn:hover {
-            color: var(--accent-color);
-        }
-
-        .sidebar-links {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            flex-grow: 1; /* لتأخذ المساحة المتاحة */
-        }
-
-        .sidebar-link, .sidebar-icon-button {
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 1.2em;
-            color: var(--text-on-dark);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: 0.3s;
-            border-radius: 8px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            box-sizing: border-box;
-            text-align: right; /* محاذاة النص لليمين */
-        }
-
-        .sidebar-link:hover, .sidebar-icon-button:hover {
-            color: var(--accent-color);
-            background-color: rgba(255, 255, 255, 0.1); /* خلفية خفيفة عند التحويم */
-        }
-        .sidebar-link.active {
-            color: var(--accent-color);
-            font-weight: 700;
-            background-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .sidebar-link i, .sidebar-icon-button i {
-            font-size: 1.3em;
-            color: var(--text-on-dark); /* لون الأيقونات داخل القائمة الجانبية */
-        }
-        .sidebar-link:hover i, .sidebar-icon-button:hover i {
-            color: var(--accent-color);
-        }
-        .sidebar-link.active i {
-            color: var(--accent-color);
-        }
-
-        /* Overlay لتعتيم الخلفية عند فتح القائمة الجانبية */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* تعتيم خفيف */
-            z-index: 1001; /* تحت القائمة الجانبية وفوق المحتوى */
-            display: none; /* مخفية افتراضياً */
-            opacity: 0; /* للتحكم في ظهور التعتيم بسلاسة */
-            transition: opacity 0.3s ease-in-out; /* حركة سلسة أسرع للتعتيم */
-        }
-        .overlay.active {
-            display: block;
-            opacity: 1;
-        }
-
-        /* تنسيقات شاشة الاختبار */
-        .exam-screen-content { /* هذا الكلاس لم يُستخدم في HTML بعد، لكنه مجهز */
-            width: 100%;
-            max-width: 900px;
-            padding: 20px;
-            box-sizing: border-box;
-            background-color: var(--light-background);
-            border-radius: 15px;
-            box-shadow: 0 5px 20px var(--shadow-color);
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .timer-display {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: var(--dark-primary);
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background-color: var(--border-color);
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .question-container {
-            background-color: var(--light-background);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .question-text {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: var(--text-on-light);
-            margin-bottom: 25px;
-            line-height: 1.6;
-            /* إصلاح مشكلة علامات الترقيم في اللغات المختلطة */
-            direction: rtl; /* اتجاه النص من اليمين لليسار للعربي */
-            unicode-bidi: embed; /* السماح للمحتوى داخل العنصر بتغيير الاتجاه */
-            text-align: right;
-        }
-        /* لضمان أن الأجزاء الإنجليزية في النص العربي تحافظ على اتجاهها */
-        .question-text span.english {
-            direction: ltr;
-            unicode-bidi: isolate; /* لعزل اتجاه النص داخل هذا النطاق */
-            display: inline-block; /* لضمان تطبيق direction بشكل صحيح */
-        }
-
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .option-button {
-            width: 100%;
-            padding: 15px 20px;
-            background-color: var(--border-color); /* لون فاتح للخيار */
-            color: var(--text-on-light);
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            font-size: 1.1em;
-            text-align: right; /* محاذاة لليمين */
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-            /* إصلاح مشكلة علامات الترقيم في اللغات المختلطة */
-            direction: rtl; /* اتجاه النص من اليمين لليسار للعربي */
-            unicode-bidi: embed; /* السماح للمحتوى داخل العنصر بتغيير الاتجاه */
-        }
-        /* لضمان أن الأجزاء الإنجليزية في الخيارات تحافظ على اتجاهها */
-        .option-button span.english {
-            direction: ltr;
-            unicode-bidi: isolate;
-            display: inline-block;
-        }
-
-        .option-button:hover {
-            background-color: var(--accent-color);
-            color: var(--text-on-dark);
-            border-color: var(--accent-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-
-        .option-button.selected {
-            background-color: var(--dark-primary); /* لون داكن للخيار المحدد */
-            color: var(--text-on-dark);
-            border-color: var(--accent-color);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        .option-button:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.5); /* ظل حول الخيار المحدد */
-        }
-
-        .exam-nav-buttons {
+        .navigation-buttons {
             display: flex;
             justify-content: space-between;
-            margin-top: 30px;
-            gap: 15px;
-            flex-wrap: wrap; /* للسماح للأزرار بالتكسر في الأجهزة الصغيرة */
+            margin-top: 20px;
         }
-
-        .action-button {
-            flex: 1; /* لجعل الأزرار تأخذ مساحة متساوية */
-            min-width: 120px; /* حجم أدنى للزر */
-            padding: 15px 25px;
+        .navigation-buttons button {
+            background-color: #28a745;
+            color: white;
             border: none;
-            border-radius: 30px;
-            color: var(--text-on-dark);
-            font-size: 1.1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 5px 15px var(--shadow-color);
-        }
-
-        .action-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px var(--shadow-color-hover);
-        }
-        .action-button:focus {
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(255, 179, 0, 0.6);
-        }
-        /* أزرار محددة بألوان مميزة */
-        .action-button[style*="background-color: var(--accent-color)"] {
-            background-color: var(--accent-color) !important;
-        }
-        .action-button[style*="background-color: var(--dark-primary)"] {
-            background-color: var(--dark-primary) !important;
-        }
-        .action-button[style*="background-color: #f44336"] { /* لون أحمر لزر الإنهاء */
-            background-color: #f44336 !important;
-        }
-        .action-button[style*="background-color: #f44336"]:hover {
-            background-color: #d32f2f !important;
-        }
-
-
-        /* تنسيقات شاشة النتائج */
-        .result-summary {
-            background-color: var(--border-color);
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px var(--shadow-color);
-            text-align: center;
-        }
-        .result-summary p {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            color: var(--text-on-light);
-        }
-        .result-summary p span {
-            font-weight: 700;
-            color: var(--dark-primary);
-        }
-        #scorePercentage {
-            font-size: 2em;
-            color: var(--accent-color);
-            text-shadow: 0 0 10px rgba(255, 179, 0, 0.6);
-        }
-
-        #reviewContainer {
-            background-color: var(--light-background);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px var(--shadow-color);
-        }
-        .question-review-item {
-            padding: 15px 0;
-            border-bottom: 1px dashed var(--border-color);
-            text-align: right;
-        }
-        .question-review-item:last-child {
-            border-bottom: none;
-        }
-        /* هذا الكلاس الجديد للنصوص داخل المراجعة (لمعالجة RTL/LTR) */
-        .question-review-item p.review-text {
-            margin: 5px 0;
-            font-size: 1em;
-            color: var(--secondary-text-light);
-            direction: rtl; /* اتجاه النص من اليمين لليسار للعربي */
-            unicode-bidi: embed; /* السماح للمحتوى داخل العنصر بتغيير الاتجاه */
-        }
-        .question-review-item p.review-text span {
-            font-weight: 700;
-        }
-        .question-review-item p.review-text span.english,
-        .question-review-item p.review-text span.explanation-content {
-            direction: ltr; /* لضمان أن النص الإنجليزي أو محتوى الشرح يبقى LTR */
-            unicode-bidi: isolate; /* لعزل اتجاه النص داخل هذا النطاق */
-            display: inline-block; /* لضمان تطبيق direction بشكل صحيح */
-        }
-        /* لتنسيق نص الشرح نفسه */
-        .question-review-item .explanation-text {
-            font-style: italic;
-            color: var(--dark-primary); /* لون داكن أكثر بروزاً للشرح */
-            background-color: rgba(255, 179, 0, 0.1); /* خلفية خفيفة بلون التمييز */
+            padding: 12px 25px;
             border-radius: 5px;
-            padding: 10px;
-            margin-top: 10px;
-            border-right: 4px solid var(--accent-color); /* شريط على اليمين */
-            direction: rtl; /* للتأكد من اتجاه الشرح نفسه عربي */
-            unicode-bidi: embed;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
         }
-        .question-review-item .explanation-text strong {
-            color: var(--accent-color); /* لون مميز لعنوان الشرح */
+        .navigation-buttons button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
         }
-
-        .question-review-item .correct {
-            color: #4CAF50; /* أخضر للإجابة الصحيحة */
-            font-weight: 700;
+        .navigation-buttons button:hover:not(:disabled) {
+            background-color: #218838;
         }
-        .question-review-item .incorrect {
-            color: #f44336; /* أحمر للإجابة الخاطئة */
-            font-weight: 700;
-        }
-        .question-review-item .unanswered {
-            color: #9E9E9E; /* رمادي لغير المجاب عليها */
-            font-weight: 700;
-        }
-        /* لتلوين خلفية السؤال كاملاً في المراجعة */
-        .question-review-item.wrong {
-            background-color: rgba(244, 67, 54, 0.08); /* خلفية حمراء فاتحة جداً للخاطئ */
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-        }
-        .question-review-item.unanswered {
-            background-color: rgba(158, 158, 158, 0.08); /* خلفية رمادية فاتحة لغير المجاب */
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-        }
-
-
-        /* تعديلات عامة للشاشات (scroll content و back button) */
-        .screen .scroll-content {
-            width: 100%;
-            max-width: 900px; /* نفس عرض شاشة الاختبار للحفاظ على التناسق */
-            padding: 20px;
-            box-sizing: border-box;
-            background-color: var(--light-background);
-            border-radius: 15px;
-            box-shadow: 0 5px 20px var(--shadow-color);
-            margin-top: 20px;
-            flex-grow: 1; /* لتأخذ المساحة المتبقية */
-            overflow-y: auto; /* لتمكين التمرير إذا كان المحتوى طويلاً */
-            margin-bottom: 20px; /* مسافة قبل نهاية الشاشة */
-        }
-        .screen .back-button {
-            margin-top: 20px;
+        .timer {
+            font-size: 20px;
+            font-weight: bold;
+            color: #d9534f;
+            text-align: center;
             margin-bottom: 20px;
-            background-color: var(--dark-primary);
-            color: var(--text-on-dark);
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 3px 10px var(--shadow-color);
-            display: inline-block; /* لكي يعمل التحويم والظل بشكل صحيح */
         }
-        .screen .back-button:hover {
-            background-color: #2c3e50; /* لون أغمق قليلاً */
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px var(--shadow-color-hover);
+        .results-section h2 {
+            color: #28a745;
         }
-        .screen .back-button:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(26, 35, 45, 0.5);
+        .results-section p {
+            font-size: 18px;
+            margin-bottom: 10px;
         }
-
-        /* تعديلات التجاوبية لشاشتي الاختبار والنتائج */
-        @media (max-width: 600px) {
-            .timer-display {
-                font-size: 1.2em;
-            }
-            .question-text {
-                font-size: 1.2em;
-            }
-            .option-button {
-                font-size: 1em;
-                padding: 12px 15px;
-            }
-            .action-button {
-                font-size: 1em;
-                padding: 12px 18px;
-                min-width: unset; /* إلغاء الحد الأدنى للعرض للسماح بالتكيف أكثر */
-                flex-basis: 48%; /* لكي يأخذ كل زر ما يقرب من نصف العرض */
-            }
-            .result-summary p {
-                font-size: 1em;
-            }
-            #scorePercentage {
-                font-size: 1.8em;
-            }
+        .results-section button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .results-section button:hover {
+            background-color: #0056b3;
+        }
+        .question-review {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .review-item {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #cceeff;
+        }
+        .review-item p {
+            font-size: 17px;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        .review-item .correct-answer {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .review-item .your-answer {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .review-item .explanation {
+            font-size: 15px;
+            color: #666;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px dashed #ddd;
+        }
+        .intro-section p {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #555;
+            text-align: justify;
+        }
+        .intro-section ul {
+            text-align: right;
+            list-style-position: inside;
+            padding-right: 20px;
+            color: #555;
+        }
+        .intro-section li {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .intro-section button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .intro-section button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-
-    <header class="header">
-        <button class="header-icon-button menu-button" onclick="openSidebar()">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <a href="#" class="logo" onclick="showScreen('mainScreen')">
-            <i class="fas fa-graduation-cap"></i>
-            منصة القبول
-        </a>
-        
-        <nav class="nav-links">
-            <a href="#" class="nav-link active" data-screen-id="mainScreen" onclick="showScreen('mainScreen')">
-                الرئيسية
-            </a>
-            <a href="#" class="nav-link" data-screen-id="materialsScreen" onclick="showScreen('materialsScreen')">
-                المواد الدراسية
-            </a>
-            <a href="#" class="nav-link" data-screen-id="examsOverviewScreen" onclick="showScreen('examsOverviewScreen')">
-                الامتحانات التجريبية
-            </a>
-            <a href="#" class="nav-link" onclick="openWhatsApp()">
-                تواصل معنا
-            </a>
-        </nav>
-
-        <div class="header-icons">
-            <button class="header-icon-button search-icon" onclick="alert('خاصية البحث قريباً')">
-                <i class="fas fa-search"></i>
-            </button>
-            <button class="header-icon-button profile-icon" onclick="alert('الملف الشخصي قريباً')">
-                <i class="fas fa-user-circle"></i>
-            </button>
-        </div>
+    <header>
+        <h1>منصة القبول الطبي - اليمن</h1>
     </header>
 
-    <div id="sidebar" class="sidebar">
-        <button class="close-btn" onclick="closeSidebar()">&times;</button>
-        <div class="sidebar-links">
-            <a href="#" class="sidebar-link active" data-screen-id="mainScreen" onclick="showScreen('mainScreen'); closeSidebar();">
-                <i class="fas fa-home"></i> الرئيسية
-            </a>
-            <a href="#" class="sidebar-link" data-screen-id="materialsScreen" onclick="showScreen('materialsScreen'); closeSidebar();">
-                <i class="fas fa-book-open"></i> المواد الدراسية
-            </a>
-            <a href="#" class="sidebar-link" data-screen-id="examsOverviewScreen" onclick="showScreen('examsOverviewScreen'); closeSidebar();">
-                <i class="fas fa-pencil-alt"></i> الامتحانات التجريبية
-            </a>
-            <a href="#" class="sidebar-link" onclick="openWhatsApp(); closeSidebar();">
-                <i class="fab fa-whatsapp"></i> تواصل معنا
-            </a>
-            <hr style="border-color: rgba(255,255,255,0.2); margin: 15px 0;">
-            <button class="sidebar-icon-button" onclick="alert('خاصية البحث قريباً'); closeSidebar();">
-                <i class="fas fa-search"></i> البحث
-            </button>
-            <button class="sidebar-icon-button" onclick="alert('الملف الشخصي قريباً'); closeSidebar();">
-                <i class="fas fa-user-circle"></i> الملف الشخصي
-            </button>
+    <div class="container">
+        <div id="introScreen" class="intro-section">
+            <h2>مرحباً بك في منصة القبول الطبي</h2>
+            <p>
+                منصتنا هي وجهتك الأولى للتحضير لاختبارات القبول في كليات الطب البشري بالجامعات اليمنية. نقدم لك بنكًا شاملاً من الأسئلة في المواد الأساسية (الأحياء، الكيمياء، واللغة الإنجليزية) مع شروحات مفصلة لمساعدتك على فهم الإجابات وتعزيز معرفتك.
+            </p>
+            <h3>لماذا تختار منصتنا؟</h3>
+            <ul>
+                <li>**بنك أسئلة شامل:** أسئلة مستقاة من نماذج امتحانات سابقة ومصادر موثوقة.</li>
+                <li>**شروحات وافية:** لكل سؤال شرح واضح ومبسط لضمان فهمك الكامل للمادة.</li>
+                <li>**واجهة سهلة الاستخدام:** تصميم بسيط يتيح لك التركيز على دراستك.</li>
+                <li>**تتبع التقدم:** (ميزة مستقبلية) لتقييم أدائك وتحديد نقاط قوتك وضعفك.</li>
+            </ul>
+            <p>
+                ابدأ رحلتك نحو تحقيق حلمك في دراسة الطب. اختر المادة التي ترغب في البدء بها!
+            </p>
+            <button onclick="startQuizSelection()">ابدأ الآن</button>
         </div>
-    </div>
 
-    <div class="overlay" onclick="closeSidebar()"></div>
-
-    <div id="mainScreen" class="screen active">
-        <section class="hero-section">
-            <div class="hero-illustration-placeholder">
-                <i class="fas fa-lightbulb"></i>
-            </div>
-            <h1>بوابتك نحو مستقبل مشرق!</h1>
-            <p>استعد لاختبارات القبول في جميع الجامعات اليمنية بأسلوب فريد ومواد شاملة.</p>
-            <button class="hero-button" onclick="showScreen('examsOverviewScreen')">
-                <i class="fas fa-graduation-cap"></i> ابدأ رحلتك الآن
-            </button>
-        </section>
-
-        <section class="featured-section">
-            <h2 class="section-title">المحتوى المميز</h2>
-            <div class="cards-container">
-                <div class="card">
-                    <div class="card-image"><i class="fas fa-microscope"></i></div>
-                    <div class="card-content">
-                        <h3>أحدث اختبارات الأحياء</h3>
-                        <p>اختبر معلوماتك في الأحياء مع أحدث النماذج المحاكية لاختبارات القبول.</p>
-                        <button class="card-button" onclick="alert('سنضيف اختبارات هنا قريباً!')">ابدأ الاختبار</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image"><i class="fas fa-flask"></i></div>
-                    <div class="card-content">
-                        <h3>مراجعات الكيمياء الشاملة</h3>
-                        <p>مراجعات مركزة ومبسطة لأهم نقاط الكيمياء التي تحتاجها للنجاح.</p>
-                        <button class="card-button" onclick="alert('سنضيف مراجعات هنا قريباً!')">تصفح المراجعات</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image"><i class="fas fa-book-reader"></i></div>
-                    <div class="card-content">
-                        <h3>قواعد الإنجليزية للقبول</h3>
-                        <p>كل ما تحتاجه لإتقان اللغة الإنجليزية واجتياز قسم اللغة في الامتحان.</p>
-                        <button class="card-button" onclick="alert('سنضيف دروس هنا قريباً!')">تعلم الآن</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="testimonials-section">
-            <h2 class="section-title">ماذا قال طلابنا عن المنصة؟</h2>
-            <div class="testimonial-slider-container">
-                <div class="testimonial-slider" id="testimonialSlider">
-                    <div class="testimonial-card">
-                        <div class="student-info">
-                            <div class="student-avatar">
-                                <img src="https://via.placeholder.com/80/FFB300/FFFFFF?text=طالب1" alt="صورة الطالب 1">
-                            </div>
-                            <span class="student-name">محمد السقاف</span>
-                            <span class="student-university">كلية الطب - جامعة صنعاء</span>
-                        </div>
-                        <p class="quote-text">
-                            "المنصة سهلت علي الكثير في الاستعداد لاختبارات القبول. الأسئلة الشاملة والشروحات الواضحة كانت مفتاح نجاحي."
-                        </p>
-                        <div class="rating">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                    <div class="testimonial-card">
-                        <div class="student-info">
-                            <div class="student-avatar">
-                                <img src="https://via.placeholder.com/80/FFB300/FFFFFF?text=طالب2" alt="صورة الطالب 2">
-                            </div>
-                            <span class="student-name">فاطمة علي</span>
-                            <span class="student-university">كلية الصيدلة - جامعة إب</span>
-                        </div>
-                        <p class="quote-text">
-                            "لم أكن أتخيل أن الاستعداد للاختبارات سيكون بهذه المتعة والفعالية. بفضل المنصة، حققت حلمي في دخول الصيدلة!"
-                        </p>
-                        <div class="rating">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                        </div>
-                    </div>
-                    <div class="testimonial-card">
-                        <div class="student-info">
-                            <div class="student-avatar">
-                                <img src="https://via.placeholder.com/80/FFB300/FFFFFF?text=طالب3" alt="صورة الطالب 3">
-                            </div>
-                            <span class="student-name">أحمد الحميري</span>
-                            <span class="student-university">كلية المختبرات - جامعة ذمار</span>
-                        </div>
-                        <p class="quote-text">
-                            "الدعم المستمر والمحتوى المحدث جعلني أشعر بالثقة التامة. أوصي بها بشدة لكل من يسعى للقبول في التخصصات الطبية."
-                        </p>
-                        <div class="rating">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="slider-nav-buttons">
-                    <button id="prevTestimonial"><i class="fas fa-chevron-right"></i></button>
-                    <button id="nextTestimonial"><i class="fas fa-chevron-left"></i></button>
-                </div>
-            </div>
-            <div class="slider-dots" id="testimonialDots">
-                </div>
-        </section>
-
-        <section class="get-started-section">
-            <h2 class="section-title">كيف تبدأ رحلتك نحو التميز؟</h2>
-            <div class="steps-container">
-                <div class="step-card">
-                    <i class="fas fa-user-plus step-icon"></i>
-                    <h3>1. سجل حسابك</h3>
-                    <p>انضم إلينا في دقائق معدودة وابدأ رحلتك التعليمية.</p>
-                </div>
-                <div class="step-card">
-                    <i class="fas fa-book-open step-icon"></i>
-                    <h3>2. استكشف المواد</h3>
-                    <p>تصفح مكتبتنا الغنية بالدروس والمراجعات لمختلف المواد.</p>
-                </div>
-                <div class="step-card">
-                    <i class="fas fa-pencil-alt step-icon"></i>
-                    <h3>3. ابدأ التدريب</h3>
-                    <p>خض الامتحانات التجريبية وحسن من أدائك باستمرار.</p>
-                </div>
-            </div>
-            <button class="hero-button" onclick="alert('صفحة التسجيل قريباً!')">
-                <i class="fas fa-arrow-left"></i> انضم إلينا الآن
-            </button>
-        </section>
-        
-    </div>
-
-    <div id="materialsScreen" class="screen">
-        <section class="featured-section">
-            <h2 class="section-title">المواد الدراسية المتاحة</h2>
-            <div class="cards-container">
-                <div class="card">
-                    <div class="card-image"><i class="fas fa-dna"></i></div>
-                    <div class="card-content">
-                        <h3>مادة الأحياء</h3>
-                        <p>شروحات مفصلة، ملخصات، وأسئلة تدريبية في جميع فصول الأحياء.</p>
-                        <button class="card-button" onclick="alert('محتوى الأحياء قيد التحضير!')">عرض المحتوى</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image"><i class="fas fa-atom"></i></div>
-                    <div class="card-content">
-                        <h3>مادة الكيمياء</h3>
-                        <p>شروحات وافية للتفاعلات، المعادلات، والعناصر الكيميائية الهامة.</p>
-                        <button class="card-button" onclick="alert('محتوى الكيمياء قيد التحضير!')">عرض المحتوى</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image"><i class="fas fa-language"></i></div>
-                    <div class="card-content">
-                        <h3>اللغة الإنجليزية</h3>
-                        <p>قواعد، مفردات، ونصوص تدريبية لتقوية لغتك الإنجليزية.</p>
-                        <button class="card-button" onclick="alert('محتوى الإنجليزية قيد التحضير!')">عرض المحتوى</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <div id="examsOverviewScreen" class="screen">
-        <section class="featured-section">
-            <h2 class="section-title">اختر نوع الاختبار</h2>
-            <div class="cards-container">
-                <div class="card">
-                    <div class="card-image"><i class="fas fa-vial"></i></div>
-                    <div class="card-content">
-                        <h3>اختبارات الأحياء</h3>
-                        <p>نماذج امتحانات سابقة وأسئلة محاكية للمادة.</p>
-                        <button class="card-button" onclick="startExam('أحياء')">ابدأ اختبار الأحياء</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image"><i class="fas fa-lightbulb"></i></div>
-                    <div class="card-content">
-                        <h3>اختبارات الكيمياء</h3>
-                        <p>تدرب على أسئلة الكيمياء من مختلف المستويات.</p>
-                        <button class="card-button" onclick="startExam('كيمياء')">ابدأ اختبار الكيمياء</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image"><i class="fas fa-book"></i></div>
-                    <div class="card-content">
-                        <h3>اختبارات الإنجليزية</h3>
-                        <p>عزز مهاراتك في اللغة الإنجليزية مع نماذج متنوعة.</p>
-                        <button class="card-button" onclick="startExam('إنجليزي')">ابدأ اختبار الإنجليزية</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <div id="examScreen" class="screen">
-        <button class="nav-button back-button" onclick="showScreen('examsOverviewScreen')">العودة للامتحانات</button>
-        <div class="timer-display" id="examTimer">الوقت المتبقي: 00:00</div>
-        <div class="scroll-content">
-            <div class="question-container">
-                <p class="question-text" id="questionText">سيظهر السؤال هنا.</p>
-                <div class="options-container" id="optionsContainer">
-                    </div>
-            </div>
-            
-            <div class="exam-nav-buttons">
-                <button class="action-button" onclick="prevQuestion()" style="background-color: var(--dark-primary);">السابق</button>
-                <button class="action-button" onclick="nextQuestion()" style="background-color: var(--accent-color);">التالي</button>
-                <button class="action-button" onclick="confirmEndExam()" style="background-color: #f44336;">إنهاء الاختبار</button>
-            </div>
+        <div id="categorySelection" class="category-selection" style="display: none;">
+            <h2>اختر المادة</h2>
+            <button onclick="startQuiz('biology')">الأحياء</button>
+            <button onclick="startQuiz('chemistry')">الكيمياء</button>
+            <button onclick="startQuiz('english')">اللغة الإنجليزية</button>
         </div>
-    </div>
 
-    <div id="resultsScreen" class="screen">
-        <button class="nav-button back-button" onclick="showScreen('examsOverviewScreen')">العودة للامتحانات</button>
-        <div class="scroll-content">
+        <div id="quizScreen" class="quiz-section" style="display: none;">
+            <div class="timer" id="timer">الزمن المتبقي: 00:00</div>
+            <div id="questionContainer" class="question-container">
+                </div>
+            <div class="navigation-buttons">
+                <button id="prevBtn" onclick="prevQuestion()" disabled>السابق</button>
+                <button id="nextBtn" onclick="nextQuestion()">التالي</button>
+            </div>
+            <button id="submitBtn" onclick="submitQuiz()" style="display: none; background-color: #d9534f; margin-top: 20px; width: 100%;">إنهاء الاختبار</button>
+        </div>
+
+        <div id="resultsScreen" class="results-section" style="display: none;">
             <h2>نتائج الاختبار</h2>
-            <div class="result-summary">
-                <p>درجتك: <span id="scorePercentage">--</span></p>
-                <p>الإجابات الصحيحة: <span id="correctAnswersCount">--</span></p>
-                <p>الإجابات الخاطئة: <span id="incorrectAnswersCount">--</span></p>
-                <p>الأسئلة التي لم تجب عليها: <span id="unansweredQuestionsCount">--</span></p>
-            </div>
-            <h3>مراجعة الإجابات</h3>
-            <div id="reviewContainer">
-                <p>لا توجد أسئلة لمراجعتها حالياً.</p>
-            </div>
+            <p>الأسئلة الصحيحة: <span id="correctAnswers"></span></p>
+            <p>الأسئلة الخاطئة: <span id="wrongAnswers"></span></p>
+            <p>الدرجة: <span id="scorePercentage"></span>%</p>
+            <button onclick="retakeQuiz()">إعادة الاختبار</button>
+            <button onclick="reviewAnswers()">مراجعة الإجابات</button>
+            <div id="reviewContainer" class="question-review" style="display: none;">
+                <h3>مراجعة تفصيلية للإجابات</h3>
+                </div>
         </div>
     </div>
-
-    <nav class="bottom-nav-bar">
-        <a href="#" class="bottom-nav-item active" data-screen-id="mainScreen" onclick="showScreen('mainScreen')">
-            <i class="fas fa-home"></i>
-            <span>الرئيسية</span>
-        </a>
-        <a href="#" class="bottom-nav-item" data-screen-id="materialsScreen" onclick="showScreen('materialsScreen')">
-            <i class="fas fa-book-open"></i>
-            <span>المواد</span>
-        </a>
-        <a href="#" class="bottom-nav-item" data-screen-id="examsOverviewScreen" onclick="showScreen('examsOverviewScreen')">
-            <i class="fas fa-pencil-alt"></i>
-            <span>الامتحانات</span>
-        </a>
-        <a href="#" class="bottom-nav-item" onclick="alert('ملفك الشخصي قريباً')">
-            <i class="fas fa-user-circle"></i>
-            <span>حسابي</span>
-        </a>
-    </nav>
-
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section footer-about">
-                <a href="#" class="footer-logo" onclick="showScreen('mainScreen')">
-                    <i class="fas fa-graduation-cap"></i> منصة القبول
-                </a>
-                <p>بوابتك للنجاح في اختبارات القبول الطبية بالجامعات اليمنية. نقدم لك أفضل الأدوات والموارد لتحقيق حلمك.</p>
-            </div>
-
-            <div class="footer-section footer-links">
-                <h3>روابط سريعة</h3>
-                <ul>
-                    <li><a href="#" onclick="showScreen('mainScreen')">الرئيسية</a></li>
-                    <li><a href="#" onclick="showScreen('materialsScreen')">المواد الدراسية</a></li>
-                    <li><a href="#" onclick="showScreen('examsOverviewScreen')">الامتحانات التجريبية</a></li>
-                    <li><a href="#" onclick="openWhatsApp()">تواصل معنا</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section footer-contact">
-                <h3>تواصل معنا</h3>
-                <p><i class="fas fa-map-marker-alt"></i> إب، اليمن</p>
-                <p><i class="fas fa-phone"></i> +967 776 575 356</p>
-                <p><i class="fas fa-envelope"></i> info@acceptancetools.com</p>
-                <div class="social-icons">
-                    <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 منصة القبول. جميع الحقوق محفوظة.</p>
-        </div>
-    </footer>
 
     <script>
-        // --- Screen Management Logic ---
-        function showScreen(screenId) { 
-            console.log('Attempting to show screen:', screenId);
-            
-            // إخفاء جميع الشاشات
-            const screens = document.querySelectorAll('.screen');
-            screens.forEach(screen => {
-                screen.classList.remove('active');
-            });
-
-            // إظهار الشاشة المستهدفة
-            const targetScreen = document.getElementById(screenId);
-            if (targetScreen) {
-                targetScreen.classList.add('active');
-                targetScreen.scrollTop = 0; // لضمان أن الشاشة تبدأ من الأعلى
-                console.log(screenId + ' screen activated.');
-            } else {
-                console.error('Error: Screen with ID ' + screenId + ' not found.');
-            }
-
-            // إدارة الـ "active" class في شريط التنقل العلوي (للشاشات الكبيرة)
-            const navLinks = document.querySelectorAll('.header .nav-link');
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('data-screen-id') === screenId) {
-                    link.classList.add('active');
-                }
-            });
-
-            // إدارة الـ "active" class في شريط التنقل السفلي (للشاشات الصغيرة)
-            const bottomNavItems = document.querySelectorAll('.bottom-nav-bar .bottom-nav-item');
-            bottomNavItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('data-screen-id') === screenId) {
-                    item.classList.add('active');
-                }
-            });
-
-            // إدارة الـ "active" class في القائمة الجانبية (للشاشات الصغيرة)
-            const sidebarLinks = document.querySelectorAll('.sidebar-link');
-            sidebarLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('data-screen-id') === screenId) {
-                    link.classList.add('active');
-                }
-            });
-        }
-
-        // --- Sidebar Logic ---
-        function openSidebar() {
-            document.getElementById("sidebar").classList.add("open");
-            document.querySelector(".overlay").classList.add("active");
-        }
-
-        function closeSidebar() {
-            document.getElementById("sidebar").classList.remove("open");
-            document.querySelector(".overlay").classList.remove("active");
-        }
-
-        // --- WhatsApp Function ---
-        function openWhatsApp() {
-            const phoneNumber = '+967776575356'; // رقم واتساب محمد الشريف مع رمز الدولة
-            const message = encodeURIComponent('أهلاً، أود الاستفسار عن منصة القبول الطبي - اليمن.');
-            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-            window.open(whatsappUrl, '_system');
-        }
-
-        // --- Testimonials Slider Logic ---
-        const testimonialSlider = document.getElementById('testimonialSlider');
-        const prevTestimonialBtn = document.getElementById('prevTestimonial');
-        const nextTestimonialBtn = document.getElementById('nextTestimonial');
-        const testimonialDotsContainer = document.getElementById('testimonialDots');
-        let currentTestimonialIndex = 0;
-        let testimonials = []; // سيتم ملؤها عند التحميل
-
-        function initializeTestimonialsSlider() {
-            testimonials = Array.from(testimonialSlider.children);
-            if (testimonials.length === 0) return;
-
-            // إنشاء النقاط (Dots)
-            testimonialDotsContainer.innerHTML = ''; // مسح النقاط القديمة
-            testimonials.forEach((_, index) => {
-                const dot = document.createElement('div');
-                dot.classList.add('slider-dot');
-                if (index === 0) dot.classList.add('active');
-                dot.addEventListener('click', () => showTestimonial(index));
-                testimonialDotsContainer.appendChild(dot);
-            });
-
-            showTestimonial(0); // عرض الشهادة الأولى عند التحميل
-        }
-
-
-        // دالة لعرض الشهادة بناءً على الفهرس
-        function showTestimonial(index) {
-            if (!testimonialSlider || testimonials.length === 0) return;
-
-            // تأكد من أن الفهرس ضمن الحدود
-            if (index >= testimonials.length) {
-                currentTestimonialIndex = 0;
-            } else if (index < 0) {
-                currentTestimonialIndex = testimonials.length - 1;
-            } else {
-                currentTestimonialIndex = index;
-            }
-
-            // تحريك السلايدر
-            const offset = -currentTestimonialIndex * 100; // تحريك بنسبة 100% لكل شهادة
-            testimonialSlider.style.transform = `translateX(${offset}%)`;
-
-            // تحديث النقاط (Dots)
-            const dots = Array.from(testimonialDotsContainer.children);
-            dots.forEach((dot, idx) => {
-                dot.classList.remove('active');
-                if (idx === currentTestimonialIndex) {
-                    dot.classList.add('active');
-                }
-            });
-        }
-
-
-        function nextTestimonial() {
-            showTestimonial(currentTestimonialIndex + 1);
-        }
-
-        function prevTestimonial() {
-            showTestimonial(currentTestimonialIndex - 1);
-        }
-
-        // إضافة مستمعات الأحداث للأزرار
-        if (prevTestimonialBtn) {
-            prevTestimonialBtn.addEventListener('click', prevTestimonial);
-        }
-        if (nextTestimonialBtn) {
-            nextTestimonialBtn.addEventListener('click', nextTestimonial);
-        }
-
-
-        // --- Exam Logic ---
-        // مصفوفات الأسئلة لكل مادة - تم إضافة حقل 'explanation'
-        const questionsBiology = [
+        let questionsBiology = [
             {
-                question: "ما هي الوحدة الأساسية للحياة؟",
-                options: ["الذرة", "الجزيء", "الخلية", "النسيج"],
-                answer: "الخلية",
-                explanation: "الخلية هي أصغر وحدة بنائية ووظيفية في الكائنات الحية، وهي قادرة على الحياة والتكاثر بشكل مستقل."
+                question: "توجد صبغة الكلوروفيل في خلايا بعض الكائنات مثل ...",
+                options: ["الفطريات", "البكتيريا", "النخيل", "البراميسيوم"],
+                answer: "النخيل",
+                explanation: "الكلوروفيل هي الصبغة الخضراء المسؤولة عن عملية البناء الضوئي، وتوجد في النباتات والطحالب وبعض أنواع البكتيريا. من بين الخيارات المعطاة، النخيل هو نبات ويحتوي على الكلوروفيل. الفطريات والبكتيريا والبراميسيوم لا تقوم بالبناء الضوئي بنفس طريقة النباتات (بعض البكتيريا تقوم به ولكن ليست كلها وليست بالضرورة تحتوي على الكلوروفيل بنفس التركيب الشائع في النبات)."
             },
             {
-                question: "أي من التالي ليس جزءًا من الجهاز الهضمي؟",
-                options: ["المعدة", "القلب", "الأمعاء الدقيقة", "الكبد"],
-                answer: "القلب",
-                explanation: "الجهاز الهضمي يتكون من الأعضاء المسؤولة عن هضم الطعام وامتصاصه. القلب هو جزء من الجهاز الدوري (الدورة الدموية)."
+                question: "في نبات الفيوناريا يتكون من القدم وشبه الساق والعنق والعلبة",
+                options: ["المشيج المذكر", "النسيج المؤنث", "النبات البوغي", "النبات المشيجي"],
+                answer: "النبات البوغي",
+                explanation: "نبات الفيوناريا (من الحزازيات) يمر بدورة حياة تتناوب فيها الأجيال. النبات البوغي (Sporophyte) هو الجيل الذي ينتج الأبواغ، ويتكون من قدم (تتصل بالنبات المشيجي)، وعنق، وعلبة (حافظة الأبواغ)."
             },
             {
-                question: "ما هو اسم العملية التي تحول فيها النباتات ضوء الشمس إلى طاقة؟",
-                options: ["التنفس", "التخمر", "التمثيل الضوئي", "النتح"],
-                answer: "التمثيل الضوئي",
-                explanation: "التمثيل الضوئي (أو البناء الضوئي) هو العملية التي تستخدمها النباتات والطحالب وبعض البكتيريا لتحويل الطاقة الضوئية إلى طاقة كيميائية (سكريات)."
+                question: "النخاع المستطيل هو الذي يربط بين ....",
+                options: ["المخ والأعصاب", "المخيخ والأعصاب", "المخيخ والحبل الشوكي", "المخيخ والمخ"],
+                answer: "المخيخ والحبل الشوكي",
+                explanation: "النخاع المستطيل (Medulla Oblongata) هو جزء من جذع الدماغ، ويربط الدماغ (بما في ذلك المخيخ) بالحبل الشوكي، وينظم العديد من الوظائف الحيوية اللاإرادية."
             },
             {
-                question: "العضو المسؤول عن ضخ الدم في جسم الإنسان هو:",
-                options: ["الرئة", "الكلى", "القلب", "المخ"],
-                answer: "القلب",
-                explanation: "القلب هو عضلة مجوفة تقوم بضخ الدم في جميع أنحاء الجسم عبر الجهاز الدوري."
+                question: "ينطلق O₂ الناتج من البناء الضوئي إلى خارج النبات عن طريق ...",
+                options: ["الثغور", "الجذور", "الأوراق", "النتح"],
+                answer: "الثغور",
+                explanation: "الثغور (Stomata) هي فتحات صغيرة توجد بشكل رئيسي على سطح الأوراق، تسمح بتبادل الغازات (دخول CO₂ وخروج O₂ وبخار الماء) بين النبات والغلاف الجوي."
             },
             {
-                question: "أي من الغازات التالية ضروري لعملية التنفس عند الكائنات الحية؟",
-                options: ["ثاني أكسيد الكربون", "النيتروجين", "الأكسجين", "الهيدروجين"],
-                answer: "الأكسجين",
-                explanation: "الأكسجين ضروري للتنفس الهوائي، وهي العملية التي تنتج فيها معظم الكائنات الحية الطاقة من الغذاء."
+                question: "تتكون أصابع اليدين والقدمين والأذنين ويظهر الجنين محاطاً بأربعة أغشية في....",
+                options: ["الثلاثة الأشهر الأولى", "الثلاثة الأشهر الثانية", "الثلاثة الأشهر الأخيرة", "الثلاثة الأسابيع الأخيرة"],
+                answer: "الثلاثة الأشهر الأولى",
+                explanation: "تتطور الأعضاء الرئيسية للجنين، بما في ذلك تكون أصابع اليدين والقدمين والأذنين، وتشكل الأغشية الجنينية الأربعة (الكيس الأمينوسي، الكيس المحي، المشيمة، السقاء) بشكل أساسي خلال الثلاثة أشهر الأولى من الحمل (التي تتضمن المرحلة الجنينية المبكرة)."
             },
             {
-                question: "ما هي المادة الوراثية التي تحمل التعليمات اللازمة لبناء الكائنات الحية؟",
-                options: ["البروتين", "الكربوهيدرات", "الدهون", "الحمض النووي (DNA)"],
-                answer: "الحمض النووي (DNA)",
-                explanation: "الحمض النووي (DNA) هو جزيء يحتوي على التعليمات الوراثية التي تستخدم في تطوير وعمل جميع الكائنات الحية المعروفة وبعض الفيروسات."
+                question: "مركبات تساعد الاعضاء على القيام بوظائفها هي ...",
+                options: ["الأجسام المضادة", "الهرمونات", "الفيتامينات", "الإنزيمات"],
+                answer: "الهرمونات",
+                explanation: "الهرمونات هي مواد كيميائية تفرزها الغدد الصماء في مجرى الدم، وتعمل كرسل كيميائية تنظم وتنسق وظائف الأعضاء والخلايا المختلفة في الجسم."
             },
             {
-                question: "أي جزء من الخلية النباتية مسؤول عن إنتاج الغذاء؟",
-                options: ["النواة", "الميتوكوندريا", "البلاستيدات الخضراء", "الجدار الخلوي"],
-                answer: "البلاستيدات الخضراء",
-                explanation: "البلاستيدات الخضراء هي العضيات الموجودة في الخلايا النباتية والطحالب والتي تجري فيها عملية التمثيل الضوئي (صنع الغذاء)."
+                question: "تمر الخلايا المرستيمية بــ.....",
+                options: ["جميع مراحل دورة الخلية", "بعض مراحل دورة الخلية", "طور السبات", "ليس مما سبق"],
+                answer: "جميع مراحل دورة الخلية",
+                explanation: "الخلايا المرستيمية هي خلايا نباتية غير متخصصة تتميز بقدرتها المستمرة على الانقسام. وللقيام بالانقسام، يجب أن تمر بجميع مراحل دورة الخلية (الطور البيني الذي يشمل G1, S, G2، والطور الانقسامي M)."
             },
             {
-                question: "ما هو الهرمون المسؤول عن تنظيم مستوى السكر في الدم؟",
-                options: ["الأدرينالين", "الإنسولين", "التستوستيرون", "الإستروجين"],
-                answer: "الإنسولين",
-                explanation: "الإنسولين هو هرمون يفرزه البنكرياس ويساعد على تنظيم مستويات السكر في الدم عن طريق مساعدة الخلايا على امتصاص الجلوكوز."
+                question: "من أمراض المناعة الذاتية التي تستهدف الجهاز العصبي ...",
+                options: ["الروماتويد", "المايلوما", "التصلب المتعدد", "ليس مما سبق"],
+                answer: "التصلب المتعدد",
+                explanation: "التصلب المتعدد (Multiple Sclerosis - MS) هو مرض مناعي ذاتي يهاجم فيه الجهاز المناعي للجسم غمد الميالين الذي يغطي الألياف العصبية في الدماغ والحبل الشوكي، مما يؤثر على إشارات الجهاز العصبي. الروماتويد (التهاب المفاصل الروماتويدي) يستهدف المفاصل بشكل أساسي، والمايلوما هو سرطان نخاع العظم."
             },
             {
-                question: "أي مما يلي يعتبر من الكائنات الحية الدقيقة؟",
-                options: ["النبات", "الحيوان", "البكتيريا", "الفطر"],
-                answer: "البكتيريا",
-                explanation: "البكتيريا هي كائنات حية دقيقة وحيدة الخلية لا يمكن رؤيتها بالعين المجردة."
+                question: "تتم تفاعلات دورة كالفن في...",
+                options: ["السيتوبلازم", "البلاستيدات", "النواة", "الميتوكوندريا"],
+                answer: "البلاستيدات",
+                explanation: "دورة كالفن (التفاعلات اللاضوئية للبناء الضوئي) تتم في لحمة (Stroma) البلاستيدات الخضراء، وهي الجزء السائل داخل البلاستيدة."
             },
             {
-                question: "ما هو أكبر عضو في جسم الإنسان؟",
-                options: ["المخ", "الكبد", "الجلد", "القلب"],
-                answer: "الجلد",
-                explanation: "الجلد هو أكبر عضو في جسم الإنسان، حيث يغطي مساحة تقارب 2 متر مربع."
+                question: "ساق أفقية تنمو تحت سطح التربة ...",
+                options: ["الساق الجارية", "الكورمة", "البصلة", "الريزومة"],
+                answer: "الريزومة",
+                explanation: "الريزومة (Rhizome) هي ساق أرضية تنمو أفقيًا تحت سطح التربة، وتخزن الغذاء وتساهم في التكاثر الخضري، مثل تلك الموجودة في الزنجبيل والقصب. الساق الجارية تنمو فوق سطح التربة. الكورمة والبصلة هي سيقان متحورة للتخزين ولكنها ليست أفقية."
+            },
+            {
+                question: "جزء من مكونات النفرون يشبه الكوب ذا الجدار المزدوج....",
+                options: ["محفظة بومان", "التواء هنلي", "كرية ملبيجي", "حوض الكلية"],
+                answer: "محفظة بومان",
+                explanation: "محفظة بومان (Bowman's Capsule) هي جزء أساسي من النفرون في الكلى، وهي عبارة عن تركيب يشبه الكوب ذو الجدار المزدوج يحيط بالكُبيبة (Glomerulus) ويبدأ فيها ترشيح الدم. كرية ملبيجي هي الكبيبة ومحفظة بومان معاً."
+            },
+            {
+                question: "تعمل حركة أسواط الخلايا المطوقة في الإسفنج على....",
+                options: ["دخول تيار الماء", "خروج تيار الماء", "دخول وخروج تيار الماء", "الحركة الأميبية"],
+                answer: "دخول تيار الماء",
+                explanation: "الخلايا المطوقة (Choanocytes) في الإسفنج مبطنة لتجويفه الداخلي، وتمتلك أسواطًا (Flagella) تتحرك باستمرار لتوليد تيار مائي يدخل من مسام الإسفنج حاملًا الغذاء والأكسجين، ويخرج من فتحة التويج (Osculum)."
+            },
+            {
+                question: "..... هو أحد الأنسجة المستديمة البسيطة والذي يغطي جذور النبات.",
+                options: ["البشرة", "القشرة", "الطلائي", "الضام الليفي"],
+                answer: "البشرة",
+                explanation: "البشرة (Epidermis) هي النسيج الواقي الذي يغطي السطح الخارجي للنباتات، بما في ذلك الجذور، لحمايتها. الأنسجة الطلائية والضامة هي أنسجة حيوانية."
+            },
+            {
+                question: "ظاهرة تبادل الأجيال تحدث في ...",
+                options: ["البراميسيوم", "الأميبا", "البلاناريا", "بلازموديوم الملاريا"],
+                answer: "بلازموديوم الملاريا",
+                explanation: "تبادل الأجيال (Alternation of Generations) هو ظاهرة تتضمن تعاقب جيل جنسي وجيل لاجنسي في دورة حياة الكائن الحي. بلازموديوم الملاريا (Plasmodium falciparum) يمتلك دورة حياة معقدة تتضمن مراحل جنسية ولاجنسية داخل مضيفين مختلفين (الإنسان والبعوض)، مما يمثل تبادل أجيال."
+            },
+            {
+                question: "ينتج من الإخصاب المضاعف ....",
+                options: ["اللاقحة", "نواة الإندوسبيرم الأولية", "خلية الإندوسبيرم الأم", "أ + ب"],
+                answer: "أ + ب",
+                explanation: "الإخصاب المضاعف (Double Fertilization) هو عملية فريدة تحدث في النباتات المزهرة. ينتج عنها شيئان: اللاقحة (Zygote) من اتحاد أحد الأمشاج الذكرية مع البويضة، ونواة الإندوسبيرم الأولية (Primary Endosperm Nucleus) من اتحاد المشيج الذكري الثاني مع النواتين القطبيتين."
+            },
+            {
+                question: "نبات ....... يتكاثر خضريًا بواسطة نمو البراعم الجانبية في كل عين لتكوين نبات جديد.",
+                options: ["البطاطس", "الثوم", "النخيل", "النجيل"],
+                answer: "البطاطس",
+                explanation: "البطاطس هي ساق درنية (Tubers) تحتوي على 'عيون' (Eyes) وهي في الواقع براعم. يمكن زراعة قطع من درنة البطاطس تحتوي على عين أو أكثر، وتنمو هذه البراعم لتشكل نباتات جديدة متطابقة وراثيًا، وهذا شكل من أشكال التكاثر الخضري."
+            },
+            {
+                question: "أحد الصفات الآتية لم يقم مندل بدراستها",
+                options: ["لون الزهرة", "لون الساق", "لون البذرة", "لون القرن"],
+                answer: "لون الساق",
+                explanation: "قام مندل بدراسة سبع صفات في نبات البازلاء، وهي: طول الساق، شكل البذرة، لون البذرة، شكل القرن، لون القرن، لون الزهرة، وموقع الزهرة. لم يدرس 'لون الساق' كصفة مستقلة."
+            },
+            {
+                question: "في الخطوة الثالثة من بناء البروتين يلتقي حمض..... مع حمض RNA الناقل حيث يقوم الناقل بقراءة شفرته",
+                options: ["mRNA", "tRNA", "rRNA", "لا شيء مما سبق"],
+                answer: "mRNA",
+                explanation: "في عملية بناء البروتين (الترجمة)، يحمل حمض mRNA (الرنا الرسول) الشفرة الوراثية من النواة إلى الريبوسومات. حمض tRNA (الرنا الناقل) يحمل الحمض الأميني المحدد ويقوم 'بقراءة' الشفرة الموجودة على mRNA (عن طريق مضاد الكودون). لذا، الـ tRNA يلتقي مع الـ mRNA لقراءة الشفرة."
+            },
+            {
+                question: "تحتوي الخلايا العصوية على صبغة ........ والخلايا المخروطية على صبغة.........",
+                options: ["الرودوبسين ، اليودوبسين", "الريتينال ، الرودوبسين", "اليودوبسين ، الرودوبسين", "لا شيء مما سبق"],
+                answer: "الرودوبسين ، اليودوبسين",
+                explanation: "الخلايا العصوية (Rods) المسؤولة عن الرؤية في الإضاءة الخافتة والرؤية الليلية تحتوي على صبغة الرودوبسين (Rhodopsin). الخلايا المخروطية (Cones) المسؤولة عن الرؤية الملونة والرؤية في الإضاءة الساطعة تحتوي على صبغة اليودوبسين (Iodopsin)."
+            },
+            {
+                question: "ينتج عن السمنة ...",
+                options: ["مرض السكري", "مشاكل في القلب", "ضيق في التنفس", "كل ما سبق"],
+                answer: "كل ما سبق",
+                explanation: "السمنة هي عامل خطر رئيسي للعديد من المشاكل الصحية الخطيرة، بما في ذلك مرض السكري من النوع 2، أمراض القلب والأوعية الدموية (مثل ارتفاع ضغط الدم وتصلب الشرايين)، ومشاكل التنفس (مثل انقطاع التنفس أثناء النوم)، بالإضافة إلى مشاكل أخرى في المفاصل وبعض أنواع السرطان."
             }
         ];
 
-        const questionsChemistry = [
+        let questionsChemistry = [
             {
-                question: "ما هو الرمز الكيميائي للماء؟",
-                options: ["CO2", "O2", "H2O", "N2"],
-                answer: "H2O",
-                explanation: "يتكون جزيء الماء من ذرتي هيدروجين وذرة أكسجين واحدة، ويرمز له بالصيغة H2O."
+                question: "المعادلة الكيميائية تساعد على:",
+                options: ["معرفة الصفات الطبيعية", "معرفة التوزيع الإلكتروني", "وصف المتفاعلات والنواتج", "كل ما سبق"],
+                answer: "وصف المتفاعلات والنواتج",
+                explanation: "المعادلة الكيميائية تمثل وصفاً مختصراً ودقيقاً للتفاعل الكيميائي، حيث توضح المواد المتفاعلة والمواد الناتجة، بالإضافة إلى الحالة الفيزيائية لكل مادة والظروف اللازمة للتفاعل."
             },
             {
-                question: "ما هو العنصر الأكثر وفرة في الغلاف الجوي للأرض؟",
-                options: ["الأكسجين", "النيتروجين", "الهيدروجين", "الأرجون"],
-                answer: "النيتروجين",
-                explanation: "يشكل غاز النيتروجين حوالي 78% من حجم الغلاف الجوي للأرض."
+                question: "ترتبط عناصر المجموعة الخامسة مع الأكسجين مكونة أكاسيد خماسية أو ثلاثية:",
+                options: ["الأكاسيد الخماسية أكثر حامضية من الثلاثية", "الأكاسيد الثلاثية أكثر حامضية من الخماسية", "الأكاسيد متساوية بالحامضية", "ليس مما سبق"],
+                answer: "الأكاسيد الخماسية أكثر حامضية من الثلاثية",
+                explanation: "بشكل عام، تزداد حامضية الأكاسيد مع زيادة عدد تأكسد العنصر اللافلزي. في المجموعة الخامسة، يكون عدد تأكسد العنصر في الأكاسيد الخماسية أعلى منه في الأكاسيد الثلاثية، وبالتالي تكون الأكاسيد الخماسية أكثر حامضية."
             },
             {
-                question: "أي من التالي يعتبر حمضًا قويًا؟",
-                options: ["HCl", "NaOH", "NH3", "CH4"],
-                answer: "HCl",
-                explanation: "HCl (حمض الهيدروكلوريك) هو حمض قوي يتأين بالكامل في الماء. NaOH هيدروكسيد الصوديوم (قاعدة قوية)، NH3 الأمونيا (قاعدة ضعيفة)، CH4 الميثان (مركب عضوي)."
+                question: "عدد الكم ms كم عدد اتجاهات الإلكترون:",
+                options: ["1/2", "2", "-1/2", "أ أو ج"],
+                answer: "أ أو ج",
+                explanation: "عدد الكم المغزلي (ms) يصف اتجاه دوران الإلكترون حول محوره. له قيمتان محتملتان فقط: +1/2 (اتجاه الدوران للأعلى) و -1/2 (اتجاه الدوران للأسفل)، مما يعني وجود اتجاهين محتملين لدوران الإلكترون."
             },
             {
-                question: "ما هو رقم التكافؤ (عدد التأكسد) للأكسجين في معظم مركباته؟",
-                options: ["+1", "+2", "-1", "-2"],
-                answer: "-2",
-                explanation: "في معظم المركبات، يكون رقم التكافؤ للأكسجين -2، باستثناء بعض المركبات مثل البيروكسيدات حيث يكون -1."
+                question: "واحد مول من جزيء الكلور Cl₂ (الكتلة الذرية للكلور Cl=35.5) يساوي ...",
+                options: ["71", "35.5", "35", "17"],
+                answer: "71",
+                explanation: "جزيء الكلور هو Cl₂، أي يتكون من ذرتي كلور. بما أن الكتلة الذرية للكلور هي 35.5، فإن الكتلة المولية لجزيء Cl₂ هي 2 × 35.5 = 71 جرام/مول."
             },
             {
-                question: "المادة التي تسرع التفاعل الكيميائي دون أن تستهلك هي:",
-                options: ["المثبط", "المحفز", "المتفاعل", "الناتج"],
-                answer: "المحفز",
-                explanation: "المحفز هو مادة تزيد من سرعة التفاعل الكيميائي دون أن تستهلك في العملية نفسها."
+                question: "عدد الكم المغناطيسي للعدد الثانوي f هو ....",
+                options: ["(-5, 5)", "(-3, 3)", "(-1, 1)", "(-7, 7)"],
+                answer: "(-3, 3)",
+                explanation: "عدد الكم الثانوي (l) للمستوى الفرعي f هو 3. عدد الكم المغناطيسي (ml) يتراوح من -l إلى +l بما في ذلك الصفر. لذا، بالنسبة لـ l=3 (المستوى الفرعي f)، تكون قيم ml هي: -3, -2, -1, 0, +1, +2, +3. وبالتالي، النطاق هو (-3, 3)."
             },
             {
-                question: "الغاز الناتج عن احتراق الوقود الأحفوري ويسبب الاحتباس الحراري هو:",
-                options: ["الأكسجين", "النيتروجين", "ثاني أكسيد الكربون", "الهيدروجين"],
-                answer: "ثاني أكسيد الكربون",
-                explanation: "ثاني أكسيد الكربون (CO2) هو أحد غازات الدفيئة الرئيسية التي تساهم في ظاهرة الاحتباس الحراري."
+                question: "عدد أفوجادرو ....",
+                options: ["عدد الذرات أو الكتل في المول", "عدد الذرات أو الجزيئات في مول", "العدد الذري للعناصر", "عدد الجزيئات أو الكتل في واحد مول"],
+                answer: "عدد الذرات أو الجزيئات في مول",
+                explanation: "عدد أفوجادرو (6.022 × 10^23) هو عدد الجسيمات (سواء كانت ذرات، جزيئات، أيونات، أو وحدات صيغة) الموجودة في مول واحد من أي مادة."
             },
             {
-                question: "ما هو اسم العملية التي يتحول فيها السائل إلى غاز؟",
-                options: ["التكثيف", "التجمد", "التبخر", "الانصهار"],
-                answer: "التبخر",
-                explanation: "التبخر هو عملية فيزيائية يتحول فيها السائل إلى غاز (بخار) عند درجة حرارة أقل من نقطة الغليان."
+                question: "نسبة كتلة الهيليوم He=4 إلى كتلة الكربون C=12",
+                options: ["0.33", "0.77", "0.5", "0.8"],
+                answer: "0.33",
+                explanation: "نسبة كتلة الهيليوم إلى كتلة الكربون هي كتلة الهيليوم / كتلة الكربون = 4 / 12 = 1/3 ≈ 0.33."
             },
             {
-                question: "كم عدد البروتونات في ذرة الكربون (C)؟ (العدد الذري للكربون = 6)",
-                options: ["4", "6", "8", "12"],
-                answer: "6",
-                explanation: "العدد الذري للعنصر (Z) يمثل عدد البروتونات في نواة الذرة. بما أن العدد الذري للكربون هو 6، فإنه يحتوي على 6 بروتونات."
+                question: "الأكثر نشاطاً بين عناصر المجموعة الرئيسية الثانية هو.....",
+                options: ["Mg", "Ca", "Sr", "Ba"],
+                answer: "Ba",
+                explanation: "في المجموعة الواحدة، يزداد النشاط الكيميائي للعناصر الفلزية كلما اتجهنا للأسفل في المجموعة، وذلك بسبب زيادة نصف قطر الذرة وسهولة فقدان إلكترونات التكافؤ. ترتيب العناصر المعطاة في المجموعة الثانية من الأعلى للأسفل هو Mg, Ca, Sr, Ba. لذا، الباريوم (Ba) هو الأكثر نشاطًا."
             },
             {
-                question: "الرابطة الكيميائية الناتجة عن مشاركة الإلكترونات بين الذرات هي:",
-                options: ["أيونية", "تساهمية", "فلزية", "هيدروجينية"],
-                answer: "تساهمية",
-                explanation: "الرابطة التساهمية تتشكل عندما تتشارك ذرتان أو أكثر في أزواج من الإلكترونات لكي تكتمل مداراتها الخارجية."
+                question: "يوجد اليود في الطبيعة على هيئة .....",
+                options: ["يوديد البوتاسيوم", "يوديد الصوديوم", "يوديد الكالسيوم", "لا توجد إجابة"],
+                answer: "لا توجد إجابة",
+                explanation: "اليود يوجد في الطبيعة بشكل رئيسي على هيئة أيونات يوديد في مياه البحار والمحيطات، ويتركز في بعض الأعشاب البحرية. كما يوجد في بعض الأملاح والرواسب على هيئة يودات (مثل يودات الصوديوم في نترات تشيلي). الخيارات المعطاة هي مركبات اصطناعية أو يوجد اليود فيها بشكل أيوني وليس على هيئة يودات أو أيونات حرة في الحالة الخام الطبيعية المذكورة."
             },
             {
-                question: "ما هو العنصر الأساسي الذي تشكل منه جميع المركبات العضوية؟",
-                options: ["الأكسجين", "الهيدروجين", "الكربون", "النيتروجين"],
-                answer: "الكربون",
-                explanation: "الكيمياء العضوية هي دراسة المركبات التي تحتوي على الكربون، حيث يشكل الكربون العمود الفقري لهذه المركبات."
+                question: "يستخدم التحلل المائي في وسط قاعدي للمشتقات الهالوجينية للهيدروكربونات لتحضير ......\n",
+                options: ["كيتونات", "كحولات", "أسترات", "ألدهيدات"],
+                answer: "كحولات",
+                explanation: "التحلل المائي للمشتقات الهالوجينية (هاليدات الألكيل) في وسط قاعدي هو تفاعل استبدال نوكليوفيلي (Nucleophilic substitution) يتم فيه استبدال ذرة الهالوجين بمجموعة الهيدروكسيل (-OH)، مما يؤدي إلى تكوين الكحولات. مثال: R-X + NaOH → R-OH + NaX"
+            },
+            {
+                question: "اعتقد ان المادة تتكون من جسيمات صغيرة جدا ولكنها تحتفظ بخواص المادة .",
+                options: ["جاليليو", "ديمقراط", "فرانسيس بيكون", "طومسون"],
+                answer: "ديمقراط",
+                explanation: "ديمقراطيس (Democritus) هو الفيلسوف اليوناني الذي طرح فكرة أن المادة تتكون من جسيمات صغيرة غير قابلة للتجزئة أسماها 'ذرات' (Atoms)، والتي تحتفظ بخواص المادة."
+            },
+            {
+                question: "تم اكتشاف الدهانات والأصباغ في المرحلة",
+                options: ["الأولى", "الثانية", "الثالثة", "الرابعة"],
+                answer: "الرابعة",
+                explanation: "هذا السؤال يتعلق بتاريخ الكيمياء وربما التصنيفات المعطاة تشير إلى مراحل تطور علم الكيمياء. عادةً ما يُشار إلى 'المرحلة الرابعة' أو 'العصر الحديث' للكيمياء بالفترة التي شهدت تطوراً صناعياً واسعاً بما في ذلك صناعة البوليمرات والدهانات والأصباغ الحديثة، والتي تعتمد على الكيمياء العضوية المتقدمة التي تطورت بشكل كبير في القرن العشرين."
+            },
+            {
+                question: "مساحة السطح تتناسب تناسبا..... مع سرعة التفاعل",
+                options: ["عكسي", "طردي", "لا يتأثر", "متردد"],
+                answer: "طردي",
+                explanation: "تتناسب سرعة التفاعل الكيميائي تناسبًا طرديًا مع مساحة السطح للمواد المتفاعلة. كلما زادت مساحة السطح المعرضة للتفاعل، زادت فرص التصادم بين جزيئات المتفاعلات، وبالتالي تزداد سرعة التفاعل."
+            },
+            {
+                question: "يمكن الحصول على كربونات الصوديوم من تسخين :",
+                options: ["NaHCO₃", "NaNO₃", "Na₂CO₃", "CaCO₃"],
+                answer: "NaHCO₃",
+                explanation: "تسخين بيكربونات الصوديوم (NaHCO₃) يؤدي إلى تحللها حرارياً لإنتاج كربونات الصوديوم (Na₂CO₃) وثاني أكسيد الكربون والماء. هذا هو أساس عملية سولفاي لتحضير كربونات الصوديوم. المعادلة: 2NaHCO₃(s) → Na₂CO₃(s) + H₂O(g) + CO₂(g)"
+            },
+            {
+                question: "من المعادلات الآتية :\n1. 2H₂ + O₂ → 2H₂O\n2. H₂ + 1/2O₂ → H₂O\nالعلاقة في حرارة التفاعل لتكوين بخار الماء حيث الوحدة هي (Kj):",
+                options: ["1=2", "1<2", "1>2", "لا شيء مما سبق"],
+                answer: "1>2",
+                explanation: "حرارة التفاعل (التغير في الإنتالبيا، ΔH) تتناسب طرديًا مع كمية المواد المتفاعلة والناتجة. في المعادلة (1)، يتم إنتاج مولين من بخار الماء، بينما في المعادلة (2) يتم إنتاج مول واحد فقط. لذلك، فإن قيمة حرارة التفاعل (|ΔH|) للمعادلة (1) ستكون ضعف قيمة حرارة التفاعل (|ΔH|) للمعادلة (2). هذا يعني أن حرارة التفاعل (1) > حرارة التفاعل (2) إذا كنا نقصد القيمة المطلقة للطاقة المنطلقة أو الممتصة."
             }
         ];
 
-        const questionsEnglish = [
+        let questionsEnglish = [
+            // No English questions provided yet, placeholder for future addition
             {
-                question: "Choose the correct word to complete the sentence: 'She <span class='english'>___</span> to the store yesterday.'",
-                options: ["<span class='english'>go</span>", "<span class='english'>goes</span>", "<span class='english'>went</span>", "<span class='english'>going</span>"],
-                answer: "<span class='english'>went</span>",
-                explanation: "The sentence uses 'yesterday,' indicating a past action. The past simple form of 'go' is 'went'."
-            },
-            {
-                question: "What is the past participle of the verb '<span class='english'>eat</span>'?",
-                options: ["<span class='english'>eat</span>", "<span class='english'>ate</span>", "<span class='english'>eaten</span>", "<span class='english'>eating</span>"],
-                answer: "<span class='english'>eaten</span>",
-                explanation: "The past participle of the irregular verb 'eat' is 'eaten'. It is often used with 'have' or 'has' in perfect tenses, e.g., 'I have eaten'."
-            },
-            {
-                question: "Which of these is a synonym for '<span class='english'>happy</span>'?",
-                options: ["<span class='english'>sad</span>", "<span class='english'>joyful</span>", "<span class='english'>angry</span>", "<span class='english'>tired</span>"],
-                answer: "<span class='english'>joyful</span>",
-                explanation: "'Joyful' means feeling, expressing, or causing great pleasure and happiness, making it a synonym for 'happy'."
-            },
-            {
-                question: "Complete the sentence: 'If I <span class='english'>__</span> a bird, I would fly.'",
-                options: ["<span class='english'>was</span>", "<span class='english'>were</span>", "<span class='english'>am</span>", "<span class='english'>is</span>"],
-                answer: "<span class='english'>were</span>",
-                explanation: "This is a second conditional sentence (hypothetical situation). In such sentences, 'were' is used for all subjects in the 'if' clause, even for singular subjects like 'I', 'he', 'she', 'it'."
-            },
-            {
-                question: "What is the plural of '<span class='english'>child</span>'?",
-                options: ["<span class='english'>childs</span>", "<span class='english'>children</span>", "<span class='english'>childes</span>", "<span class='english'>child's</span>"],
-                answer: "<span class='english'>children</span>",
-                explanation: "'Children' is the irregular plural form of 'child'. Many English nouns have irregular plural forms."
-            },
-            {
-                question: "Choose the correct preposition: 'The book is <span class='english'>___</span> the table.'",
-                options: ["<span class='english'>at</span>", "<span class='english'>in</span>", "<span class='english'>on</span>", "<span class='english'>by</span>"],
-                answer: "<span class='english'>on</span>",
-                explanation: "'On' is used when something is resting on the surface of another object, like a book on a table."
-            },
-            {
-                question: "Which word means the opposite of '<span class='english'>expand</span>'?",
-                options: ["<span class='english'>grow</span>", "<span class='english'>stretch</span>", "<span class='english'>contract</span>", "<span class='english'>enlarge</span>"],
-                answer: "<span class='english'>contract</span>",
-                explanation: "'Expand' means to become larger or more extensive. 'Contract' means to become smaller or shorter, thus it is the opposite."
-            },
-            {
-                question: "Identify the adjective in the sentence: '<span class='english'>The quick brown fox jumps over the lazy dog.</span>'",
-                options: ["<span class='english'>fox</span>", "<span class='english'>jumps</span>", "<span class='english'>quick</span>", "<span class='english'>over</span>"],
-                answer: "<span class='english'>quick</span>",
-                explanation: "An adjective describes a noun. In this sentence, 'quick' describes 'fox', and 'lazy' describes 'dog'. 'Quick' is one of the adjectives."
-            },
-            {
-                question: "Complete the sentence: 'She speaks English <span class='english'>___</span>.'",
-                options: ["<span class='english'>good</span>", "<span class='english'>well</span>", "<span class='english'>fluent</span>", "<span class='english'>bad</span>"],
-                answer: "<span class='english'>well</span>",
-                explanation: "'Well' is an adverb used to describe how someone speaks (an action verb). 'Good' is an adjective and describes nouns."
-            },
-            {
-                question: "What is the full form of '<span class='english'>I'll</span>'?",
-                options: ["<span class='english'>I will</span>", "<span class='english'>I shall</span>", "<span class='english'>I would</span>", "<span class='english'>I am</span>"],
-                answer: "<span class='english'>I will</span>",
-                explanation: "The contraction 'I'll' is most commonly a short form of 'I will'."
+                question: "Which of the following is a synonym for 'diligent'?",
+                options: ["Lazy", "Hardworking", "Careless", "Slow"],
+                answer: "Hardworking",
+                explanation: "The word 'diligent' means characterized by steady, earnest, and energetic application of effort. 'Hardworking' is a direct synonym."
             }
         ];
 
-        // مصفوفة الأسئلة النشطة حالياً (سيتم ملؤها عند بدء الاختبار)
-        let activeQuestions = [];
+        let currentQuestions = [];
         let currentQuestionIndex = 0;
         let userAnswers = [];
-        let examTimer;
-        let timeLeft = 0; // في البداية 0
-        const EXAM_DURATION_SECONDS = 300; // 5 دقائق لكل اختبار كمثال
+        let timerInterval;
+        let timeLeft = 0; // Will be set based on number of questions
 
-        // دالة بدء الاختبار
-        function startExam(subject) {
-            switch (subject) {
-                case 'أحياء':
-                    activeQuestions = [...questionsBiology]; // نسخ الأسئلة
-                    break;
-                case 'كيمياء':
-                    activeQuestions = [...questionsChemistry];
-                    break;
-                case 'إنجليزي':
-                    activeQuestions = [...questionsEnglish];
-                    break;
-                default:
-                    alert('المادة غير موجودة!');
-                    return;
-            }
+        const introScreen = document.getElementById('introScreen');
+        const categorySelection = document.getElementById('categorySelection');
+        const quizScreen = document.getElementById('quizScreen');
+        const resultsScreen = document.getElementById('resultsScreen');
+        const questionContainer = document.getElementById('questionContainer');
+        const timerDisplay = document.getElementById('timer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const correctAnswersSpan = document.getElementById('correctAnswers');
+        const wrongAnswersSpan = document.getElementById('wrongAnswers');
+        const scorePercentageSpan = document.getElementById('scorePercentage');
+        const reviewContainer = document.getElementById('reviewContainer');
 
-            // خلط الأسئلة عشوائياً
-            activeQuestions.sort(() => Math.random() - 0.5);
-
-            currentQuestionIndex = 0;
-            userAnswers = Array(activeQuestions.length).fill(null); // تهيئة إجابات المستخدم
-            timeLeft = EXAM_DURATION_SECONDS; // إعادة ضبط المؤقت
-            
-            showScreen('examScreen');
-            loadQuestion();
-            startTimer();
+        function showScreen(screenId) {
+            introScreen.style.display = 'none';
+            categorySelection.style.display = 'none';
+            quizScreen.style.display = 'none';
+            resultsScreen.style.display = 'none';
+            document.getElementById(screenId).style.display = 'block';
         }
 
-        // دالة تحميل السؤال الحالي
-        function loadQuestion() {
-            if (activeQuestions.length === 0) {
-                document.getElementById('questionText').innerText = "لا توجد أسئلة لهذه المادة.";
-                document.getElementById('optionsContainer').innerHTML = '';
+        function startQuizSelection() {
+            showScreen('categorySelection');
+        }
+
+        function startQuiz(category) {
+            if (category === 'biology') {
+                currentQuestions = questionsBiology;
+            } else if (category === 'chemistry') {
+                currentQuestions = questionsChemistry;
+            } else if (category === 'english') {
+                currentQuestions = questionsEnglish;
+            }
+
+            if (currentQuestions.length === 0) {
+                alert("لا توجد أسئلة لهذه الفئة حتى الآن. يرجى اختيار فئة أخرى.");
                 return;
             }
 
-            const questionData = activeQuestions[currentQuestionIndex];
-            document.getElementById('questionText').innerHTML = `${currentQuestionIndex + 1}. ${questionData.question}`; // استخدم innerHTML لدعم span.english
+            currentQuestionIndex = 0;
+            userAnswers = Array(currentQuestions.length).fill(null);
+            showScreen('quizScreen');
+            loadQuestion();
+            startTimer(currentQuestions.length * 60); // 1 minute per question
+        }
 
-            const optionsContainer = document.getElementById('optionsContainer');
-            optionsContainer.innerHTML = ''; // مسح الخيارات السابقة
+        function loadQuestion() {
+            const questionData = currentQuestions[currentQuestionIndex];
+            questionContainer.innerHTML = `
+                <p>السؤال ${currentQuestionIndex + 1} من ${currentQuestions.length}: ${questionData.question}</p>
+                <div class="options">
+                    ${questionData.options.map((option, index) => `
+                        <label>
+                            <input type="radio" name="question${currentQuestionIndex}" value="${option}" ${userAnswers[currentQuestionIndex] === option ? 'checked' : ''}>
+                            ${option}
+                        </label>
+                    `).join('')}
+                </div>
+            `;
 
-            questionData.options.forEach((option, index) => {
-                const button = document.createElement('button');
-                button.classList.add('option-button');
-                button.innerHTML = option; // استخدم innerHTML لدعم span.english
-                button.onclick = () => selectOption(index);
+            // Update navigation buttons
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === currentQuestions.length - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === currentQuestions.length - 1 ? 'block' : 'none';
 
-                // إذا كان المستخدم قد أجاب على هذا السؤال، حدد خياره
-                if (userAnswers[currentQuestionIndex] === option) {
-                    button.classList.add('selected');
-                }
-                optionsContainer.appendChild(button);
+            // Add event listeners for radio buttons
+            document.querySelectorAll(`input[name="question${currentQuestionIndex}"]`).forEach(radio => {
+                radio.addEventListener('change', (event) => {
+                    userAnswers[currentQuestionIndex] = event.target.value;
+                });
             });
         }
 
-        // دالة اختيار إجابة
-        function selectOption(optionIndex) {
-            const optionsContainer = document.getElementById('optionsContainer');
-            const buttons = optionsContainer.querySelectorAll('.option-button');
-            
-            // إزالة التحديد من جميع الخيارات
-            buttons.forEach(btn => btn.classList.remove('selected'));
-            
-            // تحديد الخيار الذي تم النقر عليه
-            buttons[optionIndex].classList.add('selected');
-            
-            // حفظ إجابة المستخدم (نص الخيار، وليس فقط الفهرس)
-            userAnswers[currentQuestionIndex] = activeQuestions[currentQuestionIndex].options[optionIndex];
+        function nextQuestion() {
+            if (currentQuestionIndex < currentQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
         }
 
-        // دالة السؤال السابق
         function prevQuestion() {
             if (currentQuestionIndex > 0) {
                 currentQuestionIndex--;
                 loadQuestion();
-            } else {
-                alert('هذا هو السؤال الأول!');
             }
         }
 
-        // دالة السؤال التالي
-        function nextQuestion() {
-            if (currentQuestionIndex < activeQuestions.length - 1) {
-                currentQuestionIndex++;
-                loadQuestion();
-            } else {
-                alert('هذا هو السؤال الأخير. يرجى إنهاء الاختبار.');
-            }
-        }
-
-        // دالة بدء المؤقت
-        function startTimer() {
-            clearInterval(examTimer); // مسح أي مؤقت سابق
-            examTimer = setInterval(() => {
+        function startTimer(duration) {
+            timeLeft = duration;
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
                 const minutes = Math.floor(timeLeft / 60);
                 const seconds = timeLeft % 60;
-                document.getElementById('examTimer').innerText = `الوقت المتبقي: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                timerDisplay.textContent = `الزمن المتبقي: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
                 if (timeLeft <= 0) {
-                    clearInterval(examTimer);
-                    alert('انتهى الوقت! سيتم إنهاء الاختبار تلقائياً.');
-                    endExam();
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                    alert("انتهى الوقت!");
                 }
                 timeLeft--;
             }, 1000);
         }
 
-        // دالة تأكيد إنهاء الاختبار
-        function confirmEndExam() {
-            if (confirm('هل أنت متأكد أنك تريد إنهاء الاختبار؟')) {
-                endExam();
-            }
-        }
-
-        // دالة إنهاء الاختبار وعرض النتائج
-        function endExam() {
-            clearInterval(examTimer); // إيقاف المؤقت
-            calculateResults();
-            showScreen('resultsScreen');
-        }
-
-        // دالة حساب النتائج وعرض المراجعة
-        function calculateResults() {
+        function submitQuiz() {
+            clearInterval(timerInterval);
             let correctCount = 0;
-            let incorrectCount = 0;
-            let unansweredCount = 0;
+            let wrongCount = 0;
 
-            const reviewContainer = document.getElementById('reviewContainer');
-            reviewContainer.innerHTML = ''; // مسح المراجعات القديمة
-
-            activeQuestions.forEach((q, index) => {
-                const userAnswer = userAnswers[index];
-                const correctAnswer = q.answer;
-                const explanation = q.explanation || "لا يوجد شرح متاح لهذا السؤال."; // استخدم شرح افتراضي إذا لم يكن موجوداً
-
-                const questionReviewDiv = document.createElement('div');
-                questionReviewDiv.classList.add('question-review-item');
-                
-                let answerStatusClass = '';
-                let answerDisplay = '';
-
-                if (userAnswer === correctAnswer) {
+            currentQuestions.forEach((q, index) => {
+                if (userAnswers[index] === q.answer) {
                     correctCount++;
-                    answerStatusClass = 'correct';
-                    answerDisplay = userAnswer;
-                } else if (userAnswer !== null) {
-                    incorrectCount++;
-                    answerStatusClass = 'incorrect';
-                    answerDisplay = userAnswer;
-                    questionReviewDiv.classList.add('wrong'); // لتلوين خلفية السؤال الخاطئ
                 } else {
-                    unansweredCount++;
-                    answerStatusClass = 'unanswered';
-                    answerDisplay = 'لم تجب';
-                    questionReviewDiv.classList.add('unanswered'); // لتلوين خلفية السؤال غير المجاب
+                    wrongCount++;
                 }
-
-                questionReviewDiv.innerHTML = `
-                    <p class="review-text"><strong>السؤال ${index + 1}:</strong> ${q.question}</p>
-                    <p class="review-text">إجابتك: <span class="${answerStatusClass}">${answerDisplay}</span></p>
-                    <p class="review-text">الإجابة الصحيحة: <span class="correct">${correctAnswer}</span></p>
-                    <div class="explanation-text">
-                        <strong>الشرح:</strong> <span class="explanation-content">${explanation}</span>
-                    </div>
-                `;
-                reviewContainer.appendChild(questionReviewDiv);
             });
 
-            const totalQuestions = activeQuestions.length;
-            const scorePercentage = totalQuestions > 0 ? ((correctCount / totalQuestions) * 100).toFixed(2) + '%' : '0%';
+            correctAnswersSpan.textContent = correctCount;
+            wrongAnswersSpan.textContent = wrongCount;
+            scorePercentageSpan.textContent = ((correctCount / currentQuestions.length) * 100).toFixed(2);
 
-            document.getElementById('scorePercentage').innerText = scorePercentage;
-            document.getElementById('correctAnswersCount').innerText = correctCount;
-            document.getElementById('incorrectAnswersCount').innerText = incorrectCount;
-            document.getElementById('unansweredQuestionsCount').innerText = unansweredCount;
+            showScreen('resultsScreen');
+            reviewContainer.style.display = 'none'; // Hide review on initial results view
         }
 
-        // Initialize the first screen and the testimonials slider on load
+        function retakeQuiz() {
+            showScreen('categorySelection');
+            reviewContainer.innerHTML = ''; // Clear previous review
+        }
+
+        function reviewAnswers() {
+            reviewContainer.style.display = 'block';
+            reviewContainer.innerHTML = '<h3>مراجعة تفصيلية للإجابات</h3>';
+
+            currentQuestions.forEach((q, index) => {
+                const reviewItem = document.createElement('div');
+                reviewItem.classList.add('review-item');
+
+                const userAnswerText = userAnswers[index] ? userAnswers[index] : 'لم تتم الإجابة';
+                const isCorrect = userAnswers[index] === q.answer;
+
+                reviewItem.innerHTML = `
+                    <p><strong>السؤال ${index + 1}:</strong> ${q.question}</p>
+                    <p class="correct-answer"><strong>الإجابة الصحيحة:</strong> ${q.answer}</p>
+                    <p class="${isCorrect ? 'correct-answer' : 'your-answer'}"><strong>إجابتك:</strong> ${userAnswerText} ${isCorrect ? '(صحيحة)' : '(خاطئة)'}</p>
+                    <p class="explanation"><strong>الشرح:</strong> ${q.explanation}</p>
+                `;
+                reviewContainer.appendChild(reviewItem);
+            });
+        }
+
+        // Initial screen load
         document.addEventListener('DOMContentLoaded', () => {
-            showScreen('mainScreen');
-            initializeTestimonialsSlider(); // تهيئة السلايدر بعد تحميل DOM بالكامل
+            showScreen('introScreen');
         });
-
-        // لتحديث حجم السلايدر عند تغيير حجم الشاشة (مهم للتجاوبية)
-        window.addEventListener('resize', () => {
-            if (testimonialSlider) {
-                showTestimonial(currentTestimonialIndex); // إعادة ضبط موضع السلايدر
-            }
-        });
-
     </script>
 </body>
 </html>
