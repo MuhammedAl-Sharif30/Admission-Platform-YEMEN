@@ -902,7 +902,7 @@
             background-color: var(--dark-primary); /* نفس لون الهيدر */
             overflow-x: hidden;
             transition: 0.3s ease-in-out; /* حركة سلسة أسرع للفتح والإغلاق */
-            padding-top: 60px; /* مسافة من الأعلى لتجنب تداخل الهيدر */
+            padding-top: 60px; /* مسافة من الأعلى لتجنب تداخل تداخل الهيدر */
             box-shadow: -5px 0 15px var(--shadow-color-hover);
             display: flex;
             flex-direction: column;
@@ -1333,6 +1333,79 @@
             box-shadow: 0 0 0 3px rgba(26, 35, 45, 0.5);
         }
 
+        /* تنسيقات خاصة لبطاقات الامتحانات (لتمييز المجاني والمدفوع) */
+        .exam-card {
+            background-color: var(--light-background);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            padding: 25px;
+            margin-bottom: 20px;
+            text-align: right;
+            border-left: 5px solid transparent; /* شريط جانبي للتأشير */
+            transition: all 0.3s ease;
+        }
+
+        .exam-card.free {
+            border-left-color: var(--accent-color); /* شريط برتقالي للاختبار المجاني */
+            box-shadow: 0 8px 20px rgba(255, 179, 0, 0.2); /* ظل توهج خفيف */
+        }
+
+        .exam-card.paid {
+            border-left-color: var(--dark-primary); /* شريط كحلي للاختبار المدفوع */
+        }
+
+        .exam-card h3 {
+            font-size: 1.6em;
+            color: var(--text-on-light);
+            margin-bottom: 10px;
+        }
+
+        .exam-card p {
+            font-size: 0.95em;
+            color: var(--secondary-text-light);
+            margin-bottom: 15px;
+        }
+
+        .exam-card .price {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .exam-card .exam-button {
+            background-color: var(--accent-color);
+            color: var(--text-on-dark);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 3px 10px var(--shadow-color);
+        }
+        .exam-card .exam-button:hover {
+            background-color: #E69A00;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--shadow-color-hover);
+        }
+        .exam-card .exam-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.5);
+        }
+        /* زر الشراء قد يحتاج لوناً مختلفاً */
+        .exam-card .exam-button.buy-button {
+            background-color: var(--dark-primary);
+        }
+        .exam-card .exam-button.buy-button:hover {
+            background-color: #2c3e50;
+        }
+        .exam-card.package .exam-button { /* لون مختلف لأزرار الباقات */
+            background-color: var(--accent-color);
+        }
+
         /* تعديلات التجاوبية لشاشتي الاختبار والنتائج */
         @media (max-width: 600px) {
             .timer-display {
@@ -1444,7 +1517,7 @@
                     <div class="card-content">
                         <h3>أحدث اختبارات الأحياء</h3>
                         <p>اختبر معلوماتك في الأحياء مع أحدث النماذج المحاكية لاختبارات القبول.</p>
-                        <button class="card-button" onclick="alert('سنضيف اختبارات هنا قريباً!')">ابدأ الاختبار</button>
+                        <button class="card-button" onclick="showExamList('biology')">ابدأ الاختبار</button>
                     </div>
                 </div>
                 <div class="card">
@@ -1592,7 +1665,7 @@
                     <div class="card-content">
                         <h3>اختبارات الأحياء</h3>
                         <p>نماذج امتحانات سابقة وأسئلة محاكية للمادة.</p>
-                        <button class="card-button" onclick="startExam('أحياء')">ابدأ اختبار الأحياء</button>
+                        <button class="card-button" onclick="showExamList('biology')">ابدأ اختبار الأحياء</button>
                     </div>
                 </div>
                 <div class="card">
@@ -1600,7 +1673,7 @@
                     <div class="card-content">
                         <h3>اختبارات الكيمياء</h3>
                         <p>تدرب على أسئلة الكيمياء من مختلف المستويات.</p>
-                        <button class="card-button" onclick="startExam('كيمياء')">ابدأ اختبار الكيمياء</button>
+                        <button class="card-button" onclick="showExamList('chemistry')">ابدأ اختبار الكيمياء</button>
                     </div>
                 </div>
                 <div class="card">
@@ -1608,13 +1681,39 @@
                     <div class="card-content">
                         <h3>اختبارات الإنجليزية</h3>
                         <p>عزز مهاراتك في اللغة الإنجليزية مع نماذج متنوعة.</p>
-                        <button class="card-button" onclick="startExam('إنجليزي')">ابدأ اختبار الإنجليزية</button>
+                        <button class="card-button" onclick="showExamList('english')">ابدأ اختبار الإنجليزية</button>
                     </div>
                 </div>
             </div>
         </section>
     </div>
 
+    <div id="biologyExamsListScreen" class="screen">
+        <button class="nav-button back-button" onclick="showScreen('examsOverviewScreen')">العودة لأنواع الامتحانات</button>
+        <section class="featured-section">
+            <h2 class="section-title">اختر اختبار الأحياء الذي يناسبك</h2>
+            <div class="cards-container" id="biologyExamsContainer">
+                </div>
+        </section>
+    </div>
+
+    <div id="chemistryExamsListScreen" class="screen">
+        <button class="nav-button back-button" onclick="showScreen('examsOverviewScreen')">العودة لأنواع الامتحانات</button>
+        <section class="featured-section">
+            <h2 class="section-title">اختر اختبار الكيمياء الذي يناسبك</h2>
+            <div class="cards-container" id="chemistryExamsContainer">
+                </div>
+        </section>
+    </div>
+
+    <div id="englishExamsListScreen" class="screen">
+        <button class="nav-button back-button" onclick="showScreen('examsOverviewScreen')">العودة لأنواع الامتحانات</button>
+        <section class="featured-section">
+            <h2 class="section-title">اختر اختبار الإنجليزية الذي يناسبك</h2>
+            <div class="cards-container" id="englishExamsContainer">
+                </div>
+        </section>
+    </div>
     <div id="examScreen" class="screen">
         <button class="nav-button back-button" onclick="showScreen('examsOverviewScreen')">العودة للامتحانات</button>
         <div class="timer-display" id="examTimer">الوقت المتبقي: 00:00</div>
@@ -1739,7 +1838,14 @@
             const bottomNavItems = document.querySelectorAll('.bottom-nav-bar .bottom-nav-item');
             bottomNavItems.forEach(item => {
                 item.classList.remove('active');
-                if (item.getAttribute('data-screen-id') === screenId) {
+                // تحديث منطق تفعيل شريط التنقل السفلي ليشمل شاشات قوائم الامتحانات
+                if (item.getAttribute('data-screen-id') === screenId || 
+                    (screenId === 'biologyExamsListScreen' && item.getAttribute('data-screen-id') === 'examsOverviewScreen') ||
+                    (screenId === 'chemistryExamsListScreen' && item.getAttribute('data-screen-id') === 'examsOverviewScreen') ||
+                    (screenId === 'englishExamsListScreen' && item.getAttribute('data-screen-id') === 'examsOverviewScreen') ||
+                    (screenId === 'examScreen' && item.getAttribute('data-screen-id') === 'examsOverviewScreen') ||
+                    (screenId === 'resultsScreen' && item.getAttribute('data-screen-id') === 'examsOverviewScreen')
+                ) {
                     item.classList.add('active');
                 }
             });
@@ -1748,7 +1854,14 @@
             const sidebarLinks = document.querySelectorAll('.sidebar-link');
             sidebarLinks.forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('data-screen-id') === screenId) {
+                // تحديث منطق تفعيل القائمة الجانبية ليشمل شاشات قوائم الامتحانات
+                if (link.getAttribute('data-screen-id') === screenId || 
+                    (screenId === 'biologyExamsListScreen' && link.getAttribute('data-screen-id') === 'examsOverviewScreen') ||
+                    (screenId === 'chemistryExamsListScreen' && link.getAttribute('data-screen-id') === 'examsOverviewScreen') ||
+                    (screenId === 'englishExamsListScreen' && link.getAttribute('data-screen-id') === 'examsOverviewScreen') ||
+                    (screenId === 'examScreen' && link.getAttribute('data-screen-id') === 'examsOverviewScreen') ||
+                    (screenId === 'resultsScreen' && link.getAttribute('data-screen-id') === 'examsOverviewScreen')
+                ) {
                     link.classList.add('active');
                 }
             });
@@ -2133,39 +2246,175 @@
         let timeLeft = 0; // في البداية 0
         const EXAM_DURATION_SECONDS = 1500; // 25 دقائق لكل اختبار كمثال
 
-        // دالة بدء الاختبار
-        function startExam(subject) {
-            switch (subject) {
-                case 'أحياء':
-                    activeQuestions = [...questionsBiology]; // نسخ الأسئلة
-                    break;
-                case 'كيمياء':
-                    activeQuestions = [...questionsChemistry];
-                    break;
-                case 'إنجليزي':
-                    activeQuestions = [...questionsEnglish];
-                    break;
-                default:
-                    alert('المادة غير موجودة!');
-                    return;
+        // تعريف بيانات الامتحانات لكل مادة
+        const examsData = {
+            biology: [
+                {
+                    id: 'biology-free-exam',
+                    type: 'free',
+                    title: 'اختبار الأحياء التجريبي المجاني (مع الشرح التفصيلي)',
+                    description: 'جرب منصتنا مجاناً! اختبار شامل مع شروحات لكل إجابة. يغطي أساسيات الأحياء.',
+                    questions: questionsBiology, // استخدام نفس مصفوفة الأسئلة التجريبية
+                    duration: 1500, // ثواني
+                    price: 'مجاني'
+                },
+                {
+                    id: 'biology-paid-exam-1',
+                    type: 'paid',
+                    title: 'اختبار الأحياء الشامل 1',
+                    description: 'اختبار متقدم يغطي فصول: الوراثة، النباتات، والحيوانات. 20 سؤال، 30 دقيقة.',
+                    questions: questionsBiology.slice(0, 20), // 20 سؤال من بداية المصفوفة كمثال
+                    duration: 1800, // 30 دقيقة
+                    price: '5000 ريال يمني'
+                },
+                {
+                    id: 'biology-paid-exam-2',
+                    type: 'paid',
+                    title: 'اختبار الأحياء الشامل 2',
+                    description: 'اختبار متقدم يغطي فصول: علم وظائف الأعضاء، البيئة، والتصنيف. 20 سؤال، 30 دقيقة.',
+                    questions: questionsBiology.slice(5, 25), // أسئلة مختلفة
+                    duration: 1800,
+                    price: '5000 ريال يمني'
+                },
+                {
+                    id: 'biology-bundle-gold',
+                    type: 'bundle',
+                    title: 'باقة الأحياء الذهبية (3 اختبارات شاملة)',
+                    description: 'احصل على 3 اختبارات شاملة (الأول، الثاني، والثالث) بخصم خاص!',
+                    exams: ['biology-paid-exam-1', 'biology-paid-exam-2', 'biology-paid-exam-3'], // IDs للاختبارات في الباقة
+                    price: '12000 ريال يمني'
+                }
+            ],
+            chemistry: [
+                {
+                    id: 'chemistry-free-exam',
+                    type: 'free',
+                    title: 'اختبار الكيمياء التجريبي المجاني (مع الشرح التفصيلي)',
+                    description: 'جرب منصتنا مجاناً! اختبار شامل مع شروحات لكل إجابة. يغطي أساسيات الكيمياء.',
+                    questions: questionsChemistry,
+                    duration: 1500,
+                    price: 'مجاني'
+                },
+                {
+                    id: 'chemistry-paid-exam-1',
+                    type: 'paid',
+                    title: 'اختبار الكيمياء الشامل 1',
+                    description: 'اختبار متقدم يغطي فصول: الكيمياء العضوية، الكيمياء غير العضوية، والكيمياء الفيزيائية. 20 سؤال، 30 دقيقة.',
+                    questions: questionsChemistry.slice(0, 20),
+                    duration: 1800,
+                    price: '5000 ريال يمني'
+                }
+            ],
+            english: [
+                {
+                    id: 'english-free-exam',
+                    type: 'free',
+                    title: 'اختبار الإنجليزية التجريبي المجاني (مع الشرح التفصيلي)',
+                    description: 'جرب منصتنا مجاناً! اختبار شامل مع شروحات لكل إجابة. يغطي أساسيات اللغة الإنجليزية.',
+                    questions: questionsEnglish,
+                    duration: 1500,
+                    price: 'مجاني'
+                },
+                {
+                    id: 'english-paid-exam-1',
+                    type: 'paid',
+                    title: 'اختبار الإنجليزية الشامل 1',
+                    description: 'اختبار متقدم يغطي فصول: القواعد، المفردات، وفهم المقروء. 20 سؤال، 30 دقيقة.',
+                    questions: questionsEnglish.slice(0, 20),
+                    duration: 1800,
+                    price: '5000 ريال يمني'
+                }
+            ]
+        };
+
+        let currentSubjectForExamList = ''; // لتخزين المادة الحالية في قائمة الامتحانات
+
+        // دالة لعرض قائمة الامتحانات لمادة معينة
+        function showExamList(subject) {
+            currentSubjectForExamList = subject; // حفظ المادة الحالية
+            const containerId = `${subject}ExamsContainer`;
+            const screenId = `${subject}ExamsListScreen`;
+            const container = document.getElementById(containerId);
+            const exams = examsData[subject];
+
+            if (!container || !exams) {
+                console.error(`No container or exams data found for subject: ${subject}`);
+                return;
             }
 
-            // خلط الأسئلة عشوائياً
-            activeQuestions.sort(() => Math.random() - 0.5);
+            container.innerHTML = ''; // مسح أي محتوى سابق
 
+            exams.forEach(exam => {
+                const examCard = document.createElement('div');
+                examCard.classList.add('exam-card');
+                examCard.classList.add(exam.type); // لإضافة كلاس 'free', 'paid', 'bundle'
+
+                let buttonHtml = '';
+                if (exam.type === 'free') {
+                    buttonHtml = `<button class="exam-button" onclick="startSpecificExam('${subject}', '${exam.id}')">ابدأ الاختبار المجاني</button>`;
+                } else if (exam.type === 'paid') {
+                    buttonHtml = `<button class="exam-button buy-button" onclick="handlePurchase('${subject}', '${exam.id}', '${exam.price}')">شراء الاختبار</button>`;
+                } else if (exam.type === 'bundle') {
+                    buttonHtml = `<button class="exam-button buy-button" onclick="handlePurchase('${subject}', '${exam.id}', '${exam.price}')">شراء الباقة</button>`;
+                }
+                
+                const priceDisplay = exam.price ? `<p class="price">${exam.price}</p>` : '';
+
+                examCard.innerHTML = `
+                    <h3>${exam.title}</h3>
+                    <p>${exam.description}</p>
+                    ${priceDisplay}
+                    ${buttonHtml}
+                `;
+                container.appendChild(examCard);
+            });
+
+            showScreen(screenId);
+        }
+
+        // دالة لبدء اختبار محدد (سواء مجاني أو مدفوع بعد الشراء)
+        function startSpecificExam(subject, examId) {
+            const exam = examsData[subject].find(e => e.id === examId);
+
+            if (!exam) {
+                alert('عذراً، هذا الاختبار غير موجود.');
+                return;
+            }
+
+            // هنا يمكنك إضافة منطق التحقق من الدفع إذا كان الاختبار مدفوعاً
+            // حالياً، نفترض أن الدفع قد تم أو أنه اختبار مجاني
+            if (exam.type === 'paid' || exam.type === 'bundle') {
+                // For demonstration, we'll allow access. In a real app,
+                // you'd check a user's purchased exams in a database.
+                console.log(`Accessing paid/bundle exam: ${exam.title}. In a real app, this would require payment verification.`);
+            }
+
+            // إعداد الأسئلة والمؤقت
+            activeQuestions = [...exam.questions]; // استخدم أسئلة الاختبار المحددة
             currentQuestionIndex = 0;
-            userAnswers = Array(activeQuestions.length).fill(null); // تهيئة إجابات المستخدم
-            timeLeft = EXAM_DURATION_SECONDS; // إعادة ضبط المؤقت
+            userAnswers = Array(activeQuestions.length).fill(null);
+            timeLeft = exam.duration || EXAM_DURATION_SECONDS; // استخدم مدة الاختبار المحددة أو الافتراضية
             
             showScreen('examScreen');
             loadQuestion();
             startTimer();
         }
 
+        // دالة للتعامل مع عملية الشراء (هذه مجرد دالة وهمية للتوضيح)
+        function handlePurchase(subject, examId, price) {
+            alert(`سيتم توجيهك لصفحة الدفع لشراء "${examId}" بسعر ${price}.`);
+            // في تطبيق حقيقي:
+            // 1. إعادة توجيه المستخدم إلى صفحة تسجيل الدخول/التسجيل إذا لم يكن مسجلاً.
+            // 2. إرسال طلب إلى واجهة برمجة التطبيقات (API) لبدء عملية الدفع.
+            // 3. عند نجاح الدفع، يتم تحديث حالة المستخدم ليتمكن من الوصول إلى الاختبار.
+            // 4. بعد الدفع، يمكنك استدعاء startSpecificExam(subject, examId) لتوجيه الطالب.
+        }
+
+
         // دالة تحميل السؤال الحالي
         function loadQuestion() {
             if (activeQuestions.length === 0) {
-                document.getElementById('questionText').innerText = "لا توجد أسئلة لهذه المادة.";
+                document.getElementById('questionText').innerText = "لا توجد أسئلة لهذا الاختبار.";
                 document.getElementById('optionsContainer').innerHTML = '';
                 return;
             }
