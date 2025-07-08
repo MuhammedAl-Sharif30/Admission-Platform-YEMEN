@@ -1812,6 +1812,238 @@
     </footer>
 
     <script>
+        // Sample questions data (dummy data for demonstration)
+        const questionsBiology = [
+            {
+                question: "ما هو الجزء المسؤول عن تنظيم دخول وخروج المواد من وإلى الخلية؟",
+                options: ["الجدار الخلوي", "الغشاء البلازمي", "النواة", "الميتوكوندريا"],
+                answer: "الغشاء البلازمي",
+                explanation: "الغشاء البلازمي هو غشاء شبه منفذ يتحكم في مرور المواد.",
+            },
+            {
+                question: "أي من التالي ليس من وظائف الجهاز الهضمي؟",
+                options: ["امتصاص الغذاء", "هضم البروتينات", "إنتاج الأنسولين", "تكسير الكربوهيدرات"],
+                answer: "إنتاج الأنسولين",
+                explanation: "البنكرياس هو المسؤول عن إنتاج الأنسولين، وهو جزء من الجهاز الغدد الصماء وليس الهضمي بشكل مباشر.",
+            },
+            {
+                question: "ما هي الوحدة الأساسية للوراثة؟",
+                options: ["البروتين", "الحمض النووي (DNA)", "الجين", "الكروموسوم"],
+                answer: "الجين",
+                explanation: "الجين هو الوحدة الأساسية للوراثة ويحمل المعلومات لصفة معينة.",
+            },
+            {
+                question: "أي من الكائنات التالية يقوم بعملية البناء الضوئي؟",
+                options: ["الفطريات", "البكتيريا", "النباتات", "الحيوانات"],
+                answer: "النباتات",
+                explanation: "النباتات تحتوي على الكلوروفيل الذي يمكنها من إجراء عملية البناء الضوئي.",
+            },
+            {
+                question: "ما هو السائل الذي يملأ العين ويساعد في الحفاظ على شكلها؟",
+                options: ["الدموع", "السائل الزجاجي", "السائل المائي", "البلازما"],
+                answer: "السائل الزجاجي",
+                explanation: "السائل الزجاجي هو سائل هلامي يملأ الجزء الخلفي من العين ويحافظ على شكلها.",
+            },
+            {
+                question: "أي من الهرمونات التالية يفرز من الغدة الدرقية؟",
+                options: ["الأنسولين", "الأدرينالين", "الثايروكسين", "الجلوكاجون"],
+                answer: "الثايروكسين",
+                explanation: "الثايروكسين هو الهرمون الرئيسي الذي تفرزه الغدة الدرقية وينظم عملية الأيض.",
+            },
+            {
+                question: "ما هو العضو المسؤول عن تصفية الدم وإزالة الفضلات في جسم الإنسان؟",
+                options: ["الكبد", "الرئة", "الكلية", "القلب"],
+                answer: "الكلية",
+                explanation: "الكلية هي العضو الرئيسي في الجهاز البولي وتعمل على تصفية الدم وتكوين البول.",
+            },
+            {
+                question: "ما هي العملية التي يتم فيها تبادل الغازات بين الرئتين والدم؟",
+                options: ["الهضم", "التنفس الخلوي", "التبادل الغازي", "الامتصاص"],
+                answer: "التبادل الغازي",
+                explanation: "التبادل الغازي هو العملية التي يتم فيها دخول الأكسجين إلى الدم وخروج ثاني أكسيد الكربون من الدم في الرئتين.",
+            },
+            {
+                question: "أي من التالي يعتبر كائن حي دقيق غير قادر على الحركة الذاتية؟",
+                options: ["الأميبا", "البراميسيوم", "الفيروس", "البكتيريا"],
+                answer: "الفيروس",
+                explanation: "الفيروسات كائنات لا خلوية ولا تستطيع الحركة الذاتية، وتحتاج إلى خلية مضيفة للتكاثر.",
+            },
+            {
+                question: "ما هو الجزء المسؤول عن إنتاج الطاقة في الخلية؟",
+                options: ["النواة", "الريبوسوم", "الميتوكوندريا", "الشبكة الإندوبلازمية"],
+                answer: "الميتوكوندريا",
+                explanation: "الميتوكوندريا هي محطات توليد الطاقة في الخلية من خلال عملية التنفس الخلوي.",
+            },
+            {
+                question: "أي من المواد التالية تُخزن في الكبد والعضلات كشكل من أشكال الطاقة؟",
+                options: ["البروتينات", "الدهون", "الجليكوجين", "السكريات الأحادية"],
+                answer: "الجليكوجين",
+                explanation: "الجليكوجين هو شكل تخزين الجلوكوز في الحيوانات والفطريات، ويوجد بشكل أساسي في الكبد والعضلات.",
+            },
+            {
+                question: "ما هو اسم العملية التي تتحول فيها اليرقة إلى فراشة بالغة؟",
+                options: ["التكاثر", "النمو", "التحول الكامل", "الانسلاخ"],
+                answer: "التحول الكامل",
+                explanation: "التحول الكامل هو عملية يمر بها بعض الحشرات مثل الفراشات، حيث تمر بأربع مراحل: بيضة، يرقة، خادرة، حشرة بالغة.",
+            },
+            {
+                question: "أي من الغدد التالية تقع في الدماغ وتعتبر الغدة الرئيسية المتحكمة في الغدد الأخرى؟",
+                options: ["الغدة الدرقية", "الغدة الكظرية", "الغدة النخامية", "البنكرياس"],
+                answer: "الغدة النخامية",
+                explanation: "الغدة النخامية تقع في قاعدة الدماغ وتسمى الغدة الأم لأنها تتحكم في العديد من الغدد الصماء الأخرى.",
+            },
+            {
+                question: "ما هي المادة الخضراء المسؤولة عن امتصاص ضوء الشمس في النباتات؟",
+                options: ["الكاروتين", "الزياكسانثين", "الكلوروفيل", "الأنثوسيانين"],
+                answer: "الكلوروفيل",
+                explanation: "الكلوروفيل هو الصبغة الخضراء الموجودة في البلاستيدات الخضراء والتي تمتص الطاقة الضوئية للبناء الضوئي.",
+            },
+            {
+                question: "أي من هذه الأمراض ليس سببها فيروس؟",
+                options: ["الأنفلونزا", "الإيدز", "السل", "الحصبة"],
+                answer: "السل",
+                explanation: "السل (الدرن) هو مرض بكتيري تسببه بكتيريا المتفطرة السلية (Mycobacterium tuberculosis).",
+            },
+            {
+                question: "ما هو الجزء من الدماغ المسؤول بشكل أساسي عن التوازن وتنسيق الحركات؟",
+                options: ["المخ", "المخيخ", "النخاع المستطيل", "المهاد"],
+                answer: "المخيخ",
+                explanation: "المخيخ يقع في الجزء الخلفي من الدماغ ويقوم بتنسيق الحركات الإرادية ويحافظ على التوازن.",
+            },
+        ];
+
+        const questionsChemistry = [
+            {
+                question: "ما هو الرمز الكيميائي للماء؟",
+                options: ["O2", "CO2", "H2O", "N2"],
+                answer: "H2O",
+                explanation: "الماء يتكون من ذرتي هيدروجين وذرة أكسجين.",
+            },
+            {
+                question: "أي من العناصر التالية هو غاز نبيل؟",
+                options: ["الأكسجين", "النيتروجين", "الهيليوم", "الكلور"],
+                answer: "الهيليوم",
+                explanation: "الهيليوم (He) هو أحد الغازات النبيلة في المجموعة 18 من الجدول الدوري، ويتميز بثباته الكيميائي.",
+            },
+            {
+                question: "ما هو الرقم الذري للأكسجين؟",
+                options: ["6", "7", "8", "9"],
+                answer: "8",
+                explanation: "الرقم الذري للأكسجين (O) هو 8، مما يعني أنه يحتوي على 8 بروتونات في نواته.",
+            },
+            {
+                question: "ما نوع الرابطة الكيميائية في جزيء كلوريد الصوديوم (<span class='latex-math'>NaCl</span>)؟",
+                options: ["تساهمية", "أيونية", "فلزية", "هيدروجينية"],
+                answer: "أيونية",
+                explanation: "الرابطة في <span class='latex-math'>NaCl</span> هي أيونية، حيث ينتقل إلكترون من الصوديوم إلى الكلور لتكوين أيونات.",
+            },
+            {
+                question: "ما هي النسبة المئوية التقريبية للنيتروجين في الغلاف الجوي؟",
+                options: ["21%", "0.9%", "78%", "0.04%"],
+                answer: "78%",
+                explanation: "يشكل النيتروجين حوالي 78% من حجم الغلاف الجوي للأرض.",
+            },
+            {
+                question: "أي من التالي هو حمض قوي؟",
+                options: ["<span class='latex-math'>CH<sub>3</sub>COOH</span> (حمض الخليك)", "<span class='latex-math'>HCl</span> (حمض الهيدروكلوريك)", "<span class='latex-math'>H<sub>2</sub>CO<sub>3</sub></span> (حمض الكربونيك)", "<span class='latex-math'>H<sub>3</sub>PO<sub>4</sub></span> (حمض الفوسفوريك)"],
+                answer: "<span class='latex-math'>HCl</span> (حمض الهيدروكلوريك)",
+                explanation: "<span class='latex-math'>HCl</span> هو حمض قوي يتأين تماماً في الماء، بينما البقية أحماض ضعيفة.",
+            },
+            {
+                question: "ما هو ناتج تفاعل حمض مع قاعدة؟",
+                options: ["غاز", "ملح وماء", "كحول", "إستر"],
+                answer: "ملح وماء",
+                explanation: "تفاعل التعادل بين الحمض والقاعدة ينتج ملحاً وماءً.",
+            },
+            {
+                question: "أي من التالي ليس من خصائص الفلزات؟",
+                options: ["قابلة للطرق والسحب", "موصلة جيدة للكهرباء والحرارة", "عازلة للكهرباء", "لها لمعان معدني"],
+                answer: "عازلة للكهرباء",
+                explanation: "الفلزات موصلة جيدة للكهرباء، وليست عازلة.",
+            },
+            {
+                question: "ما هو العنصر الأكثر وفرة في قشرة الأرض؟",
+                options: ["الحديد", "الألمنيوم", "الأكسجين", "السيليكون"],
+                answer: "الأكسجين",
+                explanation: "الأكسجين هو العنصر الأكثر وفرة في قشرة الأرض، حيث يشكل حوالي 46.6% من وزنها.",
+            },
+            {
+                question: "ما هو نوع التفاعل الذي ينتج عنه طاقة حرارية؟",
+                options: ["تفاعل ماص للحرارة", "تفاعل طارد للحرارة", "تفاعل أكسدة", "تفاعل اختزال"],
+                answer: "تفاعل طارد للحرارة",
+                explanation: "التفاعل الطارد للحرارة هو التفاعل الذي يطلق طاقة إلى البيئة المحيطة على شكل حرارة.",
+            },
+        ];
+
+        const questionsEnglish = [
+            {
+                question: "Choose the correct sentence:",
+                options: [
+                    "She don't like coffee.",
+                    "She doesn't like coffee.",
+                    "She not like coffee.",
+                    "She no like coffee."
+                ],
+                answer: "She doesn't like coffee.",
+                explanation: "For third person singular (she, he, it), we use 'doesn't' in negative simple present sentences."
+            },
+            {
+                question: "What is the past tense of the verb 'go'?",
+                options: ["goed", "went", "gone", "goes"],
+                answer: "went",
+                explanation: "The past simple tense of 'go' is 'went'. 'Gone' is the past participle."
+            },
+            {
+                question: "Complete the sentence: 'I am looking ______ my keys.'",
+                options: ["at", "for", "in", "on"],
+                answer: "for",
+                explanation: "'Looking for' means trying to find something."
+            },
+            {
+                question: "Which word is a synonym for 'happy'?",
+                options: ["sad", "angry", "joyful", "tired"],
+                answer: "joyful",
+                explanation: "Synonyms are words with similar meanings. 'Joyful' means feeling or expressing great pleasure and happiness."
+            },
+            {
+                question: "Identify the noun in the sentence: 'The cat sat on the mat.'",
+                options: ["The", "sat", "on", "cat"],
+                answer: "cat",
+                explanation: "A noun is a word that names a person, place, thing, or idea. 'Cat' is a thing (animal) in this sentence."
+            },
+            {
+                question: "Choose the correct spelling:",
+                options: ["recieve", "receive", "reiceve", "receve"],
+                answer: "receive",
+                explanation: "The correct spelling is 'receive' (i before e, except after c)."
+            },
+            {
+                question: "What is the plural of 'child'?",
+                options: ["childs", "children", "childes", "child's"],
+                answer: "children",
+                explanation: "'Children' is an irregular plural form of 'child'."
+            },
+            {
+                question: "The weather ______ nice tomorrow.",
+                options: ["is", "was", "will be", "has been"],
+                answer: "will be",
+                explanation: "To talk about future predictions, we use 'will be'."
+            },
+            {
+                question: "Which of these is a modal verb?",
+                options: ["run", "eat", "can", "sleep"],
+                answer: "can",
+                explanation: "Modal verbs (like can, could, will, would, may, might, must, should, shall) are auxiliary verbs that express necessity or possibility."
+            },
+            {
+                question: "He is good ______ playing football.",
+                options: ["on", "at", "in", "with"],
+                answer: "at",
+                explanation: "The correct preposition to use with 'good' when describing a skill is 'at'."
+            }
+        ];
+
+
         // --- Screen Management Logic ---
         function showScreen(screenId) { 
             console.log('Attempting to show screen:', screenId);
@@ -2124,15 +2356,15 @@
         // Called when "اختبارات شاملة" is clicked on subjectExamsScreen
         function showComprehensiveExamsList() {
             const container = document.getElementById('comprehensiveExamsListContainer');
-            container.innerHTML = '';
+            container.innerHTML = ''; // Clear previous content
             document.getElementById('comprehensiveExamsListTitle').innerText = `اختبارات ${materialsData[currentMaterialId].name} الشاملة`;
 
             const exams = comprehensiveExamsData[currentMaterialId];
             if (!exams || exams.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: var(--secondary-text-light);">لا توجد اختبارات شاملة متاحة حالياً.</p>';
+                container.innerHTML = '<p style="text-align: center; color: var(--secondary-text-light);">لا توجد اختبارات شاملة متاحة حالياً لهذه المادة.</p>';
                 container.classList.add('single-column'); // Adjust layout for no items
             } else {
-                container.classList.remove('single-column');
+                container.classList.remove('single-column'); // Reset layout
                 exams.forEach(exam => {
                     const card = document.createElement('div');
                     card.classList.add('card');
@@ -2154,7 +2386,7 @@
         // Called when "اختبارات حسب الصف" is clicked on subjectExamsScreen
         function showExamsByGrade() {
             const container = document.getElementById('gradesListContainer');
-            container.innerHTML = '';
+            container.innerHTML = ''; // Clear previous content
             document.getElementById('examsByGradeTitle').innerText = `اختبارات ${materialsData[currentMaterialId].name} حسب الصف`;
 
             const grades = gradesData[currentMaterialId];
@@ -2185,15 +2417,19 @@
         function showGradeSpecificExams(materialId, gradeId) {
             currentMaterialId = materialId;
             currentGradeId = gradeId;
-            document.getElementById('gradeSpecificExamsTitle').innerText = `اختبارات ${gradesData[currentMaterialId].find(g => g.id === gradeId).name} في ${materialsData[currentMaterialId].name}`;
+            const gradeName = gradesData[materialId].find(g => g.id === gradeId)?.name || 'غير معروف';
+            const materialName = materialsData[materialId]?.name || 'المادة';
+            document.getElementById('gradeSpecificExamsTitle').innerText = `اختبارات ${gradeName} في ${materialName}`;
             showScreen('gradeSpecificExamsScreen');
         }
 
         // Called when "اختبارات حسب الفصول" is clicked on gradeSpecificExamsScreen
         function showChapterExamsList() {
             const container = document.getElementById('chaptersListContainer');
-            container.innerHTML = '';
-            document.getElementById('chapterExamsListTitle').innerText = `اختبارات الفصول للصف ${gradesData[currentMaterialId].find(g => g.id === currentGradeId).name.split(' ')[1]} في ${materialsData[currentMaterialId].name}`;
+            container.innerHTML = ''; // Clear previous content
+            const gradeName = gradesData[currentMaterialId].find(g => g.id === currentGradeId)?.name || 'غير معروف';
+            const materialName = materialsData[currentMaterialId]?.name || 'المادة';
+            document.getElementById('chapterExamsListTitle').innerText = `اختبارات الفصول لـ ${gradeName} في ${materialName}`;
 
             const chapters = chaptersData[currentMaterialId]?.[currentGradeId];
             if (!chapters || chapters.length === 0) {
@@ -2271,11 +2507,13 @@
         // Go back from exam details screen based on how we got there
         function goBackFromExamDetails() {
             if (currentExamType === 'comprehensive') {
-                showComprehensiveExamsList();
-            } else if (currentExamType === 'grade_comprehensive' || currentExamType === 'chapter_exam') {
-                showGradeSpecificExams(currentMaterialId, currentGradeId);
+                showComprehensiveExamsList(); // Back to comprehensive exams list for the current material
+            } else if (currentExamType === 'grade_comprehensive') {
+                showGradeSpecificExams(currentMaterialId, currentGradeId); // Back to grade specific options
+            } else if (currentExamType === 'chapter_exam') {
+                showChapterExamsList(); // Back to chapter list for the current grade/material
             } else {
-                showScreen('examsOverviewScreen'); // Fallback
+                showScreen('examsOverviewScreen'); // Fallback to main exams overview
             }
         }
 
