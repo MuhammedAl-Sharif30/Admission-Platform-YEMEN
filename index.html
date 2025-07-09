@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>   
 <body>
 
@@ -23,8 +24,7 @@
             منصة القبول
         </a>
         
-        <nav class="nav-links">
-            <a href="#" class="nav-link active" data-screen-id="mainScreen" onclick="showScreen('mainScreen')">
+        <nav class="nav-bar"> <a href="#" class="nav-link active" data-screen-id="mainScreen" onclick="showScreen('mainScreen')">
                 الرئيسية
             </a>
             <a href="#" class="nav-link" data-screen-id="materialsScreen" onclick="showScreen('materialsScreen')">
@@ -38,8 +38,7 @@
             </a>
         </nav>
 
-        <div class="header-icons">
-            <button class="header-icon-button search-icon" onclick="alert('خاصية البحث قريباً')">
+        <div class="header-buttons"> <button class="header-icon-button search-icon" onclick="alert('خاصية البحث قريباً')">
                 <i class="fas fa-search"></i>
             </button>
             <button class="header-icon-button profile-icon" onclick="alert('الملف الشخصي قريباً')">
@@ -73,18 +72,16 @@
         </div>
     </div>
 
-    <div class="overlay" onclick="closeSidebar()"></div>
-
-    <div id="mainScreen" class="screen active">
-        <section class="hero-section">
-            <div class="hero-illustration-placeholder">
-                <i class="fas fa-lightbulb"></i>
+    <div class="overlay" id="overlay" onclick="closeSidebar()"></div> <div id="mainScreen" class="screen active">
+        <section class="hero"> <div class="hero-content"> <div class="hero-illustration-placeholder">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h1>بوابتك نحو مستقبل مشرق!</h1>
+                <p>استعد لاختبارات القبول في جميع الجامعات اليمنية بأسلوب فريد ومواد شاملة.</p>
+                <button class="hero-button" onclick="showScreen('examsOverviewScreen')">
+                    <i class="fas fa-graduation-cap"></i> ابدأ رحلتك الآن
+                </button>
             </div>
-            <h1>بوابتك نحو مستقبل مشرق!</h1>
-            <p>استعد لاختبارات القبول في جميع الجامعات اليمنية بأسلوب فريد ومواد شاملة.</p>
-            <button class="hero-button" onclick="showScreen('examsOverviewScreen')">
-                <i class="fas fa-graduation-cap"></i> ابدأ رحلتك الآن
-            </button>
         </section>
 
         <section class="featured-section">
@@ -95,7 +92,7 @@
                     <div class="card-content">
                         <h3>أحدث اختبارات الأحياء</h3>
                         <p>اختبر معلوماتك في الأحياء مع أحدث النماذج المحاكية لاختبارات القبول.</p>
-                        <button class="card-button" onclick="showSubjectExams('biology')">ابدأ الاختبار</button>
+                        <button class="card-button" onclick="event.stopPropagation(); showSubjectExams('biology')">ابدأ الاختبار</button>
                     </div>
                 </div>
                 <div class="card">
@@ -103,7 +100,7 @@
                     <div class="card-content">
                         <h3>مراجعات الكيمياء الشاملة</h3>
                         <p>مراجعات مركزة ومبسطة لأهم نقاط الكيمياء التي تحتاجها للنجاح.</p>
-                        <button class="card-button" onclick="showSubjectExams('chemistry')">تصفح المراجعات</button>
+                        <button class="card-button" onclick="event.stopPropagation(); showSubjectExams('chemistry')">تصفح المراجعات</button>
                     </div>
                 </div>
                 <div class="card">
@@ -111,7 +108,7 @@
                     <div class="card-content">
                         <h3>قواعد الإنجليزية للقبول</h3>
                         <p>كل ما تحتاجه لإتقان اللغة الإنجليزية واجتياز قسم اللغة في الامتحان.</p>
-                        <button class="card-button" onclick="showSubjectExams('english')">تعلم الآن</button>
+                        <button class="card-button" onclick="event.stopPropagation(); showSubjectExams('english')">تعلم الآن</button>
                     </div>
                 </div>
             </div>
@@ -270,7 +267,8 @@
         <button class="nav-button back-button" onclick="showScreen('examsOverviewScreen')">العودة لاختيار المادة</button>
         <section class="featured-section">
             <h2 class="section-title" id="subjectExamsTitle">اختبارات [اسم المادة]</h2>
-            <div class="cards-container single-column"> <div class="card" onclick="showComprehensiveExamsList()">
+            <div class="cards-container single-column"> 
+                <div class="card" onclick="showComprehensiveExamsList()">
                     <div class="card-image"><i class="fas fa-clipboard-list"></i></div>
                     <div class="card-content">
                         <h3>اختبارات شاملة</h3>
@@ -308,7 +306,7 @@
     </div>
 
     <div id="examsByGradeScreen" class="screen">
-        <button class="nav-button back-button" onclick="showSubjectExams(currentMaterialId)">العودة لاختيار نوع الاختبار</button>
+        <button class="nav-button back-button" onclick="showSubjectExams(currentMaterialId)">الودة لاختيار نوع الاختبار</button>
         <section class="featured-section">
             <h2 class="section-title" id="examsByGradeTitle">اختبارات [اسم المادة] حسب الصف</h2>
             <div class="cards-container" id="gradesListContainer">
@@ -367,35 +365,37 @@
 
 
     <div id="examScreen" class="screen">
-        <button class="nav-button back-button" onclick="confirmEndExam()">إنهاء الاختبار</button> <div class="timer-display" id="examTimer">الوقت المتبقي: 00:00</div>
+        <button class="nav-button back-button" onclick="confirmEndExam()">إنهاء الاختبار</button>
+        <div class="timer-display" id="examTimer">الوقت المتبقي: 00:00</div>
         <div class="scroll-content">
-            <div class="question-container">
-                <p class="question-text" id="questionText">سيظهر السؤال هنا.</p>
+            <div class="question-container" id="questionContainer"> <p class="question-text" id="questionText">سيظهر السؤال هنا.</p>
                 <div class="options-container" id="optionsContainer">
                     </div>
             </div>
             
             <div class="exam-nav-buttons">
-                <button class="action-button" onclick="prevQuestion()" style="background-color: var(--dark-primary);">السابق</button>
-                <button class="action-button" onclick="nextQuestion()" style="background-color: var(--accent-color);">التالي</button>
-                <button class="action-button" onclick="confirmEndExam()" style="background-color: #f44336;">إنهاء الاختبار</button>
+                <button class="action-button" onclick="navigateQuestion('prev')" style="background-color: var(--dark-primary);">السابق</button>
+                <button class="action-button" onclick="navigateQuestion('next')" style="background-color: var(--accent-color);">التالي</button>
+                <button class="action-button" onclick="finishExam()" style="background-color: #f44336;" id="finishExam">إنهاء الاختبار</button>
             </div>
         </div>
     </div>
 
-    <div id="resultsScreen" class="screen">
-        <button class="nav-button back-button" onclick="showScreen('examsOverviewScreen')">العودة للامتحانات</button>
+    <div id="resultScreen" class="screen"> <button class="nav-button back-button" onclick="showScreen('examsOverviewScreen')">العودة للامتحانات</button>
         <div class="scroll-content">
-            <h2>نتائج الاختبار</h2>
-            <div class="result-summary">
+            <h2 class="section-title">نتائج الاختبار</h2> <div class="result-summary">
                 <p>درجتك: <span id="scorePercentage">--</span></p>
-                <p>الإجابات الصحيحة: <span id="correctAnswersCount">--</span></p>
-                <p>الإجابات الخاطئة: <span id="incorrectAnswersCount">--</span></p>
+                <p>الإجابات الصحيحة: <span id="correctAnswers">--</span></p> <p>الإجابات الخاطئة: <span id="incorrectAnswersCount">--</span></p>
                 <p>الأسئلة التي لم تجب عليها: <span id="unansweredQuestionsCount">--</span></p>
-            </div>
+                <p>إجمالي الأسئلة: <span id="totalQuestions">--</span></p> </div>
             <h3>مراجعة الإجابات</h3>
             <div id="reviewContainer">
                 <p>لا توجد أسئلة لمراجعتها حالياً.</p>
+            </div>
+             <div style="text-align: center; margin-top: 30px;">
+                <button class="hero-button" onclick="resetExam()">
+                    <i class="fas fa-redo"></i> إعادة الاختبار
+                </button>
             </div>
         </div>
     </div>
@@ -455,5 +455,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script></body>
+    <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit-id.js" crossorigin="anonymous"></script> </body>
 </html>
